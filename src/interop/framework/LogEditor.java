@@ -1,24 +1,32 @@
 package interop.framework;
 
-import javafx.fxml.FXMLLoader;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-/**
- * Created by lucas on 17/04/2017.
- */
-public class LogEditor {
+public class LogEditor implements Initializable {
 
-    public void goTo1() {
-        try {
-            Main.window.setScene(new Scene(FXMLLoader.load(getClass().getResource("main.fxml"))));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    @FXML private static  Label logID;
+    @FXML private static TextField logName;
+    @FXML private static CheckBox training;
+
+    @FXML private static Button saveChanges;
+    @FXML private static Button cancel;
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        //logID.setText("Log ID: " + new Random().nextLong());
+    }
+
+    public static TextField getLogName() {
+        return logName;
     }
 
 }

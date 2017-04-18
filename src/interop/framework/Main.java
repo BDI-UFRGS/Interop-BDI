@@ -1,41 +1,26 @@
 package interop.framework;
 
-import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.fxml.Initializable;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class Main extends Application {
-
-    public static Main main;
-    public Stage window;
+public class Main implements Initializable {
 
     @FXML BorderPane mainPane;
-
-    public static void main(String[] args) {
-        launch(args);
-    }
+    @FXML MenuItem addProfile;
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        this.window = primaryStage;
-        Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
-        window.setTitle("Interop-BDI");
-        window.setScene(new Scene(root));
-        window.show();
+    public void initialize(URL location, ResourceBundle resources) {
+        try {
+            mainPane.setCenter(FXMLLoader.load(getClass().getResource("LogEditor.fxml")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-
-    public void setCenterContent(String parent) throws IOException {
-        setCenterParent(FXMLLoader.load(getClass().getResource(parent)));
-    }
-
-    public void setCenterParent(Parent parent) {
-        this.mainPane.setCenter(parent);
-    }
-
 }
