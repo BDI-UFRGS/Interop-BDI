@@ -1,23 +1,20 @@
-package interop.framework;
+package interop.framework.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.net.URL;
 import java.util.Random;
 import java.util.ResourceBundle;
 
-public class LogEditor implements Initializable {
+public class LogEditorController implements Controller, Initializable {
 
-    @FXML Label logID;
-    @FXML TextField logName;
-    @FXML CheckBox training;
+    @FXML Label lasID;
+    @FXML TextField lasName;
 
     @FXML Button saveChanges;
     @FXML Button cancel;
@@ -26,14 +23,9 @@ public class LogEditor implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        if(file == null) {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Open Resource File");
-            fileChooser.showOpenDialog(Framework.instance);
-        }
 
 
-        logID.setText("Log ID: " + new Random().nextInt());
+        lasID.setText("LAS ID: " + new Random().nextInt());
 
         //mainPane.setBackground(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)));
     }

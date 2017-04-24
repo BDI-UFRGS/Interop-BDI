@@ -5,9 +5,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane fx:id="mainPane" minHeight="400.0" minWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interop.framework.Main">
+<BorderPane fx:id="mainPane" minHeight="400.0" minWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interop.framework.controller.MainController">
    <top>
-      <MenuBar BorderPane.alignment="CENTER">
+      <MenuBar fx:id="mainMenuBar" BorderPane.alignment="CENTER">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
@@ -15,7 +15,7 @@
                   <MenuItem mnemonicParsing="false" text="Save" />
                   <MenuItem mnemonicParsing="false" text="Save As" />
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem fx:id="addProfile" mnemonicParsing="false" text="Add Profile" />
+                  <MenuItem fx:id="addProfile" mnemonicParsing="false" text="Add LAS" />
                   <MenuItem mnemonicParsing="false" text="Add XML" />
             </items>
           </Menu>
