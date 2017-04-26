@@ -15,6 +15,12 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+
+/**
+ * Controller for the Validation LAS Editing screen
+ *
+ * @author Lucas Hagen
+ */
 public class VLASEditorController implements Controller, Initializable {
 
     @FXML Label lasID;
@@ -61,6 +67,9 @@ public class VLASEditorController implements Controller, Initializable {
             logsTable.getItems().add(new ConfigurableLog(log));
     }
 
+    /**
+     * Function to set Table View PropertyValueFactories
+     */
     public void setupTableColumns() {
         this.logActive.setCellValueFactory(new PropertyValueFactory<>("active"));
         this.logName.setCellValueFactory(new PropertyValueFactory<>("name"));

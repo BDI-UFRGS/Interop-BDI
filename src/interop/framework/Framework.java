@@ -10,6 +10,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Main Aplication Class
+ *
+ * @author Lucas Hagen
+ */
 public class Framework extends Application {
 
     private static Framework instance;
