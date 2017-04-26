@@ -1,5 +1,6 @@
 package interop.framework;
 
+import interop.framework.controller.VLASEditorController;
 import interop.framework.controller.MainController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +11,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Framework extends Application {
+
+    private static Framework instance;
 
     private Stage window;
     private Scene mainScene;
@@ -22,6 +25,8 @@ public class Framework extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
+        Framework.instance = this;
+
         // Initializes Window
         window = primaryStage;
         window.getIcons().setAll(new Image("oil.png"));
@@ -33,10 +38,13 @@ public class Framework extends Application {
         mainScene = new Scene(loader.load());
         mainController = loader.getController();
 
+        getMainController().setCenterFXML(getClass().getResource("fxml/VLASEditor.fxml"));
+        ((VLASEditorController) getMainController().getContentController()).setupTableColumns();
+
         window.setScene(mainScene);
         window.show();
 
-        getMainController().setCenterFXML(getClass().getResource("fxml/LogEditor.fxml"));
+
     }
 
     public Stage getWindow() {
@@ -49,6 +57,10 @@ public class Framework extends Application {
 
     public MainController getMainController() {
         return this.mainController;
+    }
+
+    public static Framework getInstance() {
+        return Framework.instance;
     }
 
 
