@@ -1,17 +1,13 @@
 package interop.framework.controller;
 
-import interop.framework.Framework;
 import interop.log.model.ParsedLAS;
 import interop.log.model.WellLog;
 import interop.log.util.ConfigurableLog;
-import interop.log.util.LASParser;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.FileChooser;
 
-import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -40,28 +36,23 @@ public class VLASEditorController implements Controller, Initializable {
     @FXML TableColumn<ConfigurableLog, String> logSmallW;
     @FXML TableColumn<ConfigurableLog, String> logBigW;
 
-    private ParsedLAS las = null;
+    public ParsedLAS las = null;
+
+    public VLASEditorController(ParsedLAS las) {
+        this.las = las;
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.setupTableColumns();
+        this.updateLAS();
+    }
 
-        if(las == null) {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("LAS File");
-            File file = fileChooser.showOpenDialog(Framework.getInstance().getWindow());
-
-            if(file != null)
-                las = new LASParser().parseLAS(file.getAbsolutePath());
-            else
-                return;
-        }
-
+    public void updateLAS() {
         lasID.setText("'" + las.getWellName() + "'");
         lasStartDepth.setText(las.getStartDepth() + " (" + las.getStartDepthMeasureUnit() + ")");
         lasStopDepth.setText(las.getStopDepth() + " (" + las.getStopDepthMeasureUnit() + ")");
         lasStep.setText(las.getStepValue() + " (" + las.getStepValueMeasureUnit() + ")");
-
 
         for(WellLog log : las.getLogsList())
             logsTable.getItems().add(new ConfigurableLog(log));

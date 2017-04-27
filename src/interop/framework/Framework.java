@@ -1,7 +1,9 @@
 package interop.framework;
 
-import interop.framework.controller.VLASEditorController;
 import interop.framework.controller.MainController;
+import interop.framework.controller.VLASEditorController;
+import interop.log.model.ParsedLAS;
+import interop.log.util.LASParser;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -43,13 +45,16 @@ public class Framework extends Application {
         mainScene = new Scene(loader.load());
         mainController = loader.getController();
 
-        getMainController().setCenterFXML(getClass().getResource("fxml/VLASEditor.fxml"));
-        ((VLASEditorController) getMainController().getContentController()).setupTableColumns();
+
+
+        String className = "VLASEditorController";
+        ParsedLAS las = new LASParser().parseLAS("C:\\Users\\lucas\\Documents\\PoçosVinicius\\7-CP-1382D-SE\\Perfil\\CP1382.las");
+        Object controller = new VLASEditorController();
+
+        getMainController().setCenterFXML(getClass().getResource("fxml/VLASEditor.fxml"), controller);
 
         window.setScene(mainScene);
         window.show();
-
-
     }
 
     public Stage getWindow() {

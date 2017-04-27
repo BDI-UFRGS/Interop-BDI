@@ -10,6 +10,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -41,6 +42,21 @@ public class MainController implements Controller, Initializable {
      */
     public void setCenterFXML(URL fxml) throws IOException {
         FXMLLoader loader = new FXMLLoader(fxml);
+        this.setCenter(loader.load());
+        this.contentController = loader.getController();
+    }
+
+    /**
+     * Sets the main content with a ControllerFactory.
+     *
+     * @param fxml URL to FXML file
+     * @param params Params
+     * @throws IOException
+     */
+    public void setCenterFXML(URL fxml, Object... params) throws IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        FXMLLoader loader = new FXMLLoader(fxml);
+
+        loader.setControllerFactory(param -> loader.getController().getClass().getDeclaredConstructor(Object[].class).newInstance(params));
         this.setCenter(loader.load());
         this.contentController = loader.getController();
     }
