@@ -51,12 +51,13 @@ public class MainController implements Controller, Initializable {
      *
      * @param fxml URL to FXML file
      * @param params Params
-     * @throws IOException
      */
-    public void setCenterFXML(URL fxml, Object... params) throws IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    public void setCenterFXML(URL fxml, Object params, Class controllerClass) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, IOException {
         FXMLLoader loader = new FXMLLoader(fxml);
 
-        loader.setControllerFactory(param -> loader.getController().getClass().getDeclaredConstructor(Object[].class).newInstance(params));
+        Object b = controllerClass.getDeclaredConstructor(Object.class).newInstance(params);
+
+        loader.setControllerFactory(param -> b);
         this.setCenter(loader.load());
         this.contentController = loader.getController();
     }

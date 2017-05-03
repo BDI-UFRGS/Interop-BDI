@@ -38,14 +38,18 @@ public class VLASEditorController implements Controller, Initializable {
 
     public ParsedLAS las = null;
 
-    public VLASEditorController(ParsedLAS las) {
-        this.las = las;
+    public VLASEditorController(Object las) {
+        if(las instanceof ParsedLAS) {
+            this.las = (ParsedLAS)las;
+        }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.setupTableColumns();
-        this.updateLAS();
+        if(las != null) {
+            this.updateLAS();
+        }
     }
 
     public void updateLAS() {
@@ -67,6 +71,10 @@ public class VLASEditorController implements Controller, Initializable {
         this.logWeight.setCellValueFactory(new PropertyValueFactory<>("weight"));
         this.logSmallW.setCellValueFactory(new PropertyValueFactory<>("smallW"));
         this.logBigW.setCellValueFactory(new PropertyValueFactory<>("bigW"));
+    }
+
+    public static void openLASFile() {
+
     }
 
 }

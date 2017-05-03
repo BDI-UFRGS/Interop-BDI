@@ -1,9 +1,7 @@
 package interop.framework;
 
 import interop.framework.controller.MainController;
-import interop.framework.controller.VLASEditorController;
 import interop.log.model.ParsedLAS;
-import interop.log.util.LASParser;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,6 +9,8 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Main Aplication Class
@@ -21,10 +21,15 @@ public class Framework extends Application {
 
     private static Framework instance;
 
+    private MainController mainController;
+
     private Stage window;
     private Scene mainScene;
 
-    private MainController mainController;
+    private List<ParsedLAS> trainingLAS = new ArrayList<>();
+    private List<ParsedLAS> validationLAS = new ArrayList<>();
+
+
 
     public static void main(String[] args) {
         launch(args);
@@ -45,13 +50,7 @@ public class Framework extends Application {
         mainScene = new Scene(loader.load());
         mainController = loader.getController();
 
-
-
-        String className = "VLASEditorController";
-        ParsedLAS las = new LASParser().parseLAS("C:\\Users\\lucas\\Documents\\PoçosVinicius\\7-CP-1382D-SE\\Perfil\\CP1382.las");
-        Object controller = new VLASEditorController();
-
-        getMainController().setCenterFXML(getClass().getResource("fxml/VLASEditor.fxml"), controller);
+        getMainController().setCenterFXML(getClass().getResource("fxml/Home.fxml"));
 
         window.setScene(mainScene);
         window.show();
@@ -67,6 +66,14 @@ public class Framework extends Application {
 
     public MainController getMainController() {
         return this.mainController;
+    }
+
+    public void addTrainingParsedLas(ParsedLAS las) {
+        this.validationLAS.add(las);
+    }
+
+    public void addValidationParsedLas(ParsedLAS las) {
+        this.validationLAS.add(las);
     }
 
     public static Framework getInstance() {
