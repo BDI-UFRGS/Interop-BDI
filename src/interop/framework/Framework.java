@@ -30,7 +30,6 @@ public class Framework extends Application {
     private List<ParsedLAS> validationLAS = new ArrayList<>();
 
 
-
     public static void main(String[] args) {
         launch(args);
     }
@@ -49,8 +48,7 @@ public class Framework extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/Main.fxml"));
         mainScene = new Scene(loader.load());
         mainController = loader.getController();
-
-        getMainController().setCenterFXML(getClass().getResource("fxml/Home.fxml"));
+        mainController.openHomePage();
 
         window.setScene(mainScene);
         window.show();
@@ -69,12 +67,21 @@ public class Framework extends Application {
     }
 
     public void addTrainingParsedLas(ParsedLAS las) {
-        this.validationLAS.add(las);
+        this.trainingLAS.add(las);
     }
 
     public void addValidationParsedLas(ParsedLAS las) {
         this.validationLAS.add(las);
     }
+
+    public List<ParsedLAS> getTrainingLAS() {
+        return this.trainingLAS;
+    }
+
+    public List<ParsedLAS> getValidationLAS() {
+        return this.trainingLAS;
+    }
+
 
     public static Framework getInstance() {
         return Framework.instance;

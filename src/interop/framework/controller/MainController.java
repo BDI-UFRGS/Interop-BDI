@@ -1,9 +1,9 @@
 package interop.framework.controller;
 
+import interop.framework.Page;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Stack;
 
 /**
  * Main FXML. This is the controller of the main MenuBar.
@@ -27,11 +28,15 @@ public class MainController implements Controller, Initializable {
     @FXML VBox centerVBox;
     @FXML MenuBar mainMenuBar;
 
-    private Controller contentController;
+    private Page currentPage;
+    private Page homePage;
+
+    Stack<Page> pages;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        pages =  new Stack<>();
+        //openHomePage();
     }
 
     /**
@@ -40,10 +45,11 @@ public class MainController implements Controller, Initializable {
      * @param fxml URL to FXML file
      * @throws IOException
      */
-    public void setCenterFXML(URL fxml) throws IOException {
+    public void setPageFXML(URL fxml, boolean saveCurrentPage) throws IOException {
         FXMLLoader loader = new FXMLLoader(fxml);
-        this.setCenter(loader.load());
-        this.contentController = loader.getController();
+        Page page = new Page(loader);
+
+        this.setPage(page, saveCurrentPage);
     }
 
     /**
@@ -52,39 +58,50 @@ public class MainController implements Controller, Initializable {
      * @param fxml URL to FXML file
      * @param params Params
      */
-    public void setCenterFXML(URL fxml, Object params, Class controllerClass) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, IOException {
+    public void setPageFXML(URL fxml, boolean saveCurrentPage, Object params, Class controllerClass) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, IOException {
         FXMLLoader loader = new FXMLLoader(fxml);
-
         Object b = controllerClass.getDeclaredConstructor(Object.class).newInstance(params);
-
         loader.setControllerFactory(param -> b);
-        this.setCenter(loader.load());
-        this.contentController = loader.getController();
+
+        Page page = new Page(loader);
+
+        setPage(page, saveCurrentPage);
     }
 
     /**
      * Removes any content already displayed.
      */
-    public void clearCenter() {
+    private void clearPage() {
         this.centerVBox.getChildren().clear();
-        this.contentController = null;
+        this.currentPage = null;
+    }
+
+    public void closePage() {
+        if(pages.isEmpty()) {
+            openHomePage();
+        } else {
+            setPage(pages.pop(), false);
+        }
+    }
+
+    private void savePage() {
+        if(this.currentPage != null) {
+            pages.push(currentPage);
+        }
     }
 
     /**
      * Sets center content.
-     * @param parent Center Content
+     * @param page Center Content
      */
-    public void setCenter(Parent parent) {
-        this.clearCenter();
-        this.addCenter(parent);
-    }
+    public void setPage(Page page, boolean saveCurrentPage) {
+        if(saveCurrentPage)
+            this.savePage();
+        clearPage();
 
-    /**
-     * Adds a center content without removing existent ones.
-     * @param parent Center Content
-     */
-    public void addCenter(Parent parent) {
-        this.centerVBox.getChildren().add(parent);
+        this.currentPage = page;
+        this.centerVBox.getChildren().add(page.getParent());
+
     }
 
     /**
@@ -93,8 +110,22 @@ public class MainController implements Controller, Initializable {
      *
      * @return Controller of the main content
      */
-    public Controller getContentController() {
-        return this.contentController;
+    public Page getCurrentPage() {
+        return this.currentPage != null ? this.currentPage : this.homePage;
+    }
+
+    public void openHomePage() {
+        pages.clear();
+
+        if(homePage == null) {
+            try {
+                homePage = new Page(new FXMLLoader(getClass().getResource("../fxml/Home.fxml")));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        this.centerVBox.getChildren().setAll(homePage.getParent());
     }
 
     

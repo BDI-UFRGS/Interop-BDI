@@ -28,16 +28,17 @@ public class HomeController implements Controller, Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        TreeItem<String> root = new TreeItem<>();
-        root.setExpanded(true);
+        TreeItem<String> tRoot = new TreeItem<>();
+        tRoot.setExpanded(true);
 
-        trainingFilesTree.setRoot(root);
+        trainingFilesTree.setRoot(tRoot);
         trainingFilesTree.setShowRoot(false);
-        makeBranch("Teste", makeBranch("Teste1", root));
-        makeBranch("Teste2", root);
-        makeBranch("Teste3", root);
-        makeBranch("Teste4", root);
-        makeBranch("Teste5", root);
+
+        TreeItem<String> vRoot = new TreeItem<>();
+        vRoot.setExpanded(true);
+
+        validationFilesTree.setRoot(vRoot);
+        validationFilesTree.setShowRoot(false);
     }
 
     @FXML
@@ -59,12 +60,12 @@ public class HomeController implements Controller, Initializable {
         if(las != null) {
             if(event.getSource() == this.addTrainingFileButton) {
                 Framework.getInstance().addTrainingParsedLas(las);
+                this.makeBranch(las.getWellName(), this.trainingFilesTree.getRoot());
             } else if(event.getSource() == this.addValidationFileButton) {
                 Framework.getInstance().addValidationParsedLas(las);
+                this.makeBranch(las.getWellName(), this.validationFilesTree.getRoot());
             }
         }
-
-
     }
 
     private TreeItem<String> makeBranch(String las, TreeItem<String> parent) {
