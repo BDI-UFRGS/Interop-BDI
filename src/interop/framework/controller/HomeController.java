@@ -7,8 +7,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -18,23 +22,24 @@ import java.util.ResourceBundle;
 /**
  * @author Lucas Hagen
  */
+
 public class HomeController implements Controller, Initializable {
 
     @FXML Button addTrainingFileButton;
     @FXML Button addValidationFileButton;
 
-    @FXML TreeView<String> trainingFilesTree;
-    @FXML TreeView<String> validationFilesTree;
+    @FXML TreeView<HBox> trainingFilesTree;
+    @FXML TreeView<HBox> validationFilesTree;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        TreeItem<String> tRoot = new TreeItem<>();
+        TreeItem<HBox> tRoot = new TreeItem<>();
         tRoot.setExpanded(true);
 
         trainingFilesTree.setRoot(tRoot);
         trainingFilesTree.setShowRoot(false);
 
-        TreeItem<String> vRoot = new TreeItem<>();
+        TreeItem<HBox> vRoot = new TreeItem<>();
         vRoot.setExpanded(true);
 
         validationFilesTree.setRoot(vRoot);
@@ -68,9 +73,11 @@ public class HomeController implements Controller, Initializable {
         }
     }
 
-    private TreeItem<String> makeBranch(String las, TreeItem<String> parent) {
-        TreeItem<String> item = new TreeItem<>(las);
+    private TreeItem<HBox> makeBranch(String las, TreeItem<HBox> parent) {
+        TreeItem<HBox> item = new TreeItem<>(new HBox());
         item.setExpanded(true);
+        item.getValue().getChildren().add(new Label(las));
+        item.getValue().getChildren().add(new ImageView(new Image("del.png")));
         parent.getChildren().add(item);
         return item;
     }
