@@ -7,12 +7,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -28,18 +24,18 @@ public class HomeController implements Controller, Initializable {
     @FXML Button addTrainingFileButton;
     @FXML Button addValidationFileButton;
 
-    @FXML TreeView<HBox> trainingFilesTree;
-    @FXML TreeView<HBox> validationFilesTree;
+    @FXML TreeView<String> trainingFilesTree;
+    @FXML TreeView<String> validationFilesTree;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        TreeItem<HBox> tRoot = new TreeItem<>();
+        TreeItem<String> tRoot = new TreeItem<>();
         tRoot.setExpanded(true);
 
         trainingFilesTree.setRoot(tRoot);
         trainingFilesTree.setShowRoot(false);
 
-        TreeItem<HBox> vRoot = new TreeItem<>();
+        TreeItem<String> vRoot = new TreeItem<>();
         vRoot.setExpanded(true);
 
         validationFilesTree.setRoot(vRoot);
@@ -65,19 +61,25 @@ public class HomeController implements Controller, Initializable {
         if(las != null) {
             if(event.getSource() == this.addTrainingFileButton) {
                 Framework.getInstance().addTrainingParsedLas(las);
-                this.makeBranch(las.getWellName(), this.trainingFilesTree.getRoot());
+                this.branchLAS(las.getWellName(), this.trainingFilesTree.getRoot());
             } else if(event.getSource() == this.addValidationFileButton) {
                 Framework.getInstance().addValidationParsedLas(las);
-                this.makeBranch(las.getWellName(), this.validationFilesTree.getRoot());
+                this.branchLAS(las.getWellName(), this.validationFilesTree.getRoot());
             }
         }
     }
 
-    private TreeItem<HBox> makeBranch(String las, TreeItem<HBox> parent) {
-        TreeItem<HBox> item = new TreeItem<>(new HBox());
+
+    private TreeItem<String> branchLAS(String las, TreeItem<String> parent) {
+        TreeItem<String> item = new TreeItem(las);
         item.setExpanded(true);
-        item.getValue().getChildren().add(new Label(las));
-        item.getValue().getChildren().add(new ImageView(new Image("del.png")));
+        parent.getChildren().add(item);
+        return item;
+    }
+
+    private TreeItem<String> branchXML(String xml, TreeItem<String> parent) {
+        TreeItem<String> item = new TreeItem(xml);
+        item.setExpanded(true);
         parent.getChildren().add(item);
         return item;
     }
