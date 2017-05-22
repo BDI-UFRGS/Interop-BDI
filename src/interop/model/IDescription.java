@@ -3,16 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package interop.log.util;
-
-import interop.log.model.LogValuePair;
-import java.util.ArrayList;
+package interop.model;
 
 /**
- * An ArrayList of pairs of depth/log values.
+ *
  * @author Luan
  */
-public class LogValueList extends ArrayList<LogValuePair>
-{
+public interface IDescription {
     
 }

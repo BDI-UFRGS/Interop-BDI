@@ -191,7 +191,7 @@ public class ParsedLAS
         double maxValue=-99999; //LAS file can have values bigger than 99999?
         //double minValue=99999;
         for(int p=0; p<(int)wellSize*5; p++ ){//for the beginning to an end of a log
-            double q = this.getLogsList().get(log).getLogValues().get(p).getLogValue();
+            double q = this.getLogsList().get(log).getLogValues().getPair(p).getLogValue();
             if(q>maxValue && q!= this.getNullValue()){
                 maxValue=q;
             }
@@ -204,7 +204,7 @@ public class ParsedLAS
         //double maxValue=-99999; //LAS file can have values bigger than 99999?
         double minValue=99999;
         for(int p=0; p<(int)wellSize*5; p++ ){//for the beginning to an end of a log
-            double q = this.getLogsList().get(log).getLogValues().get(p).getLogValue();
+            double q = this.getLogsList().get(log).getLogValues().getPair(p).getLogValue();
             if(q<minValue && q!=this.getNullValue()){
                 minValue=q;
             }

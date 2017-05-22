@@ -10,9 +10,20 @@ package interop.log.model;
  * @author Bruno Zanette
  */
 public class LogType {
+
     private String logType;
     private String logDescription;
     private String logMeasureUnit;
+
+    public LogType() {
+        this("", "", "");
+    }
+
+    public LogType(String logType, String logDescription, String logMeasureUnit) {
+        this.logType = logType;
+        this.logDescription = logDescription;
+        this.logMeasureUnit = logMeasureUnit;
+    }
 
     
      /**

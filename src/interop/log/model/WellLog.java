@@ -5,89 +5,66 @@
  */
 package interop.log.model;
 
-import interop.log.util.LogValueList;
-
 /**
  * Represents a Well Log, containing its type mnemonic, descriptions, measure unit, null value and the list of depth / log values.
+ *
  * @author Luan
  */
-public class WellLog 
-{
-    private String logType;
-    private String logDescription;
-    private String logMeasureUnit;
+public class WellLog {
+
+    private LogType logType;
+
     private float nullValue;
-    private LogValueList logValues;
-    private LogValueList changePoints;
+
+    private LogValues logValues;
+    private LogValues changePoints;
+
+    private LogConfiguration configuration;
 
     public WellLog() {
-        this.logValues = new LogValueList();
+        this.logValues = new LogValues();
+        this.configuration = new LogConfiguration();
     }
-    
+
     /**
-     * @return The log mnemonic.
+     * @return The LogType
      */
-    public String getLogType() {
+    public LogType getLogType() {
+        if(this.logType == null)
+            this.logType = new LogType();
         return logType;
     }
 
     /**
-     * @param logType The log mnemonic.
+     * @param logType The LogType.
      */
-    public void setLogType(String logType) {
+    public void setLogType(LogType logType) {
         this.logType = logType;
     }
 
     /**
-     * @return The description of the log.
+     * @return A TreeMap of depth/log value.
      */
-    public String getLogDescription() {
-        return logDescription;
-    }
-
-    /**
-     * @param logDescription the logDescription to set
-     */
-    public void setLogDescription(String logDescription) {
-        this.logDescription = logDescription;
-    }
-
-    /**
-     * @return the logMeasureUnit
-     */
-    public String getLogMeasureUnit() {
-        return logMeasureUnit;
-    }
-
-    /**
-     * @param logMeasureUnit the logMeasureUnit to set
-     */
-    public void setLogMeasureUnit(String logMeasureUnit) {
-        this.logMeasureUnit = logMeasureUnit;
-    }
-
-    /**
-     * @return A list of pairs of depth/log value.
-     */
-    public LogValueList getLogValues() {
+    public LogValues getLogValues() {
         return logValues;
     }
 
     /**
-     * @param logValues Set the entire list of pairs of depth/log value;
+     * @param logValues Set the entire TreeMap of depth/log value;
      */
-    public void setLogValues(LogValueList logValues) {
+    public void setLogValues(LogValues logValues) {
         this.logValues = logValues;
 
     }
-    
+
     /**
      * Convenience method to add to the list of log value pairs a single pair.
-     * @param logValuePair A pair of depth/log value.
+     *
+     * @param depth Depth
+     * @param value Value
      */
-    public void addLogValuePair(LogValuePair logValuePair)
-    {
-        this.logValues.add(logValuePair);
+    public void addLogValuePair(float depth, float value) {
+        this.logValues.put(depth, value);
     }
 
     /**
@@ -103,33 +80,39 @@ public class WellLog
     public void setNullValue(float nullValue) {
         this.nullValue = nullValue;
     }
-    
+
     /**
-     * TODO: Gets log weight, should be used to integrate change points
-     * @author: Lucas Hagen
-     */
-    public int getLogWeight() {
-        return 1;
-    }
-    
-    /**
-     * Gets the Change Points from this log.
+     * TODO: Gets the Change Points from this log.
+     *
      * @return LogValueList, where 0 means no change point, and values > 0 mark a change point.
      */
-    public LogValueList getChangePoints() {
-        //if(this.changePoints == null)
-            //this.changePoints = BeddingDiscriminator.findChangePoints(this.logValues);
-        
-        return this.changePoints;
+    public LogValues getChangePoints() {
+        return null;
     }
-    
+
     /**
      * Manually set change points
+     *
      * @param changePoints LogValueList, where: 0 - no change point, > 0 - change point
      */
-    public void setChangePoints(LogValueList changePoints) {
+    public void setChangePoints(LogValues changePoints) {
         this.changePoints = changePoints;
     }
-    
-    
+
+
+    /**
+     * Getter for the LogConfiguration
+     *
+     * @return LogConfiguration
+     */
+    public LogConfiguration getConfiguration() {
+        return configuration;
+    }
+
+    /**
+     * Setter for the LogConfiguration
+     */
+    public void setConfiguration(LogConfiguration configuration) {
+        this.configuration = configuration;
+    }
 }

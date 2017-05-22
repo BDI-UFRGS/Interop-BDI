@@ -7,6 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.layout.*?>
+<?import interop.framework.controller.factory.WellLogActiveFactory?>
 
 <GridPane alignment="CENTER" minHeight="375.0" minWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interop.framework.controller.VLASEditorController">
    <children>
@@ -52,10 +53,10 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
          </rowConstraints>
       </GridPane>
-      <TableView fx:id="logsTable" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+      <TableView fx:id="logsTable" editable="true" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
         <columns>
-          <TableColumn fx:id="logActive" maxWidth="75.0" prefWidth="50.0" sortable="false" text="Active" />
-          <TableColumn fx:id="logName" prefWidth="325.0" resizable="false" text="Name" />
+          <TableColumn fx:id="logActive" maxWidth="75.0" prefWidth="50.0" sortable="false" text="Active"/>
+          <TableColumn fx:id="logName" editable="false" prefWidth="325.0" resizable="false" text="Name" />
             <TableColumn fx:id="logWeight" prefWidth="75.0" resizable="false" sortable="false" text="Weight" />
             <TableColumn fx:id="logSmallW" resizable="false" sortable="false" text="Small MMW" />
             <TableColumn fx:id="logBigW" prefWidth="70.0" resizable="false" sortable="false" text="Big MMW" />

@@ -63,6 +63,7 @@ public class MainController implements Controller, Initializable {
         Object b = controllerClass.getDeclaredConstructor(Object.class).newInstance(params);
         loader.setControllerFactory(param -> b);
 
+        loader.load();
         Page page = new Page(loader);
 
         setPage(page, saveCurrentPage);

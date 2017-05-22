@@ -79,9 +79,8 @@ public class Framework extends Application {
     }
 
     public List<ParsedLAS> getValidationLAS() {
-        return this.trainingLAS;
+        return this.validationLAS;
     }
-
 
     public static Framework getInstance() {
         return Framework.instance;

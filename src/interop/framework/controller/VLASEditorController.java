@@ -1,12 +1,12 @@
 package interop.framework.controller;
 
+import interop.framework.controller.factory.WellLogActiveFactory;
 import interop.log.model.ParsedLAS;
 import interop.log.model.WellLog;
-import interop.log.util.ConfigurableLog;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -29,18 +29,20 @@ public class VLASEditorController implements Controller, Initializable {
     @FXML Button saveChanges;
     @FXML Button cancel;
 
-    @FXML TableView<ConfigurableLog> logsTable;
-    @FXML TableColumn<ConfigurableLog, Boolean> logActive;
-    @FXML TableColumn<ConfigurableLog, String> logName;
-    @FXML TableColumn<ConfigurableLog, Integer> logWeight;
-    @FXML TableColumn<ConfigurableLog, String> logSmallW;
-    @FXML TableColumn<ConfigurableLog, String> logBigW;
+    @FXML TableView<WellLog> logsTable;
+    @FXML TableColumn<WellLog, CheckBox> logActive;
+    @FXML TableColumn<WellLog, String> logName;
+    @FXML TableColumn<WellLog, Float> logWeight;
+    @FXML TableColumn<WellLog, Float> logSmallW;
+    @FXML TableColumn<WellLog, Float> logBigW;
 
     public ParsedLAS las = null;
 
     public VLASEditorController(Object las) {
         if(las instanceof ParsedLAS) {
             this.las = (ParsedLAS)las;
+        } else {
+
         }
     }
 
@@ -52,6 +54,9 @@ public class VLASEditorController implements Controller, Initializable {
         }
     }
 
+    /**
+     * TODO
+     */
     public void updateLAS() {
         lasID.setText("'" + las.getWellName() + "'");
         lasStartDepth.setText(las.getStartDepth() + " (" + las.getStartDepthMeasureUnit() + ")");
@@ -59,21 +64,32 @@ public class VLASEditorController implements Controller, Initializable {
         lasStep.setText(las.getStepValue() + " (" + las.getStepValueMeasureUnit() + ")");
 
         for(WellLog log : las.getLogsList())
-            logsTable.getItems().add(new ConfigurableLog(log));
+            logsTable.getItems().add(log);
     }
 
     /**
      * Function to set Table View PropertyValueFactories
      */
     public void setupTableColumns() {
-        this.logActive.setCellValueFactory(new PropertyValueFactory<>("active"));
+        this.logActive.setCellValueFactory(new WellLogActiveFactory());
+
+        this.logActive.setEditable(true);
+
+        this.logName.setCellValueFactory(cellValue -> {
+            WellLog log = cellValue.getValue();
+            return new SimpleObjectProperty(log.getLogType().getLogType() + " (" + log.getLogType().getLogMeasureUnit() + ")");
+        });
+        this.logName.setEditable(true);
+
+
+        /*this.logActive.setCellValueFactory(new PropertyValueFactory<>("active"));
         this.logName.setCellValueFactory(new PropertyValueFactory<>("name"));
         this.logWeight.setCellValueFactory(new PropertyValueFactory<>("weight"));
         this.logSmallW.setCellValueFactory(new PropertyValueFactory<>("smallW"));
-        this.logBigW.setCellValueFactory(new PropertyValueFactory<>("bigW"));
+        this.logBigW.setCellValueFactory(new PropertyValueFactory<>("bigW"));*/
     }
 
-    public static void openLASFile() {
+    public void openLASFile() {
 
     }
 
