@@ -11,13 +11,13 @@ import javafx.util.Callback;
  * @author Lucas Hagen
  */
 
-public class WellLogWeightFactory implements Callback<TableColumn.CellDataFeatures<WellLog, TextField>, ObservableValue<TextField>> {
+public class WellLogSmallWindowFactory implements Callback<TableColumn.CellDataFeatures<WellLog, TextField>, ObservableValue<TextField>> {
 
     @Override
     public ObservableValue<TextField> call(TableColumn.CellDataFeatures<WellLog, TextField> param) {
         WellLog log = param.getValue();
         TextField input = new TextField();
-        input.setText(Float.toString(log.getConfiguration().getWeight()));
+        input.setText(Float.toString(log.getConfiguration().getSmallWindow()));
 
         input.textProperty().addListener((o, oldValue, newValue) -> {
             String value = newValue;

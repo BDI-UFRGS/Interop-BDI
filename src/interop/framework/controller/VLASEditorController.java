@@ -1,6 +1,9 @@
 package interop.framework.controller;
 
 import interop.framework.controller.factory.WellLogActiveFactory;
+import interop.framework.controller.factory.WellLogBigWindowFactory;
+import interop.framework.controller.factory.WellLogSmallWindowFactory;
+import interop.framework.controller.factory.WellLogWeightFactory;
 import interop.log.model.ParsedLAS;
 import interop.log.model.WellLog;
 import javafx.beans.property.SimpleObjectProperty;
@@ -32,9 +35,9 @@ public class VLASEditorController implements Controller, Initializable {
     @FXML TableView<WellLog> logsTable;
     @FXML TableColumn<WellLog, CheckBox> logActive;
     @FXML TableColumn<WellLog, String> logName;
-    @FXML TableColumn<WellLog, Float> logWeight;
-    @FXML TableColumn<WellLog, Float> logSmallW;
-    @FXML TableColumn<WellLog, Float> logBigW;
+    @FXML TableColumn<WellLog, TextField> logWeight;
+    @FXML TableColumn<WellLog, TextField> logSmallW;
+    @FXML TableColumn<WellLog, TextField> logBigW;
 
     public ParsedLAS las = null;
 
@@ -73,20 +76,15 @@ public class VLASEditorController implements Controller, Initializable {
     public void setupTableColumns() {
         this.logActive.setCellValueFactory(new WellLogActiveFactory());
 
-        this.logActive.setEditable(true);
-
         this.logName.setCellValueFactory(cellValue -> {
             WellLog log = cellValue.getValue();
             return new SimpleObjectProperty(log.getLogType().getLogType() + " (" + log.getLogType().getLogMeasureUnit() + ")");
         });
-        this.logName.setEditable(true);
 
 
-        /*this.logActive.setCellValueFactory(new PropertyValueFactory<>("active"));
-        this.logName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        this.logWeight.setCellValueFactory(new PropertyValueFactory<>("weight"));
-        this.logSmallW.setCellValueFactory(new PropertyValueFactory<>("smallW"));
-        this.logBigW.setCellValueFactory(new PropertyValueFactory<>("bigW"));*/
+        this.logWeight.setCellValueFactory(new WellLogWeightFactory());
+        this.logSmallW.setCellValueFactory(new WellLogSmallWindowFactory());
+        this.logBigW.setCellValueFactory(new WellLogBigWindowFactory());
     }
 
     public void openLASFile() {
