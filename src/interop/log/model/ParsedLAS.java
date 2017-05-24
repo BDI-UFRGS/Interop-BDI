@@ -9,12 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents a parsed LAS File, containing the most common attributes, 
+ * Represents a parsed LAS File, containing the most common attributes,
  * as well as a list of the logs that are stored in the represented LAS File.
+ *
  * @author Luan
  */
-public class ParsedLAS 
-{
+public class ParsedLAS {
+
+    private String nickName;
+
     private String version;
     private float startDepth;
     private String startDepthMeasureUnit;
@@ -25,17 +28,16 @@ public class ParsedLAS
     private float nullValue;
     private String company;
     private String wellName;
-    
+
     private List<WellLog> logsList;
 
     /**
      * @return the logsList
      */
-    public List<WellLog> getLogsList() 
-    {
-        if(logsList == null)
+    public List<WellLog> getLogsList() {
+        if (logsList == null)
             logsList = new ArrayList<>();
-        
+
         return logsList;
     }
 
@@ -188,12 +190,12 @@ public class ParsedLAS
 
     public double getMaxValue(int log) {
         double wellSize = this.getStopDepth() - this.getStartDepth();
-        double maxValue=-99999; //LAS file can have values bigger than 99999?
+        double maxValue = -99999; //LAS file can have values bigger than 99999?
         //double minValue=99999;
-        for(int p=0; p<(int)wellSize*5; p++ ){//for the beginning to an end of a log
+        for (int p = 0; p < (int) wellSize * 5; p++) {//for the beginning to an end of a log
             double q = this.getLogsList().get(log).getLogValues().getPair(p).getLogValue();
-            if(q>maxValue && q!= this.getNullValue()){
-                maxValue=q;
+            if (q > maxValue && q != this.getNullValue()) {
+                maxValue = q;
             }
         }
         return maxValue;
@@ -202,13 +204,21 @@ public class ParsedLAS
     public double getMinValue(int log) {
         double wellSize = this.getStopDepth() - this.getStartDepth();
         //double maxValue=-99999; //LAS file can have values bigger than 99999?
-        double minValue=99999;
-        for(int p=0; p<(int)wellSize*5; p++ ){//for the beginning to an end of a log
+        double minValue = 99999;
+        for (int p = 0; p < (int) wellSize * 5; p++) {//for the beginning to an end of a log
             double q = this.getLogsList().get(log).getLogValues().getPair(p).getLogValue();
-            if(q<minValue && q!=this.getNullValue()){
-                minValue=q;
+            if (q < minValue && q != this.getNullValue()) {
+                minValue = q;
             }
         }
         return minValue;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 }

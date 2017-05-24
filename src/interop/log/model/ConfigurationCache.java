@@ -4,7 +4,7 @@ package interop.log.model;
  * @author Lucas Hagen
  */
 
-public class LogConfiguration {
+public class ConfigurationCache {
 
     private float smallWindow;
     private float bigWindow;
@@ -12,11 +12,11 @@ public class LogConfiguration {
 
     private boolean active;
 
-    public LogConfiguration() {
-        this(1, 1, 1, true);
+    public ConfigurationCache(LogConfiguration config) {
+        this(config.getSmallWindow(), config.getBigWindow(), config.getWeight(), config.isActive());
     }
 
-    public LogConfiguration(float smallWindow, float bigWindow, float weight, boolean active) {
+    public ConfigurationCache(float smallWindow, float bigWindow, float weight, boolean active) {
         this.smallWindow = smallWindow;
         this.bigWindow = bigWindow;
         this.weight = weight;
@@ -55,9 +55,4 @@ public class LogConfiguration {
     public void setActive(boolean active) {
         this.active = active;
     }
-
-    public LogConfiguration clone() {
-        return new LogConfiguration(smallWindow, bigWindow, weight, active);
-    }
-
 }

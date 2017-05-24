@@ -27,20 +27,32 @@ public class HomeController implements Controller, Initializable {
     /**
      * Training Buttons
      */
-    @FXML Button addTLAS;
-    @FXML Button addTXML;
-    @FXML Button removeT;
+    @FXML
+    private Button addTLAS;
+    @FXML
+    private Button addTXML;
+    @FXML
+    private Button removeT;
 
     /**
      * Validation Buttons
      */
-    @FXML Button addVLAS;
-    @FXML Button addVXML;
-    @FXML Button removeV;
-    @FXML Button editV;
+    @FXML
+    private Button addVLAS;
+    @FXML
+    private Button addVXML;
+    @FXML
+    private Button removeV;
+    @FXML
+    private Button editV;
 
-    @FXML TreeView<String> trainingFilesTree;
-    @FXML TreeView<String> validationFilesTree;
+    @FXML
+    private TreeView<String> trainingFilesTree;
+    @FXML
+    private TreeView<String> validationFilesTree;
+
+
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -69,7 +81,7 @@ public class HomeController implements Controller, Initializable {
 
         try {
             las = new LASParser().parseLAS(file.getAbsolutePath());
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
 
@@ -93,39 +105,33 @@ public class HomeController implements Controller, Initializable {
     }
 
     public void editLAS() {
-        String wellName = getSelectedItem(this.validationFilesTree).getValue();
-        ParsedLAS toEdit = null;
+        if(getSelectedItem(this.validationFilesTree) != null) {
+            String wellName = getSelectedItem(this.validationFilesTree).getValue();
+            ParsedLAS toEdit = null;
 
-        for(ParsedLAS las : Framework.getInstance().getValidationLAS()) {
-            if (las.getWellName().equalsIgnoreCase(wellName))
-                toEdit = las;
-        }
+            for (ParsedLAS las : Framework.getInstance().getValidationLAS()) {
+                if (las.getWellName().equalsIgnoreCase(wellName))
+                    toEdit = las;
+            }
 
 
-        try {
-            Framework.getInstance().getMainController().setPageFXML(getClass().getResource("../fxml/VLASEditor.fxml"), true, toEdit, VLASEditorController.class);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            try {
+                Framework.getInstance().getMainController().setPageFXML(getClass().getResource("../fxml/VLASEditor.fxml"), true, toEdit, VLASEditorController.class);
+            } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException | IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     private TreeItem<String> branchLAS(String las, TreeItem<String> parent) {
-        TreeItem<String> item = new TreeItem(las);
+        TreeItem<String> item = new TreeItem<>(las);
         item.setExpanded(true);
         parent.getChildren().add(item);
         return item;
     }
 
     private TreeItem<String> branchXML(String xml, TreeItem<String> parent) {
-        TreeItem<String> item = new TreeItem(xml);
+        TreeItem<String> item = new TreeItem<>(xml);
         item.setExpanded(true);
         parent.getChildren().add(item);
         return item;
@@ -162,7 +168,7 @@ public class HomeController implements Controller, Initializable {
         }
     }
 
-    public TreeItem<String> getSelectedItem(TreeView<String> tree) {
+    private TreeItem<String> getSelectedItem(TreeView<String> tree) {
         ObservableList<TreeItem<String>> items = this.validationFilesTree.getSelectionModel().getSelectedItems();
 
         if(items.size() == 0) {

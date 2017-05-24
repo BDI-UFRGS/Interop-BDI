@@ -48,7 +48,6 @@ public class Framework extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/Main.fxml"));
         mainScene = new Scene(loader.load());
         mainController = loader.getController();
-        mainController.openHomePage();
 
         window.setScene(mainScene);
         window.show();

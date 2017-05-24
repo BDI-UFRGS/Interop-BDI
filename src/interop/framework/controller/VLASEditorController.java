@@ -1,5 +1,6 @@
 package interop.framework.controller;
 
+import interop.framework.Framework;
 import interop.framework.controller.factory.WellLogActiveFactory;
 import interop.framework.controller.factory.WellLogBigWindowFactory;
 import interop.framework.controller.factory.WellLogSmallWindowFactory;
@@ -27,10 +28,7 @@ public class VLASEditorController implements Controller, Initializable {
     @FXML Label lasStopDepth;
     @FXML Label lasStep;
 
-
     @FXML TextField lasName;
-    @FXML Button saveChanges;
-    @FXML Button cancel;
 
     @FXML TableView<WellLog> logsTable;
     @FXML TableColumn<WellLog, CheckBox> logActive;
@@ -65,10 +63,28 @@ public class VLASEditorController implements Controller, Initializable {
         lasStartDepth.setText(las.getStartDepth() + " (" + las.getStartDepthMeasureUnit() + ")");
         lasStopDepth.setText(las.getStopDepth() + " (" + las.getStopDepthMeasureUnit() + ")");
         lasStep.setText(las.getStepValue() + " (" + las.getStepValueMeasureUnit() + ")");
+        lasName.setText(las.getNickName());
 
         for(WellLog log : las.getLogsList())
             logsTable.getItems().add(log);
     }
+
+    public void saveChanges() {
+        this.las.setNickName(lasName.getText());
+
+        for(WellLog log : las.getLogsList())
+            log.aplyConfigurationCache();
+
+        closePage();
+    }
+
+    public void closePage() {
+        for(WellLog log : las.getLogsList())
+            log.clearConfigurationCache();
+        Framework.getInstance().getMainController().closePage(this);
+    }
+
+
 
     /**
      * Function to set Table View PropertyValueFactories

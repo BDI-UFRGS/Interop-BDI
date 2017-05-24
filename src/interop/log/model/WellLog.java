@@ -20,6 +20,7 @@ public class WellLog {
     private LogValues changePoints;
 
     private LogConfiguration configuration;
+    private LogConfiguration configurationCache;
 
     public WellLog() {
         this.logValues = new LogValues();
@@ -114,5 +115,23 @@ public class WellLog {
      */
     public void setConfiguration(LogConfiguration configuration) {
         this.configuration = configuration;
+    }
+
+    public LogConfiguration getConfigurationCache() {
+        if(configurationCache == null)
+            configurationCache = configuration.clone();
+
+        return configurationCache;
+    }
+
+    public void aplyConfigurationCache() {
+        if(configurationCache != null) {
+            this.configuration = configurationCache;
+            clearConfigurationCache();
+        }
+    }
+
+    public void clearConfigurationCache() {
+        this.configurationCache = null;
     }
 }

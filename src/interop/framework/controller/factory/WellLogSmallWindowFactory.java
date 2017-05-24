@@ -25,6 +25,8 @@ public class WellLogSmallWindowFactory implements Callback<TableColumn.CellDataF
                 value = oldValue;
             }
             input.setText(value.replaceAll("[,]", "."));
+
+            log.getConfigurationCache().setSmallWindow(Float.valueOf(value));
         });
         return new SimpleObjectProperty<>(input);
     }

@@ -18,9 +18,9 @@ public class WellLogActiveFactory implements Callback<TableColumn.CellDataFeatur
         WellLog log = param.getValue();
         CheckBox checkBox = new CheckBox();
         checkBox.selectedProperty().setValue(log.getConfiguration().isActive());
-        /*checkBox.selectedProperty().addListener((ov, old_val, new_val) -> {
-            log.getConfiguration().setActive(new_val);
-        });*/
+        checkBox.selectedProperty().addListener((oV, oldVal, newVal) -> {
+            log.getConfigurationCache().setActive(newVal);
+        });
         return new SimpleObjectProperty<>(checkBox);
     }
 

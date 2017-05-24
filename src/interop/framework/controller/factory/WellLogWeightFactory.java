@@ -25,6 +25,8 @@ public class WellLogWeightFactory implements Callback<TableColumn.CellDataFeatur
                 value = oldValue;
             }
             input.setText(value.replaceAll("[,]", "."));
+
+            log.getConfigurationCache().setWeight(Float.valueOf(value));
         });
         return new SimpleObjectProperty<>(input);
     }

@@ -25,7 +25,7 @@ public class MainController implements Controller, Initializable {
 
     @FXML BorderPane mainPane;
     @FXML MenuItem addProfile;
-    @FXML VBox centerVBox;
+    @FXML private VBox centerVBox;
     @FXML MenuBar mainMenuBar;
 
     private Page currentPage;
@@ -36,7 +36,7 @@ public class MainController implements Controller, Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         pages =  new Stack<>();
-        //openHomePage();
+        openHomePage();
     }
 
     /**
@@ -61,7 +61,7 @@ public class MainController implements Controller, Initializable {
     public void setPageFXML(URL fxml, boolean saveCurrentPage, Object params, Class controllerClass) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, IOException {
         FXMLLoader loader = new FXMLLoader(fxml);
         Object b = controllerClass.getDeclaredConstructor(Object.class).newInstance(params);
-        loader.setControllerFactory(param -> b);
+        loader.setControllerFactory(p -> b);
 
         loader.load();
         Page page = new Page(loader);
@@ -82,6 +82,18 @@ public class MainController implements Controller, Initializable {
             openHomePage();
         } else {
             setPage(pages.pop(), false);
+        }
+
+        System.out.println(pages.size());
+    }
+
+    public void closePage(Controller controller) {
+        if(this.currentPage.getController() == controller) {
+            if (pages.isEmpty()) {
+                openHomePage();
+            } else {
+                setPage(pages.pop(), false);
+            }
         }
     }
 
@@ -126,6 +138,7 @@ public class MainController implements Controller, Initializable {
             }
         }
 
+        this.currentPage = null;
         this.centerVBox.getChildren().setAll(homePage.getParent());
     }
 
