@@ -1,7 +1,7 @@
 package interop.framework;
 
 import interop.framework.controller.MainController;
-import interop.log.model.ParsedLAS;
+import interop.log.model.LASList;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -9,11 +9,9 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Main Aplication Class
+ * Main Application Class
  *
  * @author Lucas Hagen
  */
@@ -26,8 +24,8 @@ public class Framework extends Application {
     private Stage window;
     private Scene mainScene;
 
-    private List<ParsedLAS> trainingLAS = new ArrayList<>();
-    private List<ParsedLAS> validationLAS = new ArrayList<>();
+    private LASList trainingLAS = new LASList();
+    private LASList validationLAS = new LASList();
 
 
     public static void main(String[] args) {
@@ -65,19 +63,11 @@ public class Framework extends Application {
         return this.mainController;
     }
 
-    public void addTrainingParsedLas(ParsedLAS las) {
-        this.trainingLAS.add(las);
-    }
-
-    public void addValidationParsedLas(ParsedLAS las) {
-        this.validationLAS.add(las);
-    }
-
-    public List<ParsedLAS> getTrainingLAS() {
+    public LASList getTrainingLASList() {
         return this.trainingLAS;
     }
 
-    public List<ParsedLAS> getValidationLAS() {
+    public LASList getValidationLASList() {
         return this.validationLAS;
     }
 

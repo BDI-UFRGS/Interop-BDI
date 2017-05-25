@@ -1,6 +1,7 @@
 package interop.framework.controller;
 
 import interop.framework.Framework;
+import interop.log.model.LASList;
 import interop.log.model.ParsedLAS;
 import interop.log.util.LASParser;
 import javafx.collections.ObservableList;
@@ -87,10 +88,10 @@ public class HomeController implements Controller, Initializable {
 
         if(las != null) {
             if(event.getSource() == this.addTLAS) {
-                Framework.getInstance().addTrainingParsedLas(las);
+                Framework.getInstance().getTrainingLASList().add(las);
                 this.branchLAS(las.getWellName(), this.trainingFilesTree.getRoot());
             } else if(event.getSource() == this.addVLAS) {
-                Framework.getInstance().addValidationParsedLas(las);
+                Framework.getInstance().getValidationLASList().add(las);
                 this.branchLAS(las.getWellName(), this.validationFilesTree.getRoot());
             }
         }
@@ -100,8 +101,22 @@ public class HomeController implements Controller, Initializable {
 
     }
 
-    public void removeFile() {
+    public void removeFile(ActionEvent event) {
+        TreeView<String> tree = null;
+        LASList lasList = null;
 
+        if(event.getSource() == this.removeV) {
+            tree = validationFilesTree;
+            lasList = Framework.getInstance().getValidationLASList();
+        } else if(event.getSource() == this.removeT) {
+            tree = trainingFilesTree;
+            lasList = Framework.getInstance().getTrainingLASList();
+        }
+
+        TreeItem<String> item = getSelectedItem(tree);
+
+        lasList.removeLAS(item.getValue());
+        item.getParent().getChildren().remove(item);
     }
 
     public void editLAS() {
@@ -109,7 +124,7 @@ public class HomeController implements Controller, Initializable {
             String wellName = getSelectedItem(this.validationFilesTree).getValue();
             ParsedLAS toEdit = null;
 
-            for (ParsedLAS las : Framework.getInstance().getValidationLAS()) {
+            for (ParsedLAS las : Framework.getInstance().getValidationLASList()) {
                 if (las.getWellName().equalsIgnoreCase(wellName))
                     toEdit = las;
             }
