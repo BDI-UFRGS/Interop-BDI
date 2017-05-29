@@ -7,10 +7,12 @@ package interop.log.model;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 /**
  * An ArrayList of pairs of depth/log values.
+ *
  * @author Luan
  */
 public class LogValues extends TreeMap<Float, Float> {
@@ -26,14 +28,14 @@ public class LogValues extends TreeMap<Float, Float> {
      * @return LogValue (pair: depth, value)
      */
     public LogValue getPair(int index) {
-        if(index >= size() || index < 0)
+        if (index >= size() || index < 0)
             return null;
 
         // use Iterator
         Iterator<Map.Entry<Float, Float>> it = entrySet().iterator();
 
         // skip to i
-        for(int i = index; i > 0; --i) {
+        for (int i = index; i > 0; --i) {
             it.next();
         }
 
@@ -43,12 +45,19 @@ public class LogValues extends TreeMap<Float, Float> {
     }
 
     /**
-     *
      * @param startIndex
      * @param stopIndex
      * @return
      */
     public LogValues subMapByIndex(int startIndex, int stopIndex) {
-        return (LogValues) subMap(getPair(startIndex).getDepth(), getPair(stopIndex).getDepth());
+        LogValues subMap = new LogValues();
+
+        SortedMap<Float, Float> values = subMap(getPair(startIndex).getDepth(), getPair(stopIndex).getDepth());
+
+        for (Float depth : values.keySet()) {
+            subMap.put(depth, values.get(depth));
+        }
+
+        return subMap;
     }
 }

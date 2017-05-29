@@ -41,7 +41,7 @@ public class DataCollector {
 
         // BASTA CRIAR INSTANCIAS DE WellInfos PARA CADA POÇO PASSANDO UMA String COM O PATH DO LAS
         // E UMA List  DE Strings COM OS PATHS DOS XMLS
-        String pathLogCP1847 = "teste6\\treino\\3-CP-1847-SE\\Perfis\\CP1847.las";
+        /*String pathLogCP1847 = "teste6\\treino\\3-CP-1847-SE\\Perfis\\CP1847.las";
         List<String> pathDescriptionsCP1847 = new ArrayList<>();
         pathDescriptionsCP1847.add("teste6\\treino\\3-CP-1847-SE\\3-CP-1847-SE_(T1)_20151112101101_31.xml");
         pathDescriptionsCP1847.add("teste6\\treino\\3-CP-1847-SE\\3-CP-1847-SE_(T2)_20151112101100_29.xml");
@@ -93,17 +93,27 @@ public class DataCollector {
         pathDescriptionsSZ160.add("teste6\\treino\\9-SZ-0160-SE\\9-SZ-0160-SE_(T31)_20151112101051_11.xml");
         pathDescriptionsSZ160.add("teste6\\treino\\9-SZ-0160-SE\\9-SZ-0160-SE_(T32)_20151112101052_12.xml");
         pathDescriptionsSZ160.add("teste6\\treino\\9-SZ-0160-SE\\9-SZ-0160-SE_(T33)_20151112101052_13.xml");
-        WellInfos wellSZ160 = new WellInfos(pathLogSZ160, pathDescriptionsSZ160);
+        WellInfos wellSZ160 = new WellInfos(pathLogSZ160, pathDescriptionsSZ160);*/
+
+        String path = "C:\\Users\\lucas\\Documents\\PocosVinicius\\Teste 1\\Treino\\NA04.las";
+        List<String> xmlPath = new ArrayList<>();
+        xmlPath.add("C:\\Users\\lucas\\Documents\\PocosVinicius\\Teste 1\\Treino\\3-NA-04-RJS_(T1)_20150504162349_05.xml");
+        xmlPath.add("C:\\Users\\lucas\\Documents\\PocosVinicius\\Teste 1\\Treino\\3-NA-04-RJS_(T2)_20150504162352_07.xml");
+        xmlPath.add("C:\\Users\\lucas\\Documents\\PocosVinicius\\Teste 1\\Treino\\3-NA-04-RJS_(T4)_20150504162354_09.xml");
+        xmlPath.add("C:\\Users\\lucas\\Documents\\PocosVinicius\\Teste 1\\Treino\\3-NA-04-RJS_(T5)_20150504162356_10.xml");
+        WellInfos well = new WellInfos(path, xmlPath);
 
 
         //ENTÃO ADICIONAR TODAS AS CLASSES WellInfos PARA UMA LISTA:
         List<WellInfos> allWellInfos = new ArrayList<>();
-        allWellInfos.add(wellCP1847);
+        allWellInfos.add(well);
+
+        /*allWellInfos.add(wellCP1847);
         allWellInfos.add(wellSZ626);
         allWellInfos.add(wellFU128);
         allWellInfos.add(wellSZ508D);
         allWellInfos.add(wellGTP48);
-        allWellInfos.add(wellSZ160);
+        allWellInfos.add(wellSZ160);*/
 
 
         //E DEIXAR QUE ESSA PARTE DO PROGRAMA FAÇA A MAGICA:
@@ -112,7 +122,7 @@ public class DataCollector {
 
 
         for (Integer lithoUID : lithologies) {
-            String currentFileString = "teste6\\treino_amostras\\" + lithoUID + ".txt";
+            String currentFileString = "C:\\Users\\lucas\\Documents\\PocosVinicius\\" + lithoUID + ".txt";
 
             try {
                 PrintWriter writer = new PrintWriter(currentFileString, "UTF-8");

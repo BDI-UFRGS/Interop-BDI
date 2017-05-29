@@ -19,19 +19,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * @author eduardo
  */
 public class SampleLithology {
-    
-    static List<String> logTypesWanted ;
-    private static String TAB = "\t"; 
+
+    static List<String> logTypesWanted;
+    private static String TAB = "\t";
     private static List<LithologyArchiveFormat> lithologies = new ArrayList<>();
     private static LithologyDatabase db;
     public static float nullValue;
-    
-    public static LithologyDatabase main()
-    {  
+
+    public static void main(String[] args) {
         //SELECIONA QUAIS TIPOS DE LOG QUERES PROCESSAR
         logTypesWanted = new ArrayList<>();
         //logTypesWanted.add("DEPT");
@@ -45,9 +43,9 @@ public class SampleLithology {
         logTypesWanted.add("SP");
         logTypesWanted.add("SN");
         logTypesWanted.add("MSFL");
-        
+
         db = new LithologyDatabase(logTypesWanted);
-        
+
         //E QUAIS ARQUIVOS, BASTA DESCOMENTAR
         
      /* //TESTE 1 TREINO
@@ -220,10 +218,10 @@ public class SampleLithology {
         pathDescriptionsSZ160.add("C:\\\\StrataDB\\\\Teste 6\\Treino\\9-SZ-0160-SE\\9-SZ-0160-SE_(T33)_20151112101052_13.xml");
         SampleLithology.processWell(pathLogSZ160, pathDescriptionsSZ160);
      */
-    ///*
-    //TESTE 6 VALIDACAO
+        /*
+        //TESTE 6 VALIDACAO
         String pathLogsCP995 = "C:\\StrataDB\\Teste 6\\Validacao\\7-CP-0995-SE\\Perfis\\CP995.las";
-        List<String> pathDescriptionsCP995 = new ArrayList<>(); 
+        List<String> pathDescriptionsCP995 = new ArrayList<>();
         pathDescriptionsCP995.add("C:\\StrataDB\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T1)_20151112101055_19.xml");
         pathDescriptionsCP995.add("C:\\StrataDB\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T2)_20151112101056_21.xml");
         pathDescriptionsCP995.add("C:\\StrataDB\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T3)_20151112101056_22.xml");
@@ -234,7 +232,7 @@ public class SampleLithology {
         pathDescriptionsCP995.add("C:\\StrataDB\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T8)_20151112101059_27.xml");
         pathDescriptionsCP995.add("C:\\StrataDB\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T9)_20151112101100_28.xml");
         SampleLithology.processWell(pathLogsCP995, pathDescriptionsCP995);
-      //*/
+        //*/
       /*  
         String pathLog7CP1382DSE = "C:\\StrataDB\\NovosPocos\\7-CP-1382D-SE\\Perfil\\CP1382.las";
         List<String> pathDescriptions7CP1382DSE = new ArrayList<>();
@@ -252,61 +250,74 @@ public class SampleLithology {
         SampleLithology.processWell(pathLogCP1394, pathDescriptionsCP1394);
         */
 
+        String pathLogsCP995 = "C:\\Users\\lucas\\Documents\\PocosVinicius\\Teste 6\\Validacao\\7-CP-0995-SE\\Perfis\\CP995.las";
+        List<String> pathDescriptionsCP995 = new ArrayList<>();
+        pathDescriptionsCP995.add("C:\\Users\\lucas\\Documents\\PocosVinicius\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T1)_20151112101055_19.xml");
+        pathDescriptionsCP995.add("C:\\Users\\lucas\\Documents\\PocosVinicius\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T2)_20151112101056_21.xml");
+        pathDescriptionsCP995.add("C:\\Users\\lucas\\Documents\\PocosVinicius\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T3)_20151112101056_22.xml");
+        pathDescriptionsCP995.add("C:\\Users\\lucas\\Documents\\PocosVinicius\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T4)_20151112101057_23.xml");
+        pathDescriptionsCP995.add("C:\\Users\\lucas\\Documents\\PocosVinicius\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T5)_20151112101057_24.xml");
+        pathDescriptionsCP995.add("C:\\Users\\lucas\\Documents\\PocosVinicius\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T6)_20151112101058_25.xml");
+        pathDescriptionsCP995.add("C:\\Users\\lucas\\Documents\\PocosVinicius\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T7)_20151112101058_26.xml");
+        pathDescriptionsCP995.add("C:\\Users\\lucas\\Documents\\PocosVinicius\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T8)_20151112101059_27.xml");
+        pathDescriptionsCP995.add("C:\\Users\\lucas\\Documents\\PocosVinicius\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T9)_20151112101100_28.xml");
+        SampleLithology.processWell(pathLogsCP995, pathDescriptionsCP995);
+
         //COMENTAR PARA GRAVAR EM ARQUIVO .TXT
         LithologyArchiveFormat.initializeWriter();
-        for(LithologyArchiveFormat laf : lithologies){
+        for (LithologyArchiveFormat laf : lithologies) {
             laf.saveToArchive();
         }
         LithologyArchiveFormat.closeWriter();
 
-        
-        return db;
-    
+
+        //return db;
+
     }
-    
-    public static List<Double> getSample(int index, String pathLog){
+
+    public static List<Double> getSample(int index, String pathLog) {
         LASParser parser = new LASParser();
         ParsedLAS parsed = parser.parseLAS(pathLog);
         List<String> organized = new OrganizeSample(parsed, index).Organize();
         return parseDouble(organized);
     }
-    
-    public static List<Double> getSample(int index, ParsedLAS parsedlas){
+
+    public static List<Double> getSample(int index, ParsedLAS parsedlas) {
         List<String> organized = new OrganizeSample(parsedlas, index).Organize();
         return parseDouble(organized);
     }
-    
-    private static List<Double> parseDouble(List<String> strings){
+
+    private static List<Double> parseDouble(List<String> strings) {
         List<Double> doubles = new ArrayList<>();
-        for(String string:strings){
+        for (String string : strings) {
             doubles.add(Double.parseDouble(string));
         }
         return doubles;
     }
-    
-    static void processWell(String pathLog, List<String> pathDescriptions){
-        
-        LASParser parser = new LASParser();    
+
+    static void processWell(String pathLog, List<String> pathDescriptions) {
+
+        LASParser parser = new LASParser();
         ParsedLAS parsed = parser.parseLAS(pathLog);
         nullValue = parsed.getNullValue();
         System.out.println();
-        System.out.print( "Processing Well");     
+        System.out.print("Processing Well");
         //FOR EVERY SAMPLE IN THE LAS FILE
-        for(int i=0; i<parsed.getLogsList().get(0).getLogValues().size() ; i++){
-            if((10*i)/parsed.getLogsList().get(0).getLogValues().size() > (10*(i-1))/parsed.getLogsList().get(0).getLogValues().size())
+        for (int i = 0; i < parsed.getLogsList().get(0).getLogValues().size(); i++) {
+            if ((10 * i) / parsed.getLogsList().get(0).getLogValues().size() > (10 * (i - 1)) / parsed.getLogsList().get(0).getLogValues().size())
                 System.out.print(".");
             //ORGANIZE SAMPLE IN ORDER OF logsTypeWanted
             List<String> OrganizedSample = new OrganizeSample(parsed, i).Organize();
-            
+
             //SEARCH THE LITHOLOGY IN THE LIST OF XML, IF IT EXISTS
             DiscoverLithology discoverLithology = new DiscoverLithology(pathLog, i, pathDescriptions);
             int lithology = discoverLithology.discover();
             //int lithology = discoverLithology.fast_discover();
             //System.out.println(lithology2 + " AND " + lithology);
-            
-            if(lithology!=0)
+
+            if (lithology != 0)
                 db.feedDatabase(lithology, OrganizedSample);
-            
+
             //AND GET THE PATH OF LAS AND XML TO IDENTIFY IN THE OUTPUT
             String las = discoverLithology.getLasPath();
             String xml = discoverLithology.getXmlPath();
@@ -318,31 +329,31 @@ public class SampleLithology {
             OrganizedSample.add(String.valueOf(discoverLithology.grainSizeID));
             OrganizedSample.add(String.valueOf(discoverLithology.roundnessID));
             OrganizedSample.add(String.valueOf(discoverLithology.sphericityID));
-            
+
             //if(lithology >= -1){//WITH UNUSED SAMPLES
-            if(lithology != -1){//WITHOUT UNUSED SAMPLES
-                
+            if (lithology != -1) {//WITHOUT UNUSED SAMPLES
+
                 //SEE IF LITHOLOGY ALREADY EXISTS ON THE LIST lithologies AND GET ITS INDEX
                 int lithologiesIndex = indexOfLithologyArchiveFormatList(lithologies, lithology);
-                
+
                 //IF EXISTS JUST ADD THE SAMPLE
-                if(lithologiesIndex != -1){
+                if (lithologiesIndex != -1) {
                     lithologies.get(lithologiesIndex).add(OrganizedSample);
                 }
                 //OTHERWISE CREATE THE LITHOLOGY .txt AND ADD THE SAMPLE
-                else{
-                    LithologyArchiveFormat lit = new LithologyArchiveFormat(lithology, discoverLithology.LithologyName , OrganizedSample);
+                else {
+                    LithologyArchiveFormat lit = new LithologyArchiveFormat(lithology, discoverLithology.LithologyName, OrganizedSample);
                     lithologies.add(lit);
                 }
             }
         }
-        
+
     }
-    
-    static int indexOfLithologyArchiveFormatList(List<LithologyArchiveFormat> list, int UID){
-        
-        for(int i =0; i<list.size(); i++){
-            if(list.get(i).lithologyUID == UID){
+
+    static int indexOfLithologyArchiveFormatList(List<LithologyArchiveFormat> list, int UID) {
+
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).lithologyUID == UID) {
                 return i;
             }
         }
@@ -354,10 +365,10 @@ public class SampleLithology {
         ParsedLAS parsed = parser.parseLAS(las);
         return parsed.getLogsList().get(0).getLogValues().size();
     }
-    
-        
-    static class DiscoverLithology{
-        
+
+
+    static class DiscoverLithology {
+
         List<String> pathDescriptions = new ArrayList<>();
         float depthLAS;
         String lasFound;
@@ -368,103 +379,101 @@ public class SampleLithology {
         int roundnessID;
         int sortingID;
         int sphericityID;
-        
+
         //testing the fast_discover
         static List<StratigraphicDescription> stratigraphicDescriptions = null;
         static StratigraphicDescription stratigraphicDescription;
         static DepositionalFacies facie;
-        static int i=0; //indexOfWhichXmlFileWeAreLooking;
-        static int j=0;//indexOfStratigraphicDescriptionList;
-        static int k=0;//indexOfDepositionalFaciesList;
-        
-        
-        public DiscoverLithology(String lasPath, int index, List<String> path){
-            LASParser parser = new LASParser();    
+        static int i = 0; //indexOfWhichXmlFileWeAreLooking;
+        static int j = 0;//indexOfStratigraphicDescriptionList;
+        static int k = 0;//indexOfDepositionalFaciesList;
+
+
+        public DiscoverLithology(String lasPath, int index, List<String> path) {
+            LASParser parser = new LASParser();
             ParsedLAS parsed = parser.parseLAS(lasPath);
             this.pathDescriptions = path;
             this.depthLAS = parsed.getLogsList().get(0).getLogValues().getPair(index).getDepth();
             lasFound = lasPath;
-            
-            if(stratigraphicDescriptions==null){
+
+            if (stratigraphicDescriptions == null) {
                 stratigraphicDescriptions = XMLReader.readStratigraphicDescriptionXML(path.get(0));
                 facie = stratigraphicDescriptions.get(0).getFaciesList().get(0);
                 mmTOm(facie);
             }
         }
-        
-        
+
 
         private DepositionalFacies nextDepositionalFacie() {
-            if(k < stratigraphicDescriptions.get(j).getFaciesList().size() -1 )
+            if (k < stratigraphicDescriptions.get(j).getFaciesList().size() - 1)
                 return stratigraphicDescriptions.get(j).getFaciesList().get(++k);
-            else{
-                k=0;
-                if( j < stratigraphicDescriptions.size()-1)
+            else {
+                k = 0;
+                if (j < stratigraphicDescriptions.size() - 1)
                     return stratigraphicDescriptions.get(++j).getFaciesList().get(k);
-                else{
-                    k=0;
-                    j=0;
-                    if( i < pathDescriptions.size()-1){
+                else {
+                    k = 0;
+                    j = 0;
+                    if (i < pathDescriptions.size() - 1) {
                         stratigraphicDescriptions = XMLReader.readStratigraphicDescriptionXML(pathDescriptions.get(++i));
                         return stratigraphicDescriptions.get(j).getFaciesList().get(k);
-                    }
-                    else return null;
+                    } else return null;
                 }
             }
         }
-        
-        public String getLasPath(){
+
+        public String getLasPath() {
             return lasFound;
         }
-        
-        public String getXmlPath(){
+
+        public String getXmlPath() {
             return xmlFound;
         }
-        public String getLithologyName(){
+
+        public String getLithologyName() {
             return this.LithologyName;
         }
-        
-        
+
+
         public int fast_discover()
         //same as the discover() method but with the ideia that each xml file is readed only once, but the results are the same
         {
-            if(facie==null)
+            if (facie == null)
                 return 0;
-            if(facie.getBottomMeasure()>= depthLAS && facie.getTopMeasure()<depthLAS){
-                   //GET THE LITHOLOGY AND THE XML IT WAS FOUND
-                    xmlFound = pathDescriptions.get(i);
-                    LithologyName = facie.getLithology().getValue();
-                    grainSize = facie.getGrainSize().getValue();
-                    grainSizeID = facie.getGrainSize().getId();
-                    roundnessID = facie.getRoundness().getId();
-                    sortingID = facie.getSorting().getId();
-                    sphericityID = facie.getSphericity().getId();
-                    return facie.getLithology().getId();
+            if (facie.getBottomMeasure() >= depthLAS && facie.getTopMeasure() < depthLAS) {
+                //GET THE LITHOLOGY AND THE XML IT WAS FOUND
+                xmlFound = pathDescriptions.get(i);
+                LithologyName = facie.getLithology().getValue();
+                grainSize = facie.getGrainSize().getValue();
+                grainSizeID = facie.getGrainSize().getId();
+                roundnessID = facie.getRoundness().getId();
+                sortingID = facie.getSorting().getId();
+                sphericityID = facie.getSphericity().getId();
+                return facie.getLithology().getId();
+            } else if (depthLAS > facie.getBottomMeasure()) {
+                facie = this.nextDepositionalFacie();
+                if (facie == null)
+                    return 0;
+                mmTOm(facie);
+                return fast_discover();
             }
-            else if(depthLAS > facie.getBottomMeasure()){
-                    facie = this.nextDepositionalFacie();
-                    if(facie==null)
-                        return 0;
-                    mmTOm(facie);
-                    return fast_discover();
-            }
-            
+
             return 0;
         }
-        
-        public int discover(){
-                        
+
+        public int discover() {
+
             //FOR EVERY XML FILE
-            for(String path:pathDescriptions){
+            for (String path : pathDescriptions) {
                 List<StratigraphicDescription> listCore = XMLReader.readStratigraphicDescriptionXML(path);
                 //FOR EVERY CORE IN A XML FILE
-                for(StratigraphicDescription core:listCore){
+                for (StratigraphicDescription core : listCore) {
                     List<DepositionalFacies> faciesList = core.getFaciesList();
                     faciesList = mmTOm(faciesList);
                     //FOR EVERY FACIES
-                    for(DepositionalFacies facie:faciesList){
+                    for (DepositionalFacies facie : faciesList) {
                         //IF THE DEPTH OF SAMPLE IS IN BETWEEN THE FACIE
-                        if(facie.getBottomMeasure()>= depthLAS && facie.getTopMeasure()<depthLAS){
+                        if (facie.getBottomMeasure() >= depthLAS && facie.getTopMeasure() < depthLAS) {
                             //GET THE LITHOLOGY AND THE XML IT WAS FOUND
                             xmlFound = path;
                             LithologyName = facie.getLithology().getValue();
@@ -473,7 +482,7 @@ public class SampleLithology {
                             roundnessID = facie.getRoundness().getId();
                             sortingID = facie.getSorting().getId();
                             sphericityID = facie.getSphericity().getId();
-                            
+
                             return facie.getLithology().getId();
                         }
                     }
@@ -481,110 +490,107 @@ public class SampleLithology {
             }
             return 0;
         }
-        
-    private static List<DepositionalFacies> mmTOm(List<DepositionalFacies> depositionalFacies)
-    {
-        for(DepositionalFacies dp:depositionalFacies)
-        {
-            dp.setBottomMeasure(dp.getBottomMeasure()/1000);
-            dp.setTopMeasure(dp.getTopMeasure()/1000);
+
+        private static List<DepositionalFacies> mmTOm(List<DepositionalFacies> depositionalFacies) {
+            for (DepositionalFacies dp : depositionalFacies) {
+                dp.setBottomMeasure(dp.getBottomMeasure() / 1000);
+                dp.setTopMeasure(dp.getTopMeasure() / 1000);
+            }
+            return depositionalFacies;
         }
-        return depositionalFacies;
+
+        private static DepositionalFacies mmTOm(DepositionalFacies dp) {
+            dp.setBottomMeasure(dp.getBottomMeasure() / 1000);
+            dp.setTopMeasure(dp.getTopMeasure() / 1000);
+            return dp;
+        }
+
     }
-    
-    private static DepositionalFacies mmTOm(DepositionalFacies dp)
-    {
-        dp.setBottomMeasure(dp.getBottomMeasure()/1000);
-        dp.setTopMeasure(dp.getTopMeasure()/1000);
-        return dp;
-    }
-    
-    }
-          
-    static class OrganizeSample{
+
+    static class OrganizeSample {
         ParsedLAS parsed;
         int sampleIndex;
-        
-        public OrganizeSample(ParsedLAS psd, int index){
+
+        public OrganizeSample(ParsedLAS psd, int index) {
             this.parsed = psd;
             this.sampleIndex = index;
         }
-         
-        
-        public List<String> Organize(){
+
+
+        public List<String> Organize() {
             List<String> organizedSample = new ArrayList<>();
-            
-            for(String type:logTypesWanted){
-                organizedSample.add( Float.toString(getSpecificSampleValue(type)));
+
+            for (String type : logTypesWanted) {
+                organizedSample.add(Float.toString(getSpecificSampleValue(type)));
             }
-                       
+
             return organizedSample;
         }
-        
-        public float getSpecificSampleValue(String type){
+
+        public float getSpecificSampleValue(String type) {
             float nullValue = parsed.getLogsList().get(0).getNullValue();
             float value = nullValue;
-            
-            for(WellLog wl:parsed.getLogsList()){
-                if(type.equalsIgnoreCase("DEPT"))
+
+            for (WellLog wl : parsed.getLogsList()) {
+                if (type.equalsIgnoreCase("DEPT"))
                     value = wl.getLogValues().getPair(sampleIndex).getDepth();
-                else if(type.equalsIgnoreCase(wl.getLogType().getLogDescription())
+                else if (type.equalsIgnoreCase(wl.getLogType().getLogDescription())
                         && wl.getLogValues().getPair(sampleIndex).getLogValue() != nullValue)//IN CASE THERE IS MORE THAN ONE LOG OF THE SAME MEASURE KIND
                     value = wl.getLogValues().getPair(sampleIndex).getLogValue();
-                
+
             }
-            return value; 
+            return value;
         }
-        
+
     }
-     
-    static class LithologyArchiveFormat{
-        static int counter =0;
+
+    static class LithologyArchiveFormat {
+        static int counter = 0;
         static PrintWriter writer = null;
         int lithologyUID;
         String lithologyName = null;
         List<List<String>> specificLog;
-                
-        public LithologyArchiveFormat(int UID, String lithoName,  List<String> sample){
+
+        public LithologyArchiveFormat(int UID, String lithoName, List<String> sample) {
             this.specificLog = new ArrayList<>();
             specificLog.add(sample);
             lithologyUID = UID;
         }
-        
-        public static void initializeWriter(){
+
+        public static void initializeWriter() {
             try {
                 writer = new PrintWriter("Samples Output\\teste.txt", "UTF-8");
-                for(String types: logTypesWanted){
-                writer.print(types);
-                writer.print(TAB);
-            }
+                for (String types : logTypesWanted) {
+                    writer.print(types);
+                    writer.print(TAB);
+                }
                 writer.println("LAS" + TAB + "XML" + TAB + "LITHO_NAME" + TAB + "LITHO_ID" + TAB + "GRAIN_SIZE" + TAB + "ROUNDNESS_ID" + TAB + "SPHERICIRY_ID");
 
             } catch (IOException e) {
                 System.out.println("Cannot create output file... ");
             }
         }
-        
-        public void add(List<String> sample){
+
+        public void add(List<String> sample) {
             specificLog.add(sample);
         }
-    
-        public static void closeWriter(){
+
+        public static void closeWriter() {
             writer.close();
         }
-        
+
         //ATENTION: clean the folder of results before resaving samples, or it will save at the end
-        public void saveToArchive(){
-                                               
-            for(List<String> sample:specificLog){
-                for(String data:sample){
+        public void saveToArchive() {
+
+            for (List<String> sample : specificLog) {
+                for (String data : sample) {
                     writer.print(data);
                     writer.print(TAB);
                     counter++;
                 }
                 writer.println();
             }
-             
+
         }
     }
 }
