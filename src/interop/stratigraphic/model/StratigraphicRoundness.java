@@ -8,16 +8,14 @@ package interop.stratigraphic.model;
 import interop.stratigraphic.control.SQLite;
 
 /**
- *
  * @author Luan
  */
-public class StratigraphicRoundness extends AbstractStratigraphicAttribute
-{
+public class StratigraphicRoundness extends AbstractStratigraphicAttribute {
 
     @Override
     protected void updateValue() {
         SQLite sql = new SQLite();
         this.value = sql.readValue(AttributeType.Roundness, this.getId());
     }
-    
+
 }

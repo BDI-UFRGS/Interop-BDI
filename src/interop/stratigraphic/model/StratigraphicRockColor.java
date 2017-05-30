@@ -8,14 +8,12 @@ package interop.stratigraphic.model;
 import interop.stratigraphic.control.SQLite;
 
 /**
- *
  * @author Luan
  */
-public class StratigraphicRockColor extends AbstractStratigraphicAttribute
-{
-    
+public class StratigraphicRockColor extends AbstractStratigraphicAttribute {
+
     protected String rgbCode = null;
-    
+
 
     @Override
     protected void updateValue() {
@@ -25,22 +23,20 @@ public class StratigraphicRockColor extends AbstractStratigraphicAttribute
 
     /**
      * Returns the RGB code of that specific attribute instance as a String. This value is filled accessing the database.
-     * @return 
+     *
+     * @return
      */
-    public String getRGBCode()
-    {
-        if(rgbCode == null)
+    public String getRGBCode() {
+        if (rgbCode == null)
             updateRGBCode();
-        
+
         return rgbCode;
     }
-    
-    protected void updateRGBCode(){
+
+    protected void updateRGBCode() {
         SQLite sql = new SQLite();
         this.rgbCode = sql.readValue(AttributeType.RockColor, "VALUE_HEX", this.getId());
     }
-    
-    
-    
-    
+
+
 }

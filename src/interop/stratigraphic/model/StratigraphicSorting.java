@@ -8,16 +8,14 @@ package interop.stratigraphic.model;
 import interop.stratigraphic.control.SQLite;
 
 /**
- *
  * @author Luan
  */
-public class StratigraphicSorting extends AbstractStratigraphicAttribute 
-{
+public class StratigraphicSorting extends AbstractStratigraphicAttribute {
 
     @Override
     protected void updateValue() {
         SQLite sql = new SQLite();
         this.value = sql.readValue(AttributeType.Sorting, this.getId());
     }
-    
+
 }

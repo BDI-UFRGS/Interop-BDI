@@ -8,13 +8,11 @@ package interop.stratigraphic.model;
 import interop.stratigraphic.control.SQLite;
 
 /**
- *
  * @author Luan
  */
-public class StratigraphicLithology extends AbstractStratigraphicAttribute
-{
+public class StratigraphicLithology extends AbstractStratigraphicAttribute {
     protected String textureSVG = null;
-    
+
     @Override
     protected void updateValue() {
         SQLite sql = new SQLite();
@@ -23,20 +21,20 @@ public class StratigraphicLithology extends AbstractStratigraphicAttribute
 
     /**
      * Returns the textude on svg format of that specific attribute instance as a String. This value is filled accessing the database.
-     * @return 
+     *
+     * @return
      */
-    public String getTextureSVG()
-    {
-        if(textureSVG == null)
+    public String getTextureSVG() {
+        if (textureSVG == null)
             updateTextureSVG();
-        
+
         return textureSVG;
     }
-    
-    protected void updateTextureSVG(){
+
+    protected void updateTextureSVG() {
         SQLite sql = new SQLite();
         this.textureSVG = sql.readValue(AttributeType.Lithology, "VALUE_PATTERN_SVG", this.getId());//or is it VALUE_PATTERN?
-        
+
     }
-    
+
 }

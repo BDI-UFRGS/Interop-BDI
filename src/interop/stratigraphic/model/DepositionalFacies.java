@@ -9,12 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * @author Luan
  */
-public class DepositionalFacies 
-{
-    
+public class DepositionalFacies {
+
     private float topMeasure;
     private float bottomMeasure;
     private StratigraphicGrainSize grainSize;
@@ -26,18 +24,18 @@ public class DepositionalFacies
     private StratigraphicSphericity sphericity;
     private StratigraphicStructure mainStructure;
     private List<StratigraphicStructure> secondaryStructureList;
-    
-    
+
+
     /**
      * @return the grainSize
      */
     public StratigraphicGrainSize getGrainSize() {
-        
-        if(grainSize == null)
+
+        if (grainSize == null)
             grainSize = new StratigraphicGrainSize();
-        
+
         return grainSize;
-    }   
+    }
 
     /**
      * @return the topMeasure
@@ -71,10 +69,10 @@ public class DepositionalFacies
      * @return the fossil
      */
     public StratigraphicFossil getFossil() {
-        
-        if(fossil == null)
+
+        if (fossil == null)
             fossil = new StratigraphicFossil();
-        
+
         return fossil;
     }
 
@@ -82,10 +80,10 @@ public class DepositionalFacies
      * @return the lithology
      */
     public StratigraphicLithology getLithology() {
-        
-        if(lithology == null)
+
+        if (lithology == null)
             lithology = new StratigraphicLithology();
-        
+
         return lithology;
     }
 
@@ -93,10 +91,10 @@ public class DepositionalFacies
      * @return the rockColor
      */
     public StratigraphicRockColor getRockColor() {
-        
-        if(rockColor == null)
+
+        if (rockColor == null)
             rockColor = new StratigraphicRockColor();
-        
+
         return rockColor;
     }
 
@@ -104,10 +102,10 @@ public class DepositionalFacies
      * @return the roundness
      */
     public StratigraphicRoundness getRoundness() {
-        
-        if(roundness == null)
+
+        if (roundness == null)
             roundness = new StratigraphicRoundness();
-        
+
         return roundness;
     }
 
@@ -115,10 +113,10 @@ public class DepositionalFacies
      * @return the sorting
      */
     public StratigraphicSorting getSorting() {
-        
-        if(sorting == null)
+
+        if (sorting == null)
             sorting = new StratigraphicSorting();
-        
+
         return sorting;
     }
 
@@ -126,10 +124,10 @@ public class DepositionalFacies
      * @return the sphericity
      */
     public StratigraphicSphericity getSphericity() {
-        
-        if(sphericity == null)
+
+        if (sphericity == null)
             sphericity = new StratigraphicSphericity();
-        
+
         return sphericity;
     }
 
@@ -137,18 +135,17 @@ public class DepositionalFacies
      * @return the structure
      */
     public StratigraphicStructure getMainStructure() {
-        
-        if(mainStructure == null)
+
+        if (mainStructure == null)
             mainStructure = new StratigraphicStructure();
-        
+
         return mainStructure;
     }
-    
-    public List<StratigraphicStructure> getSecondaryStructuresList()
-    {
-        if(secondaryStructureList == null)
+
+    public List<StratigraphicStructure> getSecondaryStructuresList() {
+        if (secondaryStructureList == null)
             secondaryStructureList = new ArrayList<>();
-        
+
         return secondaryStructureList;
-    }   
+    }
 }

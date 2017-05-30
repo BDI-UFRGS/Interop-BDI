@@ -11,30 +11,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * @author Luan
  */
-public class StratigraphicDescription implements IDescription
-{
+public class StratigraphicDescription implements IDescription {
     private String wellName;
     private float topMeasure;
     private float bottomMeasure;
-    
+
     private List<DepositionalFacies> faciesList;
 
     /**
      * @return the faciesList
      */
     public List<DepositionalFacies> getFaciesList() {
-        
+
         return faciesList;
     }
 
-    public void addFacies(DepositionalFacies df)
-    {
-        if(faciesList == null)
-           faciesList = new ArrayList<>();
-        
+    public void addFacies(DepositionalFacies df) {
+        if (faciesList == null)
+            faciesList = new ArrayList<>();
+
         this.faciesList.add(df);
     }
 

@@ -8,15 +8,13 @@ package interop.stratigraphic.model;
 import interop.stratigraphic.control.SQLite;
 
 /**
- *
  * @author Luan
  */
-public class StratigraphicGrainSize extends AbstractStratigraphicAttribute
-{
+public class StratigraphicGrainSize extends AbstractStratigraphicAttribute {
 
     @Override
     protected void updateValue() {
         SQLite sql = new SQLite();
         this.value = sql.readValue(AttributeType.GrainSize, this.getId());
-    }    
+    }
 }
