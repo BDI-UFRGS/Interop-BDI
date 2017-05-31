@@ -25,7 +25,7 @@ public class SQLite {
     private Connection connect() {
         Connection conn = null;
 
-        String dbPath = "jdbc:sqlite:C:\\StrataDB\\Coreledge.db";
+        String dbPath = "jdbc:sqlite:C:\\Users\\lucas\\Documents\\PocosVinicius\\STRATALEDGE_0_9_2.db";
 
         try {
 

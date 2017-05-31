@@ -32,14 +32,14 @@ public class SampleLithology {
     public static void main(String[] args) {
         //SELECIONA QUAIS TIPOS DE LOG QUERES PROCESSAR
         logTypesWanted = new ArrayList<>();
-        //logTypesWanted.add("DEPT");
+        logTypesWanted.add("DEPT");
         logTypesWanted.add("DT");
         logTypesWanted.add("GR");
         logTypesWanted.add("ILD");
         logTypesWanted.add("NPHI");
         logTypesWanted.add("RHOB");
         logTypesWanted.add("DRHO");
-        //logTypesWanted.add("CALI");
+        logTypesWanted.add("CALI");
         logTypesWanted.add("SP");
         logTypesWanted.add("SN");
         logTypesWanted.add("MSFL");
@@ -559,7 +559,7 @@ public class SampleLithology {
 
         public static void initializeWriter() {
             try {
-                writer = new PrintWriter("Samples Output\\teste.txt", "UTF-8");
+                writer = new PrintWriter("C:\\Users\\lucas\\Documents\\PocosVinicius\\teste.txt", "UTF-8");
                 for (String types : logTypesWanted) {
                     writer.print(types);
                     writer.print(TAB);
