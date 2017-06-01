@@ -27,6 +27,8 @@ public class Framework extends Application {
     private LASList trainingLAS = new LASList();
     private LASList validationLAS = new LASList();
 
+    private String strataDBPath;
+
 
     public static void main(String[] args) {
         launch(args);
@@ -76,4 +78,11 @@ public class Framework extends Application {
     }
 
 
+    public String getStrataDBPath() {
+        return strataDBPath;
+    }
+
+    public void setStrataDBPath(String strataDBPath) {
+        this.strataDBPath = strataDBPath;
+    }
 }

@@ -1,5 +1,6 @@
 package interop.framework.controller;
 
+import interop.framework.Framework;
 import interop.framework.Page;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,7 +9,9 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -24,9 +27,9 @@ import java.util.Stack;
 public class MainController implements Controller, Initializable {
 
     @FXML BorderPane mainPane;
-    @FXML MenuItem addProfile;
-    @FXML private VBox centerVBox;
+    @FXML VBox centerVBox;
     @FXML MenuBar mainMenuBar;
+    @FXML MenuItem setDB;
 
     private Page currentPage;
     private Page homePage;
@@ -142,6 +145,21 @@ public class MainController implements Controller, Initializable {
         this.centerVBox.getChildren().setAll(homePage.getParent());
     }
 
-    
+    /**
+     *  ================================================================================================================
+     *                                 MENUBAR ACTIONS
+     *  ================================================================================================================
+     */
+
+    public void setDBPath() {
+        FileChooser chooser = new FileChooser();
+
+        chooser.setTitle("Select a StrataDB file.");
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Database (*.db)", "*.db"));
+        File file = chooser.showOpenDialog(Framework.getInstance().getWindow());
+
+        if(file != null)
+            Framework.getInstance().setStrataDBPath(file.getAbsolutePath());
+    }
 
 }

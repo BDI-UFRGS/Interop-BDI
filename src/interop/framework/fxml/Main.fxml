@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
+
 <BorderPane fx:id="mainPane" minHeight="400.0" minWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interop.framework.controller.MainController">
    <top>
       <MenuBar fx:id="mainMenuBar" BorderPane.alignment="CENTER">
@@ -13,13 +16,7 @@
                   <MenuItem mnemonicParsing="false" text="Save" />
                   <MenuItem mnemonicParsing="false" text="Save As" />
                   <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem fx:id="addProfile" mnemonicParsing="false" text="Add LAS" />
-                  <MenuItem mnemonicParsing="false" text="Add XML" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
+                  <MenuItem fx:id="setDB" mnemonicParsing="false" onAction="#setDBPath" text="Set StrataDB" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">

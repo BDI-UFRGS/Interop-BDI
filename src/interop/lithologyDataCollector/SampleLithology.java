@@ -46,210 +46,6 @@ public class SampleLithology {
 
         db = new LithologyDatabase(logTypesWanted);
 
-        //E QUAIS ARQUIVOS, BASTA DESCOMENTAR
-        
-     /* //TESTE 1 TREINO
-        String pathLogNA04 = "C:\\StrataDB\\Teste 1\\Treino\\NA04.las";
-        List<String> pathDescriptionsNA04 = new ArrayList<>(); 
-        pathDescriptionsNA04.add("C:\\StrataDB\\Teste 1\\Treino\\3-NA-04-RJS_(T1)_20150504162349_05.xml");
-        pathDescriptionsNA04.add("C:\\StrataDB\\Teste 1\\Treino\\3-NA-04-RJS_(T2)_20150504162352_07.xml");
-        pathDescriptionsNA04.add("C:\\StrataDB\\Teste 1\\Treino\\3-NA-04-RJS_(T4)_20150504162354_09.xml");
-        pathDescriptionsNA04.add("C:\\StrataDB\\Teste 1\\Treino\\3-NA-04-RJS_(T5)_20150504162356_10.xml");
-        SampleLithology.processWell(pathLogNA04, pathDescriptionsNA04);
-    */
-      
-    /*  //TESTE 1 VALIDAÇÃO
-        String pathLogNA04 = "C:\\StrataDB\\Teste 1\\Validacao\\NA04.las";
-        List<String> pathDescriptionsNA04 = new ArrayList<>(); 
-        pathDescriptionsNA04.add("C:\\StrataDB\\Teste 1\\Validacao\\3-NA-04-RJS_(T3)_20150504162352_08.xml");
-        SampleLithology.processWell(pathLogNA04, pathDescriptionsNA04);
-    */
-    
-    /*  //TESTE 2 TREINO
-        String pathLogRJS019 = "C:\\\\StrataDB\\\\Teste 2\\Treino\\1-RJ-19-RJS\\RJS019.las";
-        List<String> RJS019 = new ArrayList<>(); 
-        RJS019.add("C:\\\\StrataDB\\\\Teste 2\\Treino\\1-RJ-19-RJS\\1-RJ-19-RJS_(T2)_20150504162350_06.xml");
-        SampleLithology.processWell(pathLogRJS019, RJS019);
-        
-        String pathLogNA01A = "C:\\\\StrataDB\\\\Teste 2\\Treino\\3-NA-1A-RJS\\NA01A.las";
-        List<String> NA01A = new ArrayList<>(); 
-        NA01A.add("C:\\\\StrataDB\\\\Teste 2\\Treino\\3-NA-1A-RJS\\3-NA-1A-RJS_(T3)_20150504162348_04.xml");
-        SampleLithology.processWell(pathLogNA01A, NA01A);
-        
-        String pathLogNA02 = "C:\\\\StrataDB\\\\Teste 2\\Treino\\3-NA-02-RJS\\NA02.las";
-        List<String> NA02 = new ArrayList<>(); 
-        NA02.add("C:\\\\StrataDB\\\\Teste 2\\Treino\\3-NA-02-RJS\\3-NA-02-RJS_(T1)_20150504162347_03.xml");
-        NA02.add("C:\\\\StrataDB\\\\Teste 2\\Treino\\3-NA-02-RJS\\3-NA-02-RJS_(T2)_20150504162346_02.xml");
-        NA02.add("C:\\\\StrataDB\\\\Teste 2\\Treino\\3-NA-02-RJS\\3-NA-02-RJS_(T3)_20150504162345_01.xml");
-        SampleLithology.processWell(pathLogNA02, NA02);
-        
-        String pathLogNA04 = "C:\\\\StrataDB\\\\Teste 2\\Treino\\3-NA-04-RJS\\NA04.las";
-        List<String> NA04 = new ArrayList<>(); 
-        NA04.add("C:\\\\StrataDB\\\\Teste 2\\Treino\\3-NA-04-RJS\\3-NA-04-RJS_(T1)_20150504162349_05.xml");
-        NA04.add("C:\\\\StrataDB\\\\Teste 2\\Treino\\3-NA-04-RJS\\3-NA-04-RJS_(T2)_20150504162352_07.xml");
-        NA04.add("C:\\\\StrataDB\\\\Teste 2\\Treino\\3-NA-04-RJS\\3-NA-04-RJS_(T3)_20150504162352_08.xml");
-        NA04.add("C:\\\\StrataDB\\\\Teste 2\\Treino\\3-NA-04-RJS\\3-NA-04-RJS_(T4)_20150504162354_09.xml");
-        NA04.add("C:\\\\StrataDB\\\\Teste 2\\Treino\\3-NA-04-RJS\\3-NA-04-RJS_(T5)_20150504162356_10.xml");
-        SampleLithology.processWell(pathLogNA04, NA04);
-        
-        String pathLogRJS042 = "C:\\\\StrataDB\\\\Teste 2\\Treino\\4-RJ-42-RJS\\RJS042.las";
-        List<String> RJS042 = new ArrayList<>(); 
-        RJS042.add("C:\\\\StrataDB\\\\Teste 2\\Treino\\4-RJ-42-RJS\\4-RJS-42-RJS_(T1)_20150504162357_11.xml");
-        RJS042.add("C:\\\\StrataDB\\\\Teste 2\\Treino\\4-RJ-42-RJS\\4-RJS-42-RJS_(T2)_20150504162359_12.xml");
-        SampleLithology.processWell(pathLogRJS042, RJS042);
-        
-    */
-    
-    /*//TESTE 2 VALIDACAO
-        String pathLogRJS042 = "C:\\\\StrataDB\\\\Teste 2\\Validacao\\4-RJS-234-RJS\\RJS234.las";
-        List<String> RJS042 = new ArrayList<>(); 
-        RJS042.add("C:\\\\StrataDB\\\\Teste 2\\Validacao\\4-RJS-234-RJS\\4-RJS-234-RJS_(T1)_20150504162401_13.xml");
-        RJS042.add("C:\\\\StrataDB\\\\Teste 2\\Validacao\\4-RJS-234-RJS\\4-RJS-234-RJS_(T2)_20150504162402_14.xml");
-        RJS042.add("C:\\\\StrataDB\\\\Teste 2\\Validacao\\4-RJS-234-RJS\\4-RJS-234-RJS_(T3)_20150504162404_15.xml");
-        RJS042.add("C:\\\\StrataDB\\\\Teste 2\\Validacao\\4-RJS-234-RJS\\4-RJS-234-RJS_(T4)_20150504162404_16.xml");
-        RJS042.add("C:\\\\StrataDB\\\\Teste 2\\Validacao\\4-RJS-234-RJS\\4-RJS-234-RJS_(T5)_20150504162405_17.xml");
-        RJS042.add("C:\\\\StrataDB\\\\Teste 2\\Validacao\\4-RJS-234-RJS\\4-RJS-234-RJS_(T6)_20150504162408_18.xml");
-        SampleLithology.processWell(pathLogRJS042, RJS042);
-    */  
-    /*  //TESTE 3 TREINO
-        String pathLogRJS234 = "C:\\\\StrataDB\\\\Teste 3\\Treino\\4-RJS-234-RJS\\RJS234.las";
-        List<String> RJS234 = new ArrayList<>(); 
-        RJS234.add("C:\\\\StrataDB\\\\Teste 3\\Treino\\4-RJS-234-RJS\\4-RJS-234-RJS_(T1)_20150504162401_13.xml");
-        RJS234.add("C:\\\\StrataDB\\\\Teste 3\\Treino\\4-RJS-234-RJS\\4-RJS-234-RJS_(T2)_20150504162402_14.xml");
-        RJS234.add("C:\\\\StrataDB\\\\Teste 3\\Treino\\4-RJS-234-RJS\\4-RJS-234-RJS_(T3)_20150504162404_15.xml");
-        RJS234.add("C:\\\\StrataDB\\\\Teste 3\\Treino\\4-RJS-234-RJS\\4-RJS-234-RJS_(T4)_20150504162404_16.xml");
-        RJS234.add("C:\\\\StrataDB\\\\Teste 3\\Treino\\4-RJS-234-RJS\\4-RJS-234-RJS_(T5)_20150504162405_17.xml");
-        RJS234.add("C:\\\\StrataDB\\\\Teste 3\\Treino\\4-RJS-234-RJS\\4-RJS-234-RJS_(T6)_20150504162408_18.xml");
-        SampleLithology.processWell(pathLogRJS234, RJS234);
-    */
-    
-    /*  //TESTE 3 VALIDACAO
-        String pathLogRJS234 = "C:\\\\StrataDB\\\\Teste 3\\Validacao\\NA07.las";
-        List<String> RJS234 = new ArrayList<>(); 
-        RJS234.add("C:\\\\StrataDB\\\\Teste 3\\Validacao\\7-NA-07-RJS_(T1)_20150504162409_19.xml");
-        RJS234.add("C:\\\\StrataDB\\\\Teste 3\\Validacao\\7-NA-07-RJS_(T2)_20150504162410_20.xml");
-        RJS234.add("C:\\\\StrataDB\\\\Teste 3\\Validacao\\7-NA-07-RJS_(T3)_20150504162411_21.xml");
-        RJS234.add("C:\\\\StrataDB\\\\Teste 3\\Validacao\\7-NA-07-RJS_(T4)_20150504162413_22.xml");
-        RJS234.add("C:\\\\StrataDB\\\\Teste 3\\Validacao\\7-NA-07-RJS_(T5)_20150504162414_23.xml");
-        RJS234.add("C:\\\\StrataDB\\\\Teste 3\\Validacao\\7-NA-07-RJS_(T6)_20150504162414_24.xml");
-        SampleLithology.processWell(pathLogRJS234, RJS234);
-    */
-    
-    /*  //TESTE 4 TREINO
-        String pathLogRJS019 = "C:\\StrataDB\\Teste 4\\Treino\\1-RJ-19-RJS\\RJS019.las";
-        List<String> RJS019 = new ArrayList<>(); 
-        RJS019.add("C:\\StrataDB\\Teste 4\\Treino\\1-RJ-19-RJS\\1-RJ-19-RJS_(T2)_20150504162350_06.xml");
-        SampleLithology.processWell(pathLogRJS019, RJS019);
-    */
-    
-    /*    //TESTE 4 VALIDACAO
-        String pathLogRJS019 = "C:\\\\StrataDB\\\\Teste 4\\Validacao\\LPN2\\perfis\\LPN-2.las";
-        List<String> RJS019 = new ArrayList<>(); 
-        RJS019.add("C:\\\\StrataDB\\\\Teste 4\\Validacao\\LPN2\\LPN_02_ES-T1_20141030144704.xml");
-        RJS019.add("C:\\\\StrataDB\\\\Teste 4\\Validacao\\LPN2\\LPN_02_ES-T2_20141030144545.xml");
-        RJS019.add("C:\\\\StrataDB\\\\Teste 4\\Validacao\\LPN2\\LPN_02_ES-T3_20141031170856.xml");
-        RJS019.add("C:\\\\StrataDB\\\\Teste 4\\Validacao\\LPN2\\LPN_02_ES-T4_20141031175409.xml");
-        RJS019.add("C:\\\\StrataDB\\\\Teste 4\\Validacao\\LPN2\\LPN_02_ES-T5_20141103143620.xml");
-        SampleLithology.processWell(pathLogRJS019, RJS019);
-    */
-    /*  //TESTE 5 TREINO
-        String pathLogESS23 = "C:\\\\StrataDB\\\\Teste 5\\Treino\\ESS-23.las";
-        List<String> ESS23 = new ArrayList<>(); 
-        ESS23.add("C:\\\\StrataDB\\\\Teste 5\\Treino\\ESS023_Rangel_T1_20141021111049.xml");
-        ESS23.add("C:\\\\StrataDB\\\\Teste 5\\Treino\\ESS023_RANGEL_T2_20141022131905.xml");
-        ESS23.add("C:\\\\StrataDB\\\\Teste 5\\Treino\\ESS023_RANGEL_T4_20141027133209.xml");
-        ESS23.add("C:\\\\StrataDB\\\\Teste 5\\Treino\\ESS023_RANGEL_T5_20141027143230.xml");
-        ESS23.add("C:\\\\StrataDB\\\\Teste 5\\Treino\\ESS023_RANGEL_T6_20141027145430.xml");
-        SampleLithology.processWell(pathLogESS23, ESS23);
-    */
-    /*
-      //TESTE 6 TREINO
-        String pathLogCP1847 = "C:\\\\StrataDB\\\\Teste 6\\Treino\\3-CP-1847-SE\\Perfis\\CP1847.las";
-        List<String> pathDescriptionsCP1847 = new ArrayList<>(); 
-        pathDescriptionsCP1847.add("C:\\\\StrataDB\\\\Teste 6\\Treino\\3-CP-1847-SE\\3-CP-1847-SE_(T1)_20151112101101_31.xml");
-        pathDescriptionsCP1847.add("C:\\\\StrataDB\\\\Teste 6\\Treino\\3-CP-1847-SE\\3-CP-1847-SE_(T2)_20151112101100_29.xml");
-        pathDescriptionsCP1847.add("C:\\\\StrataDB\\\\Teste 6\\Treino\\3-CP-1847-SE\\3-CP-1847-SE_(T3)_20151112101100_30.xml");
-        pathDescriptionsCP1847.add("C:\\\\StrataDB\\\\Teste 6\\Treino\\3-CP-1847-SE\\3-CP-1847-SE_(T4)_20151112101102_32.xml");
-        pathDescriptionsCP1847.add("C:\\\\StrataDB\\\\Teste 6\\Treino\\3-CP-1847-SE\\3-CP-1847-SE_(T5)_20151112101103_33.xml");
-        SampleLithology.processWell(pathLogCP1847, pathDescriptionsCP1847);
-    
-        String pathLogSZ626 = "C:\\\\StrataDB\\\\Teste 6\\Treino\\3-SZ-0626-SE\\Perfis\\SZ626.las";
-        List<String> pathDescriptionsSZ626 = new ArrayList<>(); 
-        pathDescriptionsSZ626.add("C:\\\\StrataDB\\\\Teste 6\\Treino\\3-SZ-0626-SE\\3-SZ-0626-SE_(T1)_20151112101052_14.xml");
-        pathDescriptionsSZ626.add("C:\\\\StrataDB\\\\Teste 6\\Treino\\3-SZ-0626-SE\\3-SZ-0626-SE_(T2)_20151112101053_15.xml");
-        SampleLithology.processWell(pathLogSZ626, pathDescriptionsSZ626);
-        
-        String pathLogCP1914 = "C:\\\\StrataDB\\\\Teste 6\\Treino\\7-CP-1914-SE\\Perfis\\CP1914.las";
-        List<String> pathDescriptionsCP1914 = new ArrayList<>(); 
-        pathDescriptionsCP1914.add("C:\\\\StrataDB\\\\Teste 6\\Treino\\7-CP-1914-SE\\7-CP-1914-SE_(T1)_20151112101047_01.xml");
-        pathDescriptionsCP1914.add("C:\\\\StrataDB\\\\Teste 6\\Treino\\7-CP-1914-SE\\7-CP-1914-SE_(T2)_20151112101047_02.xml");
-        pathDescriptionsCP1914.add("C:\\\\StrataDB\\\\Teste 6\\Treino\\7-CP-1914-SE\\7-CP-1914-SE_(T3)_20151112101048_03.xml");
-        SampleLithology.processWell(pathLogCP1914, pathDescriptionsCP1914);
-        
-        String pathLogFU128 = "C:\\\\StrataDB\\\\Teste 6\\Treino\\7-FU-0128-AL\\Perfis\\FU128.las";
-        List<String> pathDescriptionsFU128 = new ArrayList<>(); 
-        pathDescriptionsFU128.add("C:\\\\StrataDB\\\\Teste 6\\Treino\\7-FU-0128-AL\\7-FU-0128-AL_(T1)_20150804170346.xml");
-        SampleLithology.processWell(pathLogFU128, pathDescriptionsFU128);
-        
-        String pathLogSZ508D = "C:\\\\StrataDB\\\\Teste 6\\Treino\\7-SZ-0508D-SE\\Perfis\\SZ508D.las";
-        List<String> pathDescriptionsSZ508D = new ArrayList<>(); 
-        pathDescriptionsSZ508D.add("C:\\\\StrataDB\\\\Teste 6\\Treino\\7-SZ-0508D-SE\\7-SZ-0508D-SE_(T1)_20151112101054_16.xml");
-        pathDescriptionsSZ508D.add("C:\\\\StrataDB\\\\Teste 6\\Treino\\7-SZ-0508D-SE\\7-SZ-0508D-SE_(T2)_20151112101054_17.xml");
-        pathDescriptionsSZ508D.add("C:\\\\StrataDB\\\\Teste 6\\Treino\\7-SZ-0508D-SE\\7-SZ-0508D-SE_(T3)_20151112101055_20.xml");
-        pathDescriptionsSZ508D.add("C:\\\\StrataDB\\\\Teste 6\\Treino\\7-SZ-0508D-SE\\7-SZ-0508D-SE_(T4)_20151112101055_18.xml");
-        SampleLithology.processWell(pathLogSZ508D, pathDescriptionsSZ508D);
-        
-        String pathLogGTP48 = "C:\\\\StrataDB\\\\Teste 6\\Treino\\7-FU-0128-AL\\Perfis\\FU128.las";
-        List<String> pathDescriptionsGTP48 = new ArrayList<>(); 
-        pathDescriptionsGTP48.add("C:\\\\StrataDB\\\\Teste 6\\Treino\\9-GTP-0048-SE\\15_descricoes (9-GTP-0048-SE).xml");
-        SampleLithology.processWell(pathLogGTP48, pathDescriptionsGTP48);
-        
-        String pathLogSZ160 = "C:\\\\StrataDB\\\\Teste 6\\Treino\\9-SZ-0160-SE\\Perfis\\SZ160.las";
-        List<String> pathDescriptionsSZ160 = new ArrayList<>(); 
-        pathDescriptionsSZ160.add("C:\\\\StrataDB\\\\Teste 6\\Treino\\9-SZ-0160-SE\\9-SZ-0160-SE_(T24)_20151112101048_04.xml");
-        pathDescriptionsSZ160.add("C:\\\\StrataDB\\\\Teste 6\\Treino\\9-SZ-0160-SE\\9-SZ-0160-SE_(T25)_20151112101048_05.xml");
-        pathDescriptionsSZ160.add("C:\\\\StrataDB\\\\Teste 6\\Treino\\9-SZ-0160-SE\\9-SZ-0160-SE_(T26)_20151112101049_06.xml");
-        pathDescriptionsSZ160.add("C:\\\\StrataDB\\\\Teste 6\\Treino\\9-SZ-0160-SE\\9-SZ-0160-SE_(T27)_20151112101050_07.xml");
-        pathDescriptionsSZ160.add("C:\\\\StrataDB\\\\Teste 6\\Treino\\9-SZ-0160-SE\\9-SZ-0160-SE_(T28)_20151112101050_08.xml");
-        pathDescriptionsSZ160.add("C:\\\\StrataDB\\\\Teste 6\\Treino\\9-SZ-0160-SE\\9-SZ-0160-SE_(T29)_20151112101051_09.xml");
-        pathDescriptionsSZ160.add("C:\\\\StrataDB\\\\Teste 6\\Treino\\9-SZ-0160-SE\\9-SZ-0160-SE_(T30)_20151112101051_10.xml");
-        pathDescriptionsSZ160.add("C:\\\\StrataDB\\\\Teste 6\\Treino\\9-SZ-0160-SE\\9-SZ-0160-SE_(T31)_20151112101051_11.xml");
-        pathDescriptionsSZ160.add("C:\\\\StrataDB\\\\Teste 6\\Treino\\9-SZ-0160-SE\\9-SZ-0160-SE_(T32)_20151112101052_12.xml");
-        pathDescriptionsSZ160.add("C:\\\\StrataDB\\\\Teste 6\\Treino\\9-SZ-0160-SE\\9-SZ-0160-SE_(T33)_20151112101052_13.xml");
-        SampleLithology.processWell(pathLogSZ160, pathDescriptionsSZ160);
-     */
-        /*
-        //TESTE 6 VALIDACAO
-        String pathLogsCP995 = "C:\\StrataDB\\Teste 6\\Validacao\\7-CP-0995-SE\\Perfis\\CP995.las";
-        List<String> pathDescriptionsCP995 = new ArrayList<>();
-        pathDescriptionsCP995.add("C:\\StrataDB\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T1)_20151112101055_19.xml");
-        pathDescriptionsCP995.add("C:\\StrataDB\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T2)_20151112101056_21.xml");
-        pathDescriptionsCP995.add("C:\\StrataDB\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T3)_20151112101056_22.xml");
-        pathDescriptionsCP995.add("C:\\StrataDB\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T4)_20151112101057_23.xml");
-        pathDescriptionsCP995.add("C:\\StrataDB\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T5)_20151112101057_24.xml");
-        pathDescriptionsCP995.add("C:\\StrataDB\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T6)_20151112101058_25.xml");
-        pathDescriptionsCP995.add("C:\\StrataDB\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T7)_20151112101058_26.xml");
-        pathDescriptionsCP995.add("C:\\StrataDB\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T8)_20151112101059_27.xml");
-        pathDescriptionsCP995.add("C:\\StrataDB\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T9)_20151112101100_28.xml");
-        SampleLithology.processWell(pathLogsCP995, pathDescriptionsCP995);
-        //*/
-      /*  
-        String pathLog7CP1382DSE = "C:\\StrataDB\\NovosPocos\\7-CP-1382D-SE\\Perfil\\CP1382.las";
-        List<String> pathDescriptions7CP1382DSE = new ArrayList<>();
-        pathDescriptions7CP1382DSE.add("C:\\StrataDB\\NovosPocos\\7-CP-1382D-SE\\7_CP_1382D_SE_20161017212332.xml");
-        SampleLithology.processWell(pathLog7CP1382DSE, pathDescriptions7CP1382DSE);
-        
-        String pathLogCP674 = "C:\\StrataDB\\NovosPocos\\9-CP-0674-SE\\Perfil\\CP674.las";
-        List<String> pathDescriptionsCP674 = new ArrayList<>();
-        pathDescriptionsCP674.add("C:\\StrataDB\\NovosPocos\\9-CP-0674-SE\\9_CP_0674_SE_20161003211554.xml");
-        SampleLithology.processWell(pathLogCP674, pathDescriptionsCP674);
-    
-        String pathLogCP1394 = "C:\\StrataDB\\NovosPocos\\9-CP-1394-SE\\Perfil\\CP1394.las";
-        List<String> pathDescriptionsCP1394 = new ArrayList<>();
-        pathDescriptionsCP1394.add("C:\\StrataDB\\NovosPocos\\9-CP-1394-SE\\9_CP_1394_SE_20160926203751.xml");
-        SampleLithology.processWell(pathLogCP1394, pathDescriptionsCP1394);
-        */
-
         String pathLogsCP995 = "C:\\Users\\lucas\\Documents\\PocosVinicius\\Teste 6\\Validacao\\7-CP-0995-SE\\Perfis\\CP995.las";
         List<String> pathDescriptionsCP995 = new ArrayList<>();
         pathDescriptionsCP995.add("C:\\Users\\lucas\\Documents\\PocosVinicius\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T1)_20151112101055_19.xml");
@@ -262,6 +58,8 @@ public class SampleLithology {
         pathDescriptionsCP995.add("C:\\Users\\lucas\\Documents\\PocosVinicius\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T8)_20151112101059_27.xml");
         pathDescriptionsCP995.add("C:\\Users\\lucas\\Documents\\PocosVinicius\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T9)_20151112101100_28.xml");
         SampleLithology.processWell(pathLogsCP995, pathDescriptionsCP995);
+
+
 
         //COMENTAR PARA GRAVAR EM ARQUIVO .TXT
         LithologyArchiveFormat.initializeWriter();
@@ -307,7 +105,7 @@ public class SampleLithology {
             if ((10 * i) / parsed.getLogsList().get(0).getLogValues().size() > (10 * (i - 1)) / parsed.getLogsList().get(0).getLogValues().size())
                 System.out.print(".");
             //ORGANIZE SAMPLE IN ORDER OF logsTypeWanted
-            List<String> OrganizedSample = new OrganizeSample(parsed, i).Organize();
+            List<String> organizedSample = new OrganizeSample(parsed, i).Organize();
 
             //SEARCH THE LITHOLOGY IN THE LIST OF XML, IF IT EXISTS
             DiscoverLithology discoverLithology = new DiscoverLithology(pathLog, i, pathDescriptions);
@@ -316,19 +114,19 @@ public class SampleLithology {
             //System.out.println(lithology2 + " AND " + lithology);
 
             if (lithology != 0)
-                db.feedDatabase(lithology, OrganizedSample);
+                db.feedDatabase(lithology, organizedSample);
 
             //AND GET THE PATH OF LAS AND XML TO IDENTIFY IN THE OUTPUT
             String las = discoverLithology.getLasPath();
             String xml = discoverLithology.getXmlPath();
-            OrganizedSample.add(las);
-            OrganizedSample.add(xml);
-            OrganizedSample.add(discoverLithology.getLithologyName());
+            organizedSample.add(las);
+            organizedSample.add(xml);
+            organizedSample.add(discoverLithology.getLithologyName());
             //System.out.println("NAMO:" + discoverLithology.getLithologyName() );
-            OrganizedSample.add(Integer.toString(lithology));
-            OrganizedSample.add(String.valueOf(discoverLithology.grainSizeID));
-            OrganizedSample.add(String.valueOf(discoverLithology.roundnessID));
-            OrganizedSample.add(String.valueOf(discoverLithology.sphericityID));
+            organizedSample.add(Integer.toString(lithology));
+            organizedSample.add(String.valueOf(discoverLithology.grainSizeID));
+            organizedSample.add(String.valueOf(discoverLithology.roundnessID));
+            organizedSample.add(String.valueOf(discoverLithology.sphericityID));
 
             //if(lithology >= -1){//WITH UNUSED SAMPLES
             if (lithology != -1) {//WITHOUT UNUSED SAMPLES
@@ -338,11 +136,11 @@ public class SampleLithology {
 
                 //IF EXISTS JUST ADD THE SAMPLE
                 if (lithologiesIndex != -1) {
-                    lithologies.get(lithologiesIndex).add(OrganizedSample);
+                    lithologies.get(lithologiesIndex).add(organizedSample);
                 }
                 //OTHERWISE CREATE THE LITHOLOGY .txt AND ADD THE SAMPLE
                 else {
-                    LithologyArchiveFormat lit = new LithologyArchiveFormat(lithology, discoverLithology.LithologyName, OrganizedSample);
+                    LithologyArchiveFormat lit = new LithologyArchiveFormat(lithology, discoverLithology.LithologyName, organizedSample);
                     lithologies.add(lit);
                 }
             }
@@ -534,7 +332,7 @@ public class SampleLithology {
             for (WellLog wl : parsed.getLogsList()) {
                 if (type.equalsIgnoreCase("DEPT"))
                     value = wl.getLogValues().getPair(sampleIndex).getDepth();
-                else if (type.equalsIgnoreCase(wl.getLogType().getLogDescription())
+                else if (type.equalsIgnoreCase(wl.getLogType().getLogType())
                         && wl.getLogValues().getPair(sampleIndex).getLogValue() != nullValue)//IN CASE THERE IS MORE THAN ONE LOG OF THE SAME MEASURE KIND
                     value = wl.getLogValues().getPair(sampleIndex).getLogValue();
 
