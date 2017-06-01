@@ -31,6 +31,8 @@ public class ParsedLAS {
 
     private List<WellLog> logsList;
 
+    private List<String> xmlPaths;
+
     /**
      * @return the logsList
      */
@@ -220,5 +222,12 @@ public class ParsedLAS {
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
+    }
+
+    public List<String> getXMLPaths() {
+        if(xmlPaths == null)
+            xmlPaths = new ArrayList<>();
+
+        return xmlPaths;
     }
 }

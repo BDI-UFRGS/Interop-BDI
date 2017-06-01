@@ -86,7 +86,7 @@ public class HomeController implements Controller, Initializable {
 
         }
 
-        if(las != null) {
+        if(las != null && las.getWellName() != null) {
             if(event.getSource() == this.addTLAS) {
                 Framework.getInstance().getTrainingLASList().add(las);
                 this.branchLAS(las.getWellName(), this.trainingFilesTree.getRoot());
@@ -97,26 +97,82 @@ public class HomeController implements Controller, Initializable {
         }
     }
 
-    public void addXML() {
+    public void addXML(ActionEvent event) {
+        TreeItem<String> parent = null;
+        LASList lasList = null;
+        if(event.getSource() == addTXML) {
+            parent = getSelectedItem(trainingFilesTree);
+            lasList = Framework.getInstance().getTrainingLASList();
+        } else if(event.getSource() == addVXML){
+            parent = getSelectedItem(validationFilesTree);
+            lasList = Framework.getInstance().getValidationLASList();
+        }
 
+        if(parent == null || !isLAS(parent))
+            return;
+
+        FileChooser chooser = new FileChooser();
+
+        chooser.setTitle("Select a XML file");
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML Files (*.xml)", "*.xml"));
+        File file = chooser.showOpenDialog(Framework.getInstance().getWindow());
+
+        if(file == null)
+            return;
+
+        ParsedLAS las = lasList.getLAS(parent.getValue());
+
+        if(!las.getXMLPaths().contains(file.getAbsolutePath())) {
+            las.getXMLPaths().add(file.getAbsolutePath());
+            branchXML(file.getName(), parent);
+        }
     }
 
     public void removeFile(ActionEvent event) {
-        TreeView<String> tree = null;
-        LASList lasList = null;
+        TreeView<String> tree;
+        TreeItem<String> item;
 
         if(event.getSource() == this.removeV) {
             tree = validationFilesTree;
-            lasList = Framework.getInstance().getValidationLASList();
+            item = getSelectedItem(tree);
+
+            if(isLAS(item)) {
+                removeLASFile(tree, item, Framework.getInstance().getValidationLASList());
+            } else {
+                removeXMLFile(tree, item,  Framework.getInstance().getValidationLASList());
+            }
         } else if(event.getSource() == this.removeT) {
             tree = trainingFilesTree;
-            lasList = Framework.getInstance().getTrainingLASList();
+            item = getSelectedItem(tree);
+
+            if(isLAS(item)) {
+                removeLASFile(tree, item, Framework.getInstance().getTrainingLASList());
+            } else {
+                removeXMLFile(tree, item,  Framework.getInstance().getTrainingLASList());
+            }
+        }
+    }
+
+    private void removeXMLFile(TreeView<String> tree, TreeItem<String> item, LASList lasList) {
+        ParsedLAS las = lasList.getLAS(item.getParent().getValue());
+        String fullPath = null;
+
+        for(String s : las.getXMLPaths()) {
+            if(s.contains(item.getValue()))
+                fullPath = s;
         }
 
-        TreeItem<String> item = getSelectedItem(tree);
+        item.getParent().getChildren().remove(item);
+        las.getXMLPaths().remove(fullPath);
+    }
 
+    public void removeLASFile(TreeView<String> tree, TreeItem<String> item, LASList lasList) {
         lasList.removeLAS(item.getValue());
         item.getParent().getChildren().remove(item);
+        tree.getSelectionModel().clearSelection();
+
+        updateValidationButtons();
+        updateTrainingButtons();
     }
 
     public void editLAS() {
@@ -128,7 +184,6 @@ public class HomeController implements Controller, Initializable {
                 if (las.getWellName().equalsIgnoreCase(wellName))
                     toEdit = las;
             }
-
 
             try {
                 Framework.getInstance().getMainController().setPageFXML(getClass().getResource("../fxml/VLASEditor.fxml"), true, toEdit, VLASEditorController.class);
@@ -159,7 +214,8 @@ public class HomeController implements Controller, Initializable {
             removeT.setDisable(true);
         } else if(tItems.size() == 1) {
             removeT.setDisable(false);
-            addTXML.setDisable(tItems.get(0).getParent() != trainingFilesTree.getRoot());
+            addTXML.setDisable(tItems.get(0).getParent() !=
+                    trainingFilesTree.getRoot());
         } else {
             addTXML.setDisable(true);
             removeT.setDisable(false);
@@ -184,16 +240,13 @@ public class HomeController implements Controller, Initializable {
     }
 
     private TreeItem<String> getSelectedItem(TreeView<String> tree) {
-        ObservableList<TreeItem<String>> items = this.validationFilesTree.getSelectionModel().getSelectedItems();
+        ObservableList<TreeItem<String>> items = tree.getSelectionModel().getSelectedItems();
 
-        if(items.size() == 0) {
-            System.out.println("NULL");
-            return null;
-        } else
-            return items.get(0);
-
+        return items.size() == 0 ? null : items.get(0);
     }
 
-
+    public boolean isLAS(TreeItem<String> item) {
+        return ((item.getParent() == validationFilesTree.getRoot()) || (item.getParent() == trainingFilesTree.getRoot()));
+    }
 
 }

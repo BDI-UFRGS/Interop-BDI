@@ -107,6 +107,7 @@
                         <Insets right="2.0" />
                      </HBox.margin>
                   </Button>
+                  <Button mnemonicParsing="false" text="aa" />
                </children>
             </HBox>
          </children>
@@ -144,6 +145,18 @@
                      </HBox.margin>
                   </Button>
                   <Button fx:id="removeT" disable="true" mnemonicParsing="false" onAction="#removeFile" text="Remove">
+                     <HBox.margin>
+                        <Insets right="2.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false">
+                      <graphic>
+                      <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
+                          <image>
+                              <Image url="@../../../export.png" />
+                          </image>
+                      </ImageView>
+                      </graphic>
                      <HBox.margin>
                         <Insets right="2.0" />
                      </HBox.margin>
