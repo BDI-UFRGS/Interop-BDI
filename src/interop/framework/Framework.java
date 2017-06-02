@@ -7,8 +7,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.apache.commons.compress.compressors.FileNameUtil;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Main Application Class
@@ -77,9 +80,14 @@ public class Framework extends Application {
         return Framework.instance;
     }
 
-
     public String getStrataDBPath() {
         return strataDBPath;
+    }
+
+    public String getExportPath() {
+        // C:\Users\lucas\Desktop\StrataDB\StrataDB.db
+        Path path = Paths.get(getStrataDBPath());
+        return path.getParent().toString() + "\\StrataExport.txt";
     }
 
     public void setStrataDBPath(String strataDBPath) {

@@ -5,7 +5,9 @@
  */
 package interop.lithologyDataCollector;
 
+import interop.framework.Framework;
 import interop.lithoprototype.model.LithologyDatabase;
+import interop.log.model.LASList;
 import interop.log.model.ParsedLAS;
 import interop.log.model.WellLog;
 import interop.log.util.LASParser;
@@ -29,7 +31,7 @@ public class SampleLithology {
     private static LithologyDatabase db;
     public static float nullValue;
 
-    public static void main(String[] args) {
+    public static void run(LASList lasList) {
         //SELECIONA QUAIS TIPOS DE LOG QUERES PROCESSAR
         logTypesWanted = new ArrayList<>();
         logTypesWanted.add("DEPT");
@@ -46,20 +48,8 @@ public class SampleLithology {
 
         db = new LithologyDatabase(logTypesWanted);
 
-        String pathLogsCP995 = "C:\\Users\\lucas\\Documents\\PocosVinicius\\Teste 6\\Validacao\\7-CP-0995-SE\\Perfis\\CP995.las";
-        List<String> pathDescriptionsCP995 = new ArrayList<>();
-        pathDescriptionsCP995.add("C:\\Users\\lucas\\Documents\\PocosVinicius\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T1)_20151112101055_19.xml");
-        pathDescriptionsCP995.add("C:\\Users\\lucas\\Documents\\PocosVinicius\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T2)_20151112101056_21.xml");
-        pathDescriptionsCP995.add("C:\\Users\\lucas\\Documents\\PocosVinicius\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T3)_20151112101056_22.xml");
-        pathDescriptionsCP995.add("C:\\Users\\lucas\\Documents\\PocosVinicius\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T4)_20151112101057_23.xml");
-        pathDescriptionsCP995.add("C:\\Users\\lucas\\Documents\\PocosVinicius\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T5)_20151112101057_24.xml");
-        pathDescriptionsCP995.add("C:\\Users\\lucas\\Documents\\PocosVinicius\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T6)_20151112101058_25.xml");
-        pathDescriptionsCP995.add("C:\\Users\\lucas\\Documents\\PocosVinicius\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T7)_20151112101058_26.xml");
-        pathDescriptionsCP995.add("C:\\Users\\lucas\\Documents\\PocosVinicius\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T8)_20151112101059_27.xml");
-        pathDescriptionsCP995.add("C:\\Users\\lucas\\Documents\\PocosVinicius\\Teste 6\\Validacao\\7-CP-0995-SE\\7-CP-0995-SE_(T9)_20151112101100_28.xml");
-        SampleLithology.processWell(pathLogsCP995, pathDescriptionsCP995);
-
-
+        for(ParsedLAS las : lasList)
+            SampleLithology.processWell(las, las.getXMLPaths());
 
         //COMENTAR PARA GRAVAR EM ARQUIVO .TXT
         LithologyArchiveFormat.initializeWriter();
@@ -93,10 +83,9 @@ public class SampleLithology {
         return doubles;
     }
 
-    static void processWell(String pathLog, List<String> pathDescriptions) {
+    static void processWell(ParsedLAS las, List<String> pathDescriptions) {
 
-        LASParser parser = new LASParser();
-        ParsedLAS parsed = parser.parseLAS(pathLog);
+        ParsedLAS parsed = las;
         nullValue = parsed.getNullValue();
         System.out.println();
         System.out.print("Processing Well");
@@ -108,7 +97,7 @@ public class SampleLithology {
             List<String> organizedSample = new OrganizeSample(parsed, i).Organize();
 
             //SEARCH THE LITHOLOGY IN THE LIST OF XML, IF IT EXISTS
-            DiscoverLithology discoverLithology = new DiscoverLithology(pathLog, i, pathDescriptions);
+            DiscoverLithology discoverLithology = new DiscoverLithology(las, i, pathDescriptions);
             int lithology = discoverLithology.discover();
             //int lithology = discoverLithology.fast_discover();
             //System.out.println(lithology2 + " AND " + lithology);
@@ -117,9 +106,9 @@ public class SampleLithology {
                 db.feedDatabase(lithology, organizedSample);
 
             //AND GET THE PATH OF LAS AND XML TO IDENTIFY IN THE OUTPUT
-            String las = discoverLithology.getLasPath();
+            String lasPath = discoverLithology.getParsedLAS().getFullPath();
             String xml = discoverLithology.getXmlPath();
-            organizedSample.add(las);
+            organizedSample.add(lasPath);
             organizedSample.add(xml);
             organizedSample.add(discoverLithology.getLithologyName());
             //System.out.println("NAMO:" + discoverLithology.getLithologyName() );
@@ -169,7 +158,7 @@ public class SampleLithology {
 
         List<String> pathDescriptions = new ArrayList<>();
         float depthLAS;
-        String lasFound;
+        ParsedLAS las;
         String xmlFound;
         String LithologyName;
         String grainSize;
@@ -187,12 +176,10 @@ public class SampleLithology {
         static int k = 0;//indexOfDepositionalFaciesList;
 
 
-        public DiscoverLithology(String lasPath, int index, List<String> path) {
-            LASParser parser = new LASParser();
-            ParsedLAS parsed = parser.parseLAS(lasPath);
+        public DiscoverLithology(ParsedLAS las, int index, List<String> path) {
             this.pathDescriptions = path;
-            this.depthLAS = parsed.getLogsList().get(0).getLogValues().getPair(index).getDepth();
-            lasFound = lasPath;
+            this.depthLAS = las.getLogsList().get(0).getLogValues().getPair(index).getDepth();
+            this.las = las;
 
             if (stratigraphicDescriptions == null) {
                 stratigraphicDescriptions = XMLReader.readStratigraphicDescriptionXML(path.get(0));
@@ -220,8 +207,8 @@ public class SampleLithology {
             }
         }
 
-        public String getLasPath() {
-            return lasFound;
+        public ParsedLAS getParsedLAS() {
+            return las;
         }
 
         public String getXmlPath() {
@@ -357,14 +344,14 @@ public class SampleLithology {
 
         public static void initializeWriter() {
             try {
-                writer = new PrintWriter("C:\\Users\\lucas\\Documents\\PocosVinicius\\teste.txt", "UTF-8");
+                writer = new PrintWriter(Framework.getInstance().getExportPath(), "UTF-8");
                 for (String types : logTypesWanted) {
                     writer.print(types);
                     writer.print(TAB);
                 }
                 writer.println("LAS" + TAB + "XML" + TAB + "LITHO_NAME" + TAB + "LITHO_ID" + TAB + "GRAIN_SIZE" + TAB + "ROUNDNESS_ID" + TAB + "SPHERICIRY_ID");
-
             } catch (IOException e) {
+                e.printStackTrace();
                 System.out.println("Cannot create output file... ");
             }
         }
@@ -379,6 +366,8 @@ public class SampleLithology {
 
         //ATENTION: clean the folder of results before resaving samples, or it will save at the end
         public void saveToArchive() {
+            if(writer == null)
+                return;
 
             for (List<String> sample : specificLog) {
                 for (String data : sample) {

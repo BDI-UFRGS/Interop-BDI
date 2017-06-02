@@ -18,6 +18,8 @@ public class ParsedLAS {
 
     private String nickName;
 
+    private String fullPath;
+
     private String version;
     private float startDepth;
     private String startDepthMeasureUnit;
@@ -229,5 +231,13 @@ public class ParsedLAS {
             xmlPaths = new ArrayList<>();
 
         return xmlPaths;
+    }
+
+    public String getFullPath() {
+        return fullPath;
+    }
+
+    public void setFullPath(String fullPath) {
+        this.fullPath = fullPath;
     }
 }

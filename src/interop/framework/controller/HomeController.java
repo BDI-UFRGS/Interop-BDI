@@ -1,6 +1,7 @@
 package interop.framework.controller;
 
 import interop.framework.Framework;
+import interop.lithologyDataCollector.SampleLithology;
 import interop.log.model.LASList;
 import interop.log.model.ParsedLAS;
 import interop.log.util.LASParser;
@@ -17,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.ResourceBundle;
 
 /**
@@ -34,6 +36,8 @@ public class HomeController implements Controller, Initializable {
     private Button addTXML;
     @FXML
     private Button removeT;
+    @FXML
+    private Button exportT;
 
     /**
      * Validation Buttons
@@ -46,6 +50,8 @@ public class HomeController implements Controller, Initializable {
     private Button removeV;
     @FXML
     private Button editV;
+    @FXML
+    private Button exportV;
 
     @FXML
     private TreeView<String> trainingFilesTree;
@@ -166,7 +172,11 @@ public class HomeController implements Controller, Initializable {
         las.getXMLPaths().remove(fullPath);
     }
 
-    public void removeLASFile(TreeView<String> tree, TreeItem<String> item, LASList lasList) {
+    private void removeLASFile(TreeView<String> tree, TreeItem<String> item, LASList lasList) {
+        Iterator<TreeItem<String>> iterator = item.getChildren().iterator();
+        while(iterator.hasNext())
+            removeXMLFile(tree, iterator.next(), lasList);
+
         lasList.removeLAS(item.getValue());
         item.getParent().getChildren().remove(item);
         tree.getSelectionModel().clearSelection();
@@ -220,6 +230,12 @@ public class HomeController implements Controller, Initializable {
             addTXML.setDisable(true);
             removeT.setDisable(false);
         }
+
+        if(trainingFilesTree.getRoot().getChildren().size() == 0 || Framework.getInstance().getStrataDBPath() == null) {
+            this.exportT.setDisable(true);
+        } else {
+            this.exportT.setDisable(false);
+        }
     }
 
     public void updateValidationButtons() {
@@ -237,6 +253,12 @@ public class HomeController implements Controller, Initializable {
             removeV.setDisable(false);
             editV.setDisable(true);
         }
+
+        if(this.validationFilesTree.getRoot().getChildren().size() == 0 || Framework.getInstance().getStrataDBPath() == null) {
+            this.exportV.setDisable(true);
+        } else {
+            this.exportV.setDisable(false);
+        }
     }
 
     private TreeItem<String> getSelectedItem(TreeView<String> tree) {
@@ -245,8 +267,21 @@ public class HomeController implements Controller, Initializable {
         return items.size() == 0 ? null : items.get(0);
     }
 
-    public boolean isLAS(TreeItem<String> item) {
+    private boolean isLAS(TreeItem<String> item) {
         return ((item.getParent() == validationFilesTree.getRoot()) || (item.getParent() == trainingFilesTree.getRoot()));
+    }
+
+    public void export(ActionEvent event) {
+        LASList lasList = null;
+        if(event.getSource() == this.exportT) {
+            lasList = Framework.getInstance().getTrainingLASList();
+        } else if(event.getSource() == this.exportV) {
+            lasList = Framework.getInstance().getValidationLASList();
+        }
+
+        if(lasList != null) {
+            SampleLithology.run(lasList);
+        }
     }
 
 }

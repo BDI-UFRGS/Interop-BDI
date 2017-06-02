@@ -5,6 +5,7 @@
  */
 package interop.stratigraphic.control;
 
+import interop.framework.Framework;
 import interop.stratigraphic.model.AttributeType;
 
 import java.sql.Connection;
@@ -25,7 +26,7 @@ public class SQLite {
     private Connection connect() {
         Connection conn = null;
 
-        String dbPath = "jdbc:sqlite:C:\\Users\\lucas\\Documents\\PocosVinicius\\STRATALEDGE_0_9_2.db";
+        String dbPath = "jdbc:sqlite:" + Framework.getInstance().getStrataDBPath();
 
         try {
 

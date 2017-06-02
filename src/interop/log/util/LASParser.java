@@ -46,6 +46,7 @@ public class LASParser {
      */
     public ParsedLAS parseLAS(String pathFile) {
         parsedLAS = new ParsedLAS();
+        parsedLAS.setFullPath(pathFile);
         logsList = new ArrayList<>();
         try {
             FileReader fileReader = new FileReader(pathFile);
