@@ -135,7 +135,7 @@ public class MainController implements Controller, Initializable {
 
         if(homePage == null) {
             try {
-                homePage = new Page(new FXMLLoader(getClass().getResource("../fxml/Home.fxml")));
+                homePage = new Page(new FXMLLoader(getClass().getResource("/interop/framework/fxml/Home.fxml")));
             } catch (IOException e) {
                 e.printStackTrace();
             }

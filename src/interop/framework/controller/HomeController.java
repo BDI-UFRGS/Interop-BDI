@@ -196,7 +196,7 @@ public class HomeController implements Controller, Initializable {
             }
 
             try {
-                Framework.getInstance().getMainController().setPageFXML(getClass().getResource("../fxml/VLASEditor.fxml"), true, toEdit, VLASEditorController.class);
+                Framework.getInstance().getMainController().setPageFXML(getClass().getResource("/interop/framework/fxml/VLASEditor.fxml"), true, toEdit, VLASEditorController.class);
             } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException | IOException e) {
                 e.printStackTrace();
             }
