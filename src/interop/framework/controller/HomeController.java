@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ResourceBundle;
 
@@ -173,9 +174,9 @@ public class HomeController implements Controller, Initializable {
     }
 
     private void removeLASFile(TreeView<String> tree, TreeItem<String> item, LASList lasList) {
-        Iterator<TreeItem<String>> iterator = item.getChildren().iterator();
-        while(iterator.hasNext())
-            removeXMLFile(tree, iterator.next(), lasList);
+        Iterator<TreeItem<String>> items = new ArrayList<>(item.getChildren()).iterator();
+        while(items.hasNext())
+            removeXMLFile(tree, items.next(), lasList);
 
         lasList.removeLAS(item.getValue());
         item.getParent().getChildren().remove(item);
