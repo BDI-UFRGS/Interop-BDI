@@ -48,7 +48,7 @@ public class SampleLithology {
 
         db = new LithologyDatabase(logTypesWanted);
 
-        for(ParsedLAS las : lasList)
+        for (ParsedLAS las : lasList)
             SampleLithology.processWell(las, las.getXMLPaths());
 
         //COMENTAR PARA GRAVAR EM ARQUIVO .TXT
@@ -366,7 +366,7 @@ public class SampleLithology {
 
         //ATENTION: clean the folder of results before resaving samples, or it will save at the end
         public void saveToArchive() {
-            if(writer == null)
+            if (writer == null)
                 return;
 
             for (List<String> sample : specificLog) {
