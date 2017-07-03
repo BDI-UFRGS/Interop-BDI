@@ -60,7 +60,7 @@ public class LithologyDatabase {
     {
         if(logType1 == logType2)
             return true;
-        else if(logType1.getLogType().equals(logType2.getLogType()))
+        else if(logType1.getLogMnemonic().equals(logType2.getLogMnemonic()))
             return true;
         else
             return false;

@@ -94,7 +94,7 @@ public class VLASEditorController implements Controller, Initializable {
 
         this.logName.setCellValueFactory(cellValue -> {
             WellLog log = cellValue.getValue();
-            return new SimpleObjectProperty(log.getLogType().getLogType() + " (" + log.getLogType().getLogMeasureUnit() + ")");
+            return new SimpleObjectProperty(log.getLogType().getLogMnemonic() + " (" + log.getLogType().getLogMeasureUnit() + ")");
         });
 
 

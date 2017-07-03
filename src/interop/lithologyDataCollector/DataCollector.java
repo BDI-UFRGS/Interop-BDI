@@ -286,7 +286,7 @@ public class DataCollector {
 
             logTypes = new ArrayList<>();
             for (WellLog wl : parsed.getLogsList()) {
-                logTypes.add(wl.getLogType().getLogType());
+                logTypes.add(wl.getLogType().getLogMnemonic());
             }
 
             bijectionVector = new ArrayList<>();

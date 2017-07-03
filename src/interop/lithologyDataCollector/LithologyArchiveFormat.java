@@ -1,68 +1,74 @@
 package interop.lithologyDataCollector;
 
-import interop.framework.Framework;
-
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.List;
 
-/**
- * @author Lucas Hagen.
- */
 public class LithologyArchiveFormat {
 
     public static String TAB = "\t";
 
-    static int counter = 0;
-    static PrintWriter writer = null;
-    int lithologyUID;
-    String lithologyName = null;
-    List<List<String>> specificLog;
-    List<String> logTypesWanted;
+    private String fullPath;
+    private PrintWriter writer = null;
+    private HashMap<String, List<String>> specificLog;
+    private List<String> logTypesWanted;
 
-    public LithologyArchiveFormat(int UID, String lithoName, List<String> sample, List<String> logTypes) {
-        this.specificLog = new ArrayList<>();
-        specificLog.add(sample);
-        lithologyUID = UID;
+    public LithologyArchiveFormat(String fullPath, List<String> logTypes) {
+        this.fullPath = fullPath;
+        this.specificLog = new HashMap<>();
         logTypesWanted = logTypes;
     }
 
-    public void initializeWriter() {
-        try {
-            writer = new PrintWriter(Framework.getInstance().getExportPath(), "UTF-8");
-            for (String types : logTypesWanted) {
-                writer.print(types);
-                writer.print(TAB);
+    public void initializeWriter() throws FileNotFoundException, UnsupportedEncodingException {
+        writer = new PrintWriter(this.fullPath, "UTF-8");
+        for (String types : logTypesWanted)
+            writer.print(types);
+
+        writer.println(TAB + "LAS" + TAB + "XML" + TAB + "LITHO_NAME" + TAB + "LITHO_ID" + TAB + "GRAIN_SIZE" + TAB + "ROUNDNESS_ID" + TAB + "SPHERICIRY_ID");
+    }
+
+    public PrintWriter getWriter() {
+        if(this.writer == null) {
+            try {
+                initializeWriter();
+            } catch(FileNotFoundException | UnsupportedEncodingException e) {
+                e.printStackTrace();
             }
-            writer.println("LAS" + TAB + "XML" + TAB + "LITHO_NAME" + TAB + "LITHO_ID" + TAB + "GRAIN_SIZE" + TAB + "ROUNDNESS_ID" + TAB + "SPHERICIRY_ID");
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Cannot create output file... ");
         }
+
+        return this.writer;
     }
 
-    public void add(List<String> sample) {
-        specificLog.add(sample);
+    public void add(String lasID, List<String> sample) {
+        specificLog.get(lasID).addAll(sample);
     }
 
-    public static void closeWriter() {
+    public void closeWriter() {
         writer.close();
     }
 
-    //ATENTION: clean the folder of results before resaving samples, or it will save at the end
+    public String getFullPath() {
+        return fullPath;
+    }
+
+    public void setFullPath(String fullPath) {
+        this.fullPath = fullPath;
+    }
+
     public void saveToArchive() {
         if (writer == null)
             return;
 
-        for (List<String> sample : specificLog) {
+        for (List<String> sample : specificLog.values()) {
+
             for (String data : sample) {
                 writer.print(data);
                 writer.print(TAB);
-                counter++;
             }
             writer.println();
-        }
 
+        }
     }
 }

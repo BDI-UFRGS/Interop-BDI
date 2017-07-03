@@ -1,14 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package interop.log.model;
 
-/**
- *
- * @author Bruno Zanette
- */
 public class LogType {
 
     private String logType;
@@ -24,12 +15,11 @@ public class LogType {
         this.logDescription = logDescription;
         this.logMeasureUnit = logMeasureUnit;
     }
-
     
      /**
      * @return The log mnemonic.
      */
-    public String getLogType() {
+    public String getLogMnemonic() {
         return logType;
     }
 
