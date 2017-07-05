@@ -12,7 +12,7 @@ public class LithologyArchiveFormat {
 
     private String fullPath;
     private PrintWriter writer = null;
-    private HashMap<String, List<String>> specificLog;
+    private HashMap<String, List<List<String>>> specificLog;
     private List<String> logTypesWanted;
 
     public LithologyArchiveFormat(String fullPath, List<String> logTypes) {
@@ -23,10 +23,6 @@ public class LithologyArchiveFormat {
 
     public void initializeWriter() throws FileNotFoundException, UnsupportedEncodingException {
         writer = new PrintWriter(this.fullPath, "UTF-8");
-        for (String types : logTypesWanted)
-            writer.print(types);
-
-        writer.println(TAB + "LAS" + TAB + "XML" + TAB + "LITHO_NAME" + TAB + "LITHO_ID" + TAB + "GRAIN_SIZE" + TAB + "ROUNDNESS_ID" + TAB + "SPHERICIRY_ID");
     }
 
     public PrintWriter getWriter() {
@@ -42,7 +38,9 @@ public class LithologyArchiveFormat {
     }
 
     public void add(String lasID, List<String> sample) {
-        specificLog.get(lasID).addAll(sample);
+        if(specificLog.containsKey(lasID))
+            specificLog.get(lasID).add(sample);
+
     }
 
     public void closeWriter() {
@@ -58,17 +56,20 @@ public class LithologyArchiveFormat {
     }
 
     public void saveToArchive() {
-        if (writer == null)
+        if (getWriter() == null)
             return;
 
-        for (List<String> sample : specificLog.values()) {
+        for (String types : logTypesWanted)
+            writer.print(types);
+        writer.println(TAB + "LAS" + TAB + "XML" + TAB + "LITHO_NAME" + TAB + "LITHO_ID" + TAB + "GRAIN_SIZE" + TAB + "ROUNDNESS_ID" + TAB + "SPHERICIRY_ID");
 
-            for (String data : sample) {
-                writer.print(data);
-                writer.print(TAB);
+        for (List<List<String>> well : specificLog.values()) {
+            for(List<String> sample : well) {
+                for (String data : sample) {
+                    writer.print(data + TAB);
+                }
+                writer.println();
             }
-            writer.println();
-
         }
     }
 }

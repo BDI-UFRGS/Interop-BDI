@@ -4,25 +4,29 @@ import interop.framework.Framework;
 import interop.lithoprototype.model.LithologyDatabase;
 import interop.log.model.LASList;
 import interop.log.model.ParsedLAS;
-import interop.log.util.LASParser;
 
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 /**
  * @author Eduardo Bassani
  */
+
 public class SampleLithology {
 
+    public static float nullValue;
     private List<String> logTypesWanted;
     private LithologyDatabase db;
-    private float nullValue;
+    private LithologyArchiveFormat archive;
 
-    public void run(LASList lasList) {
-        logTypesWanted = Arrays.asList("DEPT",
+    public SampleLithology(List<String> types) {
+        this.logTypesWanted = types;
+    }
+
+    public SampleLithology() {
+        this(Arrays.asList("DEPT",
                 "DEPT",
                 "DT",
                 "GR",
@@ -34,14 +38,17 @@ public class SampleLithology {
                 "SP",
                 "SN",
                 "MSFL"
-        );
+        ));
+    }
+
+    public void run(LASList lasList) {
+        System.out.println("LASList Size: " + lasList.size());
 
         db = new LithologyDatabase(logTypesWanted);
+        archive = new LithologyArchiveFormat(Framework.getInstance().getExportPath(), logTypesWanted);
 
         for (ParsedLAS las : lasList)
             processWell(las, las.getXMLPaths());
-
-        LithologyArchiveFormat archive = new LithologyArchiveFormat(Framework.getInstance().getExportPath(), , );
 
         try {
             archive.initializeWriter();
@@ -54,21 +61,20 @@ public class SampleLithology {
         archive.closeWriter();
     }
 
-    public void processWell(ParsedLAS las, List<String> pathDescriptions) {
-
-        ParsedLAS parsed = las;
-        nullValue = parsed.getNullValue();
+    public void processWell(ParsedLAS parsed, List<String> pathDescriptions) {
         System.out.println();
         System.out.print("Processing Well");
+
+        OrganizeSample organizer = new OrganizeSample(parsed, logTypesWanted);
         //FOR EVERY SAMPLE IN THE LAS FILE
         for (int i = 0; i < parsed.getLogsList().get(0).getLogValues().size(); i++) {
             if ((10 * i) / parsed.getLogsList().get(0).getLogValues().size() > (10 * (i - 1)) / parsed.getLogsList().get(0).getLogValues().size())
                 System.out.print(".");
             //ORGANIZE SAMPLE IN ORDER OF logsTypeWanted
-            List<String> organizedSample = new OrganizeSample(parsed, i).organize();
+            List<String> organizedSample = organizer.organize(i);
 
             //SEARCH THE LITHOLOGY IN THE LIST OF XML, IF IT EXISTS
-            DiscoverLithology discoverLithology = new DiscoverLithology(las, i, pathDescriptions);
+            DiscoverLithology discoverLithology = new DiscoverLithology(parsed, i, pathDescriptions);
             int lithology = discoverLithology.discover();
             //int lithology = discoverLithology.fast_discover();
             //System.out.println(lithology2 + " AND " + lithology);
@@ -89,33 +95,15 @@ public class SampleLithology {
             organizedSample.add(String.valueOf(discoverLithology.getSphericityID()));
 
             //if(lithology >= -1){//WITH UNUSED SAMPLES
-            if (lithology != -1) {//WITHOUT UNUSED SAMPLES
-
-                //SEE IF LITHOLOGY ALREADY EXISTS ON THE LIST lithologies AND GET ITS INDEX
-                int lithologiesIndex = indexOfLithologyArchiveFormatList(lithologies, lithology);
-
+            if (lithology != -1) {//WITHOUT UNUSED SAMPLES;
                 //IF EXISTS JUST ADD THE SAMPLE
-                if (lithologiesIndex != -1) {
-                    lithologies.get(lithologiesIndex).add(organizedSample);
-                }
-                //OTHERWISE CREATE THE LITHOLOGY .txt AND ADD THE SAMPLE
-                else {
-                    LithologyArchiveFormat lit = new LithologyArchiveFormat(lithology, discoverLithology.LithologyName, organizedSample);
-                    lithologies.add(lit);
-                }
+
+                archive.add(
+                        parsed.getWellName(),
+                        organizedSample);
             }
         }
 
-    }
-
-    private int indexOfLithologyArchiveFormatList(List<LithologyArchiveFormat> list, int UID) {
-
-        for (int i = 0; i < list.size(); i++) {
-            if (list.get(i).lithologyUID == UID) {
-                return i;
-            }
-        }
-        return -1;
     }
 
 }

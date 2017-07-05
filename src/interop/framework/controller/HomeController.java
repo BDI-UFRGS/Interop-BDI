@@ -281,7 +281,7 @@ public class HomeController implements Controller, Initializable {
         }
 
         if(lasList != null) {
-            SampleLithology.run(lasList);
+            new SampleLithology().run(lasList);
         }
     }
 

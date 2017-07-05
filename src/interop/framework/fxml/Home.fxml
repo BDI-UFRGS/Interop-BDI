@@ -104,7 +104,7 @@
                         <Insets right="2.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="exportV" disable="true" mnemonicParsing="false">
+                  <Button fx:id="exportV" disable="true" mnemonicParsing="false" onAction="#export">
                      <graphic>
                         <ImageView fitHeight="17.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
                            <image>
