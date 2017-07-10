@@ -27,7 +27,6 @@ public class SampleLithology {
 
     public SampleLithology() {
         this(Arrays.asList("DEPT",
-                "DEPT",
                 "DT",
                 "GR",
                 "ILD",

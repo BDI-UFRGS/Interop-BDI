@@ -3,6 +3,7 @@ package interop.lithologyDataCollector;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -38,9 +39,13 @@ public class LithologyArchiveFormat {
     }
 
     public void add(String lasID, List<String> sample) {
-        if(specificLog.containsKey(lasID))
+        if(specificLog.containsKey(lasID)) {
             specificLog.get(lasID).add(sample);
-
+        } else {
+            List<List<String>> list = new ArrayList<>();
+            list.add(sample);
+            specificLog.put(lasID, list);
+        }
     }
 
     public void closeWriter() {
@@ -60,15 +65,18 @@ public class LithologyArchiveFormat {
             return;
 
         for (String types : logTypesWanted)
-            writer.print(types);
-        writer.println(TAB + "LAS" + TAB + "XML" + TAB + "LITHO_NAME" + TAB + "LITHO_ID" + TAB + "GRAIN_SIZE" + TAB + "ROUNDNESS_ID" + TAB + "SPHERICIRY_ID");
+            writer.print(types + TAB);
+        writer.println("LAS" + TAB + "XML" + TAB + "LITHO_NAME" + TAB + "LITHO_ID" + TAB + "GRAIN_SIZE" + TAB + "ROUNDNESS_ID" + TAB + "SPHERICIRY_ID");
 
         for (List<List<String>> well : specificLog.values()) {
             for(List<String> sample : well) {
-                for (String data : sample) {
-                    writer.print(data + TAB);
+                if(!sample.isEmpty()) {
+                    StringBuilder builder = new StringBuilder(sample.get(0));
+                    for (int i = 1; i < sample.size(); i++) {
+                        builder.append(TAB + sample.get(i));
+                    }
+                    writer.println(builder);
                 }
-                writer.println();
             }
         }
     }
