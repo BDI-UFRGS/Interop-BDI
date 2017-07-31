@@ -1,7 +1,9 @@
 package interop.framework.controller;
 
+import interop.anp.ANPFile;
 import interop.framework.Framework;
 import interop.framework.Page;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -34,7 +36,7 @@ public class MainController implements Controller, Initializable {
     private Page currentPage;
     private Page homePage;
 
-    Stack<Page> pages;
+    private Stack<Page> pages;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -46,7 +48,7 @@ public class MainController implements Controller, Initializable {
      * Sets the main content.
      *
      * @param fxml URL to FXML file
-     * @throws IOException
+     * @throws IOException Input/Output error
      */
     public void setPageFXML(URL fxml, boolean saveCurrentPage) throws IOException {
         FXMLLoader loader = new FXMLLoader(fxml);
@@ -162,4 +164,18 @@ public class MainController implements Controller, Initializable {
             Framework.getInstance().setStrataDBPath(file.getAbsolutePath());
     }
 
+    public void convertANPFile(ActionEvent actionEvent) {
+        FileChooser chooser = new FileChooser();
+
+        chooser.setTitle("Select a ANP File");
+        chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text File (*.txt)", "*.txt"));
+        File file = chooser.showOpenDialog(Framework.getInstance().getWindow());
+
+        try {
+            System.out.println("Starting...");
+            new ANPFile(file);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

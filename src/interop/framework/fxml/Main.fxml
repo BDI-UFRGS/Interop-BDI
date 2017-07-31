@@ -18,6 +18,7 @@
                   <MenuItem disable="true" mnemonicParsing="false" text="Save As" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem fx:id="setDB" mnemonicParsing="false" onAction="#setDBPath" text="Set StrataDB" />
+                <MenuItem fx:id="convertANP" mnemonicParsing="false" onAction="#convertANPFile" text="Convert ANP" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
