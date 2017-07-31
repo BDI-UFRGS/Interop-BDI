@@ -1,5 +1,6 @@
 package interop.framework.controller;
 
+import interop.framework.AlertBox;
 import interop.framework.Framework;
 import interop.lithologyDataCollector.SampleLithology;
 import interop.log.model.LASList;
@@ -9,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -58,9 +60,6 @@ public class HomeController implements Controller, Initializable {
     private TreeView<String> trainingFilesTree;
     @FXML
     private TreeView<String> validationFilesTree;
-
-
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -146,7 +145,7 @@ public class HomeController implements Controller, Initializable {
             if(isLAS(item)) {
                 removeLASFile(tree, item, Framework.getInstance().getValidationLASList());
             } else {
-                removeXMLFile(tree, item,  Framework.getInstance().getValidationLASList());
+                removeXMLFile(item,  Framework.getInstance().getValidationLASList());
             }
         } else if(event.getSource() == this.removeT) {
             tree = trainingFilesTree;
@@ -155,12 +154,12 @@ public class HomeController implements Controller, Initializable {
             if(isLAS(item)) {
                 removeLASFile(tree, item, Framework.getInstance().getTrainingLASList());
             } else {
-                removeXMLFile(tree, item,  Framework.getInstance().getTrainingLASList());
+                removeXMLFile(item,  Framework.getInstance().getTrainingLASList());
             }
         }
     }
 
-    private void removeXMLFile(TreeView<String> tree, TreeItem<String> item, LASList lasList) {
+    private void removeXMLFile(TreeItem<String> item, LASList lasList) {
         ParsedLAS las = lasList.getLAS(item.getParent().getValue());
         String fullPath = null;
 
@@ -176,7 +175,7 @@ public class HomeController implements Controller, Initializable {
     private void removeLASFile(TreeView<String> tree, TreeItem<String> item, LASList lasList) {
         Iterator<TreeItem<String>> items = new ArrayList<>(item.getChildren()).iterator();
         while(items.hasNext())
-            removeXMLFile(tree, items.next(), lasList);
+            removeXMLFile(items.next(), lasList);
 
         lasList.removeLAS(item.getValue());
         item.getParent().getChildren().remove(item);
@@ -280,8 +279,11 @@ public class HomeController implements Controller, Initializable {
             lasList = Framework.getInstance().getValidationLASList();
         }
 
-        if(lasList != null) {
+        try {
             new SampleLithology().run(lasList);
+            new AlertBox(Alert.AlertType.INFORMATION, "Strata Export", "Strata Export Finished", "Success!").showAndWait();
+        } catch(Exception e) {
+            new AlertBox(Alert.AlertType.ERROR, "Strata Export", "Strata Export Finished", "Error! " + e.getMessage()).showAndWait();
         }
     }
 
