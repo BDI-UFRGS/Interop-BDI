@@ -1,12 +1,14 @@
 package interop.framework.controller;
 
 import interop.anp.ANPFile;
+import interop.framework.AlertBox;
 import interop.framework.Framework;
 import interop.framework.Page;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
@@ -165,17 +167,41 @@ public class MainController implements Controller, Initializable {
     }
 
     public void convertANPFile(ActionEvent actionEvent) {
+        if(Framework.getInstance().getStrataDBPath() == null) {
+            new AlertBox(Alert.AlertType.ERROR, "ANP Converter", "Conversion Finished", "Error! Strataledge DB Path not set!").showAndWait();
+            return;
+        }
+
+
         FileChooser chooser = new FileChooser();
 
         chooser.setTitle("Select a ANP File");
         chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text File (*.txt)", "*.txt"));
         File file = chooser.showOpenDialog(Framework.getInstance().getWindow());
 
+        if(file == null)
+            return;
+
+        FileChooser saveChooser = new FileChooser();
+        saveChooser.setTitle("Save Strataledge XML");
+        saveChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml"));
+        saveChooser.setInitialDirectory(file.getParentFile());
+        saveChooser.setInitialFileName(file.getName().replaceAll("\\.txt(?=$)", ".xml"));
+
+        File save = saveChooser.showSaveDialog(Framework.getInstance().getWindow());
+
+        if(save == null)
+            return;
+
         try {
-            System.out.println("Starting...");
-            new ANPFile(file);
+
+            ANPFile anpFile = new ANPFile(file);
+            anpFile.saveToXML(save);
+
+            new AlertBox(Alert.AlertType.INFORMATION, "ANP Converter", "Conversion Finished", "Success!").showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
+            new AlertBox(Alert.AlertType.ERROR, "ANP Converter", "Conversion Finished", "Error! " + e.getMessage()).showAndWait();
         }
     }
 }

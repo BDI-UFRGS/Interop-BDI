@@ -19,7 +19,8 @@ public enum AttributeType {
     Roundness("TYPE_ROUNDNESS"),
     Sorting("TYPE_SORTING"),
     Sphericity("TYPE_SPHERICITY"),
-    Structure("TYPE_STRUCTURE");
+    Structure("TYPE_STRUCTURE"),
+    RockClass("TYPE_ROCK_CLASS");
 
     private final String type;
 

@@ -22,6 +22,7 @@ public class DepositionalFacies {
     private StratigraphicRoundness roundness;
     private StratigraphicSorting sorting;
     private StratigraphicSphericity sphericity;
+    private StratigraphicRockClass rockClass;
     private StratigraphicStructure mainStructure;
     private List<StratigraphicStructure> secondaryStructureList;
 
@@ -129,6 +130,17 @@ public class DepositionalFacies {
             sphericity = new StratigraphicSphericity();
 
         return sphericity;
+    }
+
+    /**
+     * @return the sphericity
+     */
+    public StratigraphicRockClass getRockClass() {
+
+        if (rockClass == null)
+            rockClass = new StratigraphicRockClass();
+
+        return rockClass;
     }
 
     /**
