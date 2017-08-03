@@ -196,7 +196,6 @@ public class MainController implements Controller, Initializable {
                 return;
 
             try {
-
                 ANPFile anpFile = new ANPFile(file);
                 anpFile.saveToXML(save);
 

@@ -284,8 +284,18 @@ public class HomeController implements Controller, Initializable {
             lasList = Framework.getInstance().getValidationLASList();
         }
 
+        FileChooser saveChooser = new FileChooser();
+        saveChooser.setTitle("Save StrataExport");
+        saveChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt"));
+        saveChooser.setInitialFileName("StrataExport.txt");
+
+        File save = saveChooser.showSaveDialog(Framework.getInstance().getWindow());
+
+        if(save == null)
+            return;
+
         try {
-            new SampleLithology().run(lasList);
+            new SampleLithology().run(lasList, save.getAbsolutePath());
             new AlertBox(Alert.AlertType.INFORMATION, "Strata Export", "Strata Export Finished", "Success!").showAndWait();
         } catch(Exception e) {
             new AlertBox(Alert.AlertType.ERROR, "Strata Export", "Strata Export Finished", "Error! " + e.getMessage()).showAndWait();

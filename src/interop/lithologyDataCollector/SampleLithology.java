@@ -1,6 +1,5 @@
 package interop.lithologyDataCollector;
 
-import interop.framework.Framework;
 import interop.lithoprototype.model.LithologyDatabase;
 import interop.log.model.LASList;
 import interop.log.model.ParsedLAS;
@@ -40,11 +39,11 @@ public class SampleLithology {
         ));
     }
 
-    public void run(LASList lasList) {
+    public void run(LASList lasList, String path) {
         System.out.println("LASList Size: " + lasList.size());
 
         db = new LithologyDatabase(logTypesWanted);
-        archive = new LithologyArchiveFormat(Framework.getInstance().getExportPath(), logTypesWanted);
+        archive = new LithologyArchiveFormat(path, logTypesWanted);
 
         for (ParsedLAS las : lasList)
             processWell(las, las.getXMLPaths());
