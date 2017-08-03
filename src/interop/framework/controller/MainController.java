@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Stack;
 
@@ -177,31 +178,33 @@ public class MainController implements Controller, Initializable {
 
         chooser.setTitle("Select a ANP File");
         chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text File (*.txt)", "*.txt"));
-        File file = chooser.showOpenDialog(Framework.getInstance().getWindow());
+        List<File> files = chooser.showOpenMultipleDialog(Framework.getInstance().getWindow());
 
-        if(file == null)
+        if(files == null || files.size() == 0)
             return;
 
-        FileChooser saveChooser = new FileChooser();
-        saveChooser.setTitle("Save Strataledge XML");
-        saveChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml"));
-        saveChooser.setInitialDirectory(file.getParentFile());
-        saveChooser.setInitialFileName(file.getName().replaceAll("\\.txt(?=$)", ".xml"));
+        for(File file : files) {
+            FileChooser saveChooser = new FileChooser();
+            saveChooser.setTitle("Save Strataledge XML");
+            saveChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml"));
+            saveChooser.setInitialDirectory(file.getParentFile());
+            saveChooser.setInitialFileName(file.getName().replaceAll("\\.txt(?=$)", ".xml"));
 
-        File save = saveChooser.showSaveDialog(Framework.getInstance().getWindow());
+            File save = saveChooser.showSaveDialog(Framework.getInstance().getWindow());
 
-        if(save == null)
-            return;
+            if (save == null)
+                return;
 
-        try {
+            try {
 
-            ANPFile anpFile = new ANPFile(file);
-            anpFile.saveToXML(save);
+                ANPFile anpFile = new ANPFile(file);
+                anpFile.saveToXML(save);
 
-            new AlertBox(Alert.AlertType.INFORMATION, "ANP Converter", "Conversion Finished", "Success!").showAndWait();
-        } catch (Exception e) {
-            e.printStackTrace();
-            new AlertBox(Alert.AlertType.ERROR, "ANP Converter", "Conversion Finished", "Error! " + e.getMessage()).showAndWait();
+                new AlertBox(Alert.AlertType.INFORMATION, "ANP Converter", "Conversion Finished", "Success!").showAndWait();
+            } catch (Exception e) {
+                e.printStackTrace();
+                new AlertBox(Alert.AlertType.ERROR, "ANP Converter", "Conversion Finished", "Error! " + e.getMessage()).showAndWait();
+            }
         }
     }
 }

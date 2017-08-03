@@ -105,7 +105,7 @@ public class ANPFile {
         Map.Entry<Float, Integer> previous = null;
         for(Map.Entry<Float, Integer> f : lines.entrySet()) {
             if(previous != null) {
-                System.out.println(f.getKey() + " -> " + f.getValue());
+                //System.out.println(f.getKey() + " -> " + f.getValue());
                 facies.appendChild(getFacies(previous.getKey(), f.getKey(), previous.getValue(), doc));
                 insertUndefinedContact(facies);
             }

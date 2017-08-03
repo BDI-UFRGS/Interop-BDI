@@ -22,6 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -82,23 +83,25 @@ public class HomeController implements Controller, Initializable {
 
         chooser.setTitle("Select a LAS File");
         chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("LAS Files (*.las)", "*.las"));
-        File file = chooser.showOpenDialog(Framework.getInstance().getWindow());
+        List<File> files = chooser.showOpenMultipleDialog(Framework.getInstance().getWindow());
 
-        ParsedLAS las = null;
+        for(File file : files) {
+            ParsedLAS las = null;
 
-        try {
-            las = new LASParser().parseLAS(file.getAbsolutePath());
-        } catch (Exception ignored) {
+            try {
+                las = new LASParser().parseLAS(file.getAbsolutePath());
+            } catch (Exception ignored) {
 
-        }
+            }
 
-        if(las != null && las.getWellName() != null) {
-            if(event.getSource() == this.addTLAS) {
-                Framework.getInstance().getTrainingLASList().add(las);
-                this.branchLAS(las.getWellName(), this.trainingFilesTree.getRoot());
-            } else if(event.getSource() == this.addVLAS) {
-                Framework.getInstance().getValidationLASList().add(las);
-                this.branchLAS(las.getWellName(), this.validationFilesTree.getRoot());
+            if (las != null && las.getWellName() != null) {
+                if (event.getSource() == this.addTLAS) {
+                    Framework.getInstance().getTrainingLASList().add(las);
+                    this.branchLAS(las.getWellName(), this.trainingFilesTree.getRoot());
+                } else if (event.getSource() == this.addVLAS) {
+                    Framework.getInstance().getValidationLASList().add(las);
+                    this.branchLAS(las.getWellName(), this.validationFilesTree.getRoot());
+                }
             }
         }
     }
@@ -121,16 +124,18 @@ public class HomeController implements Controller, Initializable {
 
         chooser.setTitle("Select a XML file");
         chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML Files (*.xml)", "*.xml"));
-        File file = chooser.showOpenDialog(Framework.getInstance().getWindow());
+        List<File> files = chooser.showOpenMultipleDialog(Framework.getInstance().getWindow());
 
-        if(file == null)
+        if(files == null)
             return;
 
         ParsedLAS las = lasList.getLAS(parent.getValue());
 
-        if(!las.getXMLPaths().contains(file.getAbsolutePath())) {
-            las.getXMLPaths().add(file.getAbsolutePath());
-            branchXML(file.getName(), parent);
+        for(File file : files) {
+            if (!las.getXMLPaths().contains(file.getAbsolutePath())) {
+                las.getXMLPaths().add(file.getAbsolutePath());
+                branchXML(file.getName(), parent);
+            }
         }
     }
 
