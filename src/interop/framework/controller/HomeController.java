@@ -299,6 +299,7 @@ public class HomeController implements Controller, Initializable {
             new AlertBox(Alert.AlertType.INFORMATION, "Strata Export", "Strata Export Finished", "Success!").showAndWait();
         } catch(Exception e) {
             new AlertBox(Alert.AlertType.ERROR, "Strata Export", "Strata Export Finished", "Error! " + e.getMessage()).showAndWait();
+            e.printStackTrace();
         }
     }
 

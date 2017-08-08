@@ -68,6 +68,10 @@ public class ANPFile {
         Element descriptions = doc.createElement("StrataledgeDescriptions");
         rootElement.appendChild(descriptions);
 
+        // WellDescription element
+        Element wellDescription = doc.createElement("WellDescription");
+        descriptions.appendChild(wellDescription);
+
         // Well Identification
         Element identification = doc.createElement("WellDescriptionIdentification");
         addItem(identification, "WellDescriptionIdentificationName", wellName);
@@ -77,7 +81,7 @@ public class ANPFile {
         addItem(identification, "WellDescriptionIdentificationObservation", null);
         addItem(identification, "WellDescriptionIdentificationCreationDate", null);
         addItem(identification, "WellDescriptionIdentificationLastEditionDate", null);
-        descriptions.appendChild(identification);
+        wellDescription.appendChild(identification);
 
         // Well Element
         Element well = doc.createElement("Well");
@@ -92,11 +96,11 @@ public class ANPFile {
         addItem(well, "WellFieldName", null);
         addItem(well, "WellOrientation", null);
         addItem(well, "WellType", null);
-        descriptions.appendChild(well);
+        wellDescription.appendChild(well);
 
         // BoxColumn
         Element boxColumn = doc.createElement("BoxColumn");
-        descriptions.appendChild(boxColumn);
+        wellDescription.appendChild(boxColumn);
 
         // FaciesColumn
         Element facies = doc.createElement("FaciesColumn");
@@ -112,7 +116,7 @@ public class ANPFile {
             previous = f;
         }
 
-        descriptions.appendChild(facies);
+        wellDescription.appendChild(facies);
 
         // write the content into xml file
         Transformer transformer = TransformerFactory.newInstance().newTransformer();
