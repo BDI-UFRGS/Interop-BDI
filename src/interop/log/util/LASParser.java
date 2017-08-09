@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This is a simple LAS Log File parser. The method parseLas is the one responsible
@@ -54,34 +56,47 @@ public class LASParser {
             String line;
 
             while ((line = bufferedReader.readLine()) != null) {
+
+                if(line.startsWith("#")) {
+                    continue;
+                }
+
                 if (line.startsWith("~V")) {
                     setInsideFalse();
                     insideVersion = true;
+                    System.out.println("LAS: V");
                 }
 
                 if (line.startsWith("~W")) {
                     setInsideFalse();
                     insideWell = true;
+                    System.out.println("LAS: W");
                 }
 
                 if (line.startsWith("~C")) {
                     setInsideFalse();
                     insideCurve = true;
+                    System.out.println("LAS: C");
                 }
                 if (line.startsWith("~P")) {
                     setInsideFalse();
                     insideParameter = true;
+                    System.out.println("LAS: P");
                 }
                 if (line.startsWith("~O")) {
                     setInsideFalse();
                     insideOther = true;
+                    System.out.println("LAS: O");
                 }
                 if (line.startsWith("~A")) {
                     setInsideFalse();
                     insideData = true;
+                    System.out.println("LAS: A");
                 }
 
                 if (!line.startsWith("~") && !line.isEmpty()) {
+                    System.out.println("LAS: " + line);
+
                     if (insideVersion)
                         handleVersion(line);
 
@@ -105,8 +120,6 @@ public class LASParser {
 
             bufferedReader.close();
 
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(LASParser.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(LASParser.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -117,7 +130,7 @@ public class LASParser {
     private void handleVersion(String line) {
         line = line.trim();
 
-        if (line.startsWith("VERS.")) {
+        if (line.startsWith("VERS.") || line.startsWith("VERS .")) {
             if (line.contains("2.0")) {
                 this.parsedLAS.setVersion("2.0");
             } else {
@@ -125,7 +138,7 @@ public class LASParser {
             }
         }
 
-        if (line.startsWith("WRAP.")) {
+        if (line.startsWith("WRAP.") || line.startsWith("WRAP .")) {
             String[] splitLine = line.split("\\.");
             splitLine = splitLine[1].split(":");
             String wrapped = splitLine[0].trim();
@@ -152,7 +165,7 @@ public class LASParser {
 
         String[] splitLine;
 
-        if (line.startsWith("STRT.")) {
+        if (line.startsWith("STRT.") || line.startsWith("STRT .")) {
             splitLine = line.split("\\.", 2);
             String[] temp = splitLine[1].split(" ", 2);
             String measureUnity = temp[0];
@@ -164,7 +177,7 @@ public class LASParser {
             parsedLAS.setStartDepth(Float.parseFloat(startDepthValue));
         }
 
-        if (line.startsWith("STOP.")) {
+        if (line.startsWith("STOP.") || line.startsWith("STOP .")) {
             splitLine = line.split("\\.", 2);
             String[] temp = splitLine[1].split(" ", 2);
             String measureUnity = temp[0];
@@ -176,7 +189,7 @@ public class LASParser {
             parsedLAS.setStopDepth(Float.parseFloat(stopDepthValue));
         }
 
-        if (line.startsWith("STEP.")) {
+        if (line.startsWith("STEP.") || line.startsWith("STEP .")) {
             splitLine = line.split("\\.", 2);
             String[] temp = splitLine[1].split(" ", 2);
             String measureUnity = temp[0];
@@ -189,21 +202,21 @@ public class LASParser {
             parsedLAS.setStepValue(Float.parseFloat(step));
         }
 
-        if (line.startsWith("NULL.")) {
+        if (line.startsWith("NULL.") || line.startsWith("NULL .")) {
             splitLine = line.split("\\.");
             splitLine = splitLine[1].split(":");
             String nullValue = splitLine[0].trim();
             parsedLAS.setNullValue(Float.parseFloat(nullValue));
         }
 
-        if (line.startsWith("COMP.")) {
+        if (line.startsWith("COMP.") || line.startsWith("COMP .")) {
             splitLine = line.split("\\.");
             splitLine = splitLine[1].split(":");
             String company = splitLine[0].trim();
             parsedLAS.setCompany(company);
         }
 
-        if (line.startsWith("WELL.")) {
+        if (line.startsWith("WELL.") || line.startsWith("WELL .")) {
             splitLine = line.split("\\.");
             splitLine = splitLine[1].split(":");
             String well = splitLine[0].trim();
@@ -277,4 +290,15 @@ public class LASParser {
         }
         this.parsedLAS.setLogsList(this.logsList);
     }
+
+    public void extractData(String line) {
+        Pattern data = Pattern.compile("^[ \t]*([a-zA-Z]+)[ ]*" +      // MNEMONIC
+                "\\.([^ \\t]+)?[ \\t]+" +                           // DOT (SEPARATOR) + measurement unit (may not exist)
+                "([^ \\t](?:.*[^ \\t])?)[ \\t]*" +                  // DATA
+                ":(?:[ \\t]*([^ \\t](?:.*[^ \\t])?))?[ \\t]*$");    // COLON + DESCRIPTION (may not exist)
+        Matcher matcher = data.matcher(line);
+
+        if()
+    }
+
 }
