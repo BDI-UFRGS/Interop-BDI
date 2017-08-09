@@ -85,6 +85,9 @@ public class HomeController implements Controller, Initializable {
         chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("LAS Files (*.las)", "*.las"));
         List<File> files = chooser.showOpenMultipleDialog(Framework.getInstance().getWindow());
 
+        if(files == null)
+            return;
+
         for(File file : files) {
             ParsedLAS las = null;
 
