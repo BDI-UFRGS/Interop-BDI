@@ -123,16 +123,17 @@ public class HomeController implements Controller, Initializable {
         if(parent == null || !isLAS(parent))
             return;
 
+        ParsedLAS las = lasList.getLAS(parent.getValue());
+
         FileChooser chooser = new FileChooser();
 
         chooser.setTitle("Select a XML file");
         chooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML Files (*.xml)", "*.xml"));
+        chooser.setInitialDirectory(new File(las.getFullPath()).getParentFile());
         List<File> files = chooser.showOpenMultipleDialog(Framework.getInstance().getWindow());
 
         if(files == null)
             return;
-
-        ParsedLAS las = lasList.getLAS(parent.getValue());
 
         for(File file : files) {
             if (!las.getXMLPaths().contains(file.getAbsolutePath())) {
