@@ -25,7 +25,6 @@ import java.util.logging.Logger;
  * For now, supports only non-wrapped files from the version 2.0.
  *
  * @author Luan
- * <p>
  * Updated by Lucas Hagen on 14/08/2017
  */
 public class LASParser {
