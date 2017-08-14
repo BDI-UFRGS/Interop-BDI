@@ -12,5 +12,4 @@ public class WrongVersionException extends Exception {
         super(message);
     }
 
-
 }

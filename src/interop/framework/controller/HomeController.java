@@ -92,9 +92,9 @@ public class HomeController implements Controller, Initializable {
             ParsedLAS las = null;
 
             try {
-                las = new LASParser().parseLAS(file.getAbsolutePath());
-            } catch (Exception ignored) {
-
+                las = new LASParser(file.getAbsolutePath()).getParsedLAS();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
             if (las != null && las.getWellName() != null) {
