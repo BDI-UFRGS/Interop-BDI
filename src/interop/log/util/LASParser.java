@@ -25,13 +25,12 @@ import java.util.logging.Logger;
  * For now, supports only non-wrapped files from the version 2.0.
  *
  * @author Luan
- *
+ * <p>
  * Updated by Lucas Hagen on 14/08/2017
  */
 public class LASParser {
 
     private String filePath;
-    private boolean parsed = false;
 
     private boolean wrap = true;
     private LASSection section;
@@ -45,14 +44,13 @@ public class LASParser {
     }
 
     /**
-     * Parses a .LAS file, without any kind of validation. Thus, if the .las is
-     * not structured exactly according to a LAS file definition, the file could not be
-     * parsed.
+     * Parses a .LAS file, without a simple format validation.
+     * Expects version 2.0 and WRAP = NO
      *
      * @return A ParsedLAS instance, containing the most useful attributes of a LAS.
      */
     public ParsedLAS getParsedLAS() throws WrongVersionException, WrongFormatException {
-        if(parsed)
+        if (parsedLAS != null)
             return parsedLAS;
 
         parsedLAS = new ParsedLAS();
@@ -84,6 +82,13 @@ public class LASParser {
         return parsedLAS;
     }
 
+    /**
+     * Handles a line, after knowing it is not a section divider
+     *
+     * @param line Line to be parsed
+     * @throws WrongVersionException Wrong version
+     * @throws WrongFormatException  Wrong format line or WRAP = YES
+     */
     private void handleLine(String line) throws WrongVersionException, WrongFormatException {
         switch (section) {
             case VERSION:
@@ -102,14 +107,18 @@ public class LASParser {
                 handleOther(line);
                 break;
             case ASCII:
-                if (wrap)
-                    handleData(line);
-                else
-                    handleUnwrappedData(line);
+                handleData(line);
                 break;
         }
     }
 
+    /**
+     * Handles lines from Version Section
+     *
+     * @param line Line to be parsed
+     * @throws WrongVersionException Wrong Version
+     * @throws WrongFormatException  Wrong format line or WRAP = YES
+     */
     private void handleVersion(String line) throws WrongVersionException, WrongFormatException {
         if (!retriever.isInfo(line))
             throw new WrongFormatException("Unexpected line in Version Section: '" + line + "'");
@@ -129,6 +138,12 @@ public class LASParser {
         }
     }
 
+    /**
+     * Handles lines from Well Section
+     *
+     * @param line Line to be parsed
+     * @throws WrongFormatException Wrong format line
+     */
     private void handleWell(String line) throws WrongFormatException {
         if (!retriever.isInfo(line))
             throw new WrongFormatException("Unexpected line in Well Section: '" + line + "'");
@@ -159,6 +174,12 @@ public class LASParser {
         }
     }
 
+    /**
+     * Handles lines from Curve Section
+     *
+     * @param line Line to be parsed
+     * @throws WrongFormatException Wrong format line
+     */
     private void handleCurve(String line) throws WrongFormatException {
         if (!retriever.isInfo(line))
             throw new WrongFormatException("Unexpected line in Curve Section: '" + line + "'");
@@ -185,22 +206,33 @@ public class LASParser {
         }
     }
 
+    /**
+     * Handles lines from Parameter Section
+     *
+     * @param line Line to be parsed
+     */
     private void handleParameter(String line) {
         // NOTHING
     }
 
+    /**
+     * Handles lines from Other Section
+     *
+     * @param line Line to be parsed
+     */
     private void handleOther(String line) {
         // NOTHING
     }
 
+    /**
+     * Handles lines from Parameter Section
+     *
+     * @param line Line to be parsed
+     */
     private void handleData(String line) {
-        if (!wrap) {
-            handleUnwrappedData(line);
+        if(!retriever.isData(line) || wrap) {
+            return;
         }
-    }
-
-    private void handleUnwrappedData(String line) {
-        retriever.isData(line);
 
         List<Float> data = retriever.getData(line);
 
