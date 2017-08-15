@@ -42,4 +42,14 @@ public class OrganizeSample {
         return value;
     }
 
+    public List<WellLog> organizeLogs(ParsedLAS parsedLAS, List<String> sortedLogs) {
+        List<WellLog> logs = new ArrayList<>();
+
+        for(String s : sortedLogs) {
+            logs.add(parsedLAS.getLog(s));
+        }
+
+        return logs;
+    }
+
 }

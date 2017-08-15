@@ -10,9 +10,10 @@ import java.util.List;
 
 public class DiscoverLithology {
 
-    private List<String> pathDescriptions = new ArrayList<>();
-    private float depthLAS;
-    private ParsedLAS las;
+    private List<String> xmlPaths = new ArrayList<>();
+    private ParsedLAS parsedLAS;
+
+
     private String xmlFound;
     private String lithologyName;
     private String grainSize;
@@ -21,8 +22,7 @@ public class DiscoverLithology {
     private int sortingID;
     private int sphericityID;
 
-    //testing the fast_discover
-    private List<StratigraphicDescription> stratigraphicDescriptions = null;
+    private List<StratigraphicDescription> stratigraphicDescriptions;
     private StratigraphicDescription stratigraphicDescription;
     private DepositionalFacies facie;
     private int i = 0; //indexOfWhichXmlFileWeAreLooking;
@@ -30,16 +30,14 @@ public class DiscoverLithology {
     private int k = 0;//indexOfDepositionalFaciesList;
 
 
-    public DiscoverLithology(ParsedLAS las, int index, List<String> path) {
-        this.pathDescriptions = path;
-        this.depthLAS = las.getLogsList().get(0).getLogValues().getPair(index).getDepth();
-        this.las = las;
+    public DiscoverLithology(ParsedLAS las, List<String> xmls) {
+        this.xmlPaths = xmls;
+        this.parsedLAS = las;
 
-        if (stratigraphicDescriptions == null) {
-            stratigraphicDescriptions = XMLReader.readStratigraphicDescriptionXML(path.get(0));
+        /*
+            stratigraphicDescriptions = XMLReader.readStratigraphicDescriptionXML(xmls.get(0));
             facie = stratigraphicDescriptions.get(0).getFaciesList().get(0);
-            mmTOm(facie);
-        }
+            mmTOm(facie);*/
     }
 
 
@@ -53,8 +51,8 @@ public class DiscoverLithology {
             } else {
                 k = 0;
                 j = 0;
-                if (i < pathDescriptions.size() - 1) {
-                    stratigraphicDescriptions = XMLReader.readStratigraphicDescriptionXML(pathDescriptions.get(++i));
+                if (i < xmlPaths.size() - 1) {
+                    stratigraphicDescriptions = XMLReader.readStratigraphicDescriptionXML(xmlPaths.get(++i));
                     return stratigraphicDescriptions.get(j).getFaciesList().get(k);
                 } else {
                     return null;
@@ -64,7 +62,7 @@ public class DiscoverLithology {
     }
 
     public ParsedLAS getParsedLAS() {
-        return las;
+        return parsedLAS;
     }
 
     public String getXmlPath() {
@@ -76,14 +74,15 @@ public class DiscoverLithology {
     }
 
 
-    public int fast_discover() {
+    public int fast_discover(int index) {
+        float depthLAS = parsedLAS.getLogsList().get(0).getLogValues().getPair(index).getDepth();
         //same as the discover() method but with the ideia that each xml file is readed only once, but the results are the same
 
         if (facie == null) {
             return 0;
         } if (facie.getBottomMeasure() >= depthLAS && facie.getTopMeasure() < depthLAS) {
             //GET THE LITHOLOGY AND THE XML IT WAS FOUND
-            xmlFound = pathDescriptions.get(i);
+            xmlFound = xmlPaths.get(i);
             lithologyName = facie.getLithology().getValue();
             grainSize = facie.getGrainSize().getValue();
             grainSizeID = facie.getGrainSize().getId();
@@ -99,16 +98,17 @@ public class DiscoverLithology {
                 return 0;
 
             mmTOm(facie);
-            return fast_discover();
+            return fast_discover(index);
         }
 
         return 0;
     }
 
-    public int discover() {
+    public int discover(int index) {
+        float depthLAS = parsedLAS.getLogsList().get(0).getLogValues().getPair(index).getDepth();
 
         //FOR EVERY XML FILE
-        for (String path : pathDescriptions) {
+        for (String path : xmlPaths) {
             List<StratigraphicDescription> listCore = XMLReader.readStratigraphicDescriptionXML(path);
             //FOR EVERY CORE IN A XML FILE
             for (StratigraphicDescription core : listCore) {
@@ -138,10 +138,8 @@ public class DiscoverLithology {
     }
 
     private List<DepositionalFacies> mmTOm(List<DepositionalFacies> depositionalFacies) {
-        for (DepositionalFacies dp : depositionalFacies) {
-            dp.setBottomMeasure(dp.getBottomMeasure() / 1000);
-            dp.setTopMeasure(dp.getTopMeasure() / 1000);
-        }
+        for (DepositionalFacies dp : depositionalFacies)
+            mmTOm(dp);
 
         return depositionalFacies;
     }

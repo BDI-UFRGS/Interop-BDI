@@ -15,7 +15,7 @@ import java.util.List;
 
 public class SampleLithology {
 
-    public static float nullValue;
+    private float nullValue;
     private List<String> logTypesWanted;
     private LithologyDatabase db;
     private LithologyArchiveFormat archive;
@@ -40,8 +40,6 @@ public class SampleLithology {
     }
 
     public void run(LASList lasList, String path) {
-        System.out.println("LASList Size: " + lasList.size());
-
         db = new LithologyDatabase(logTypesWanted);
         archive = new LithologyArchiveFormat(path, logTypesWanted);
 
@@ -61,32 +59,37 @@ public class SampleLithology {
 
     public void processWell(ParsedLAS parsed, List<String> pathDescriptions) {
         System.out.println();
-        System.out.print("Processing Well");
 
+        System.out.print("Processing Well");
+        DiscoverLithology discoverLithology = new DiscoverLithology(parsed, pathDescriptions);
         OrganizeSample organizer = new OrganizeSample(parsed, logTypesWanted);
+
+        List<String> lasInfo = Arrays.asList(
+                discoverLithology.getParsedLAS().getFullPath(),
+                discoverLithology.getXmlPath(),
+                parsed.getFullPath()
+        );
+
         //FOR EVERY SAMPLE IN THE LAS FILE
         for (int i = 0; i < parsed.getLogsList().get(0).getLogValues().size(); i++) {
             if ((10 * i) / parsed.getLogsList().get(0).getLogValues().size() > (10 * (i - 1)) / parsed.getLogsList().get(0).getLogValues().size())
                 System.out.print(".");
+
+            //System.out.println("Process: \t" + i + "\t" + parsed.getLogsList().get(0).getLogValues().size());
             //ORGANIZE SAMPLE IN ORDER OF logsTypeWanted
             List<String> organizedSample = organizer.organize(i);
 
             //SEARCH THE LITHOLOGY IN THE LIST OF XML, IF IT EXISTS
-            DiscoverLithology discoverLithology = new DiscoverLithology(parsed, i, pathDescriptions);
-            int lithology = discoverLithology.discover();
+            int lithology = discoverLithology.fast_discover(i);
             //int lithology = discoverLithology.fast_discover();
-            //System.out.println(lithology2 + " AND " + lithology);
 
             if (lithology != 0)
                 db.feedDatabase(lithology, organizedSample);
 
             //AND GET THE PATH OF LAS AND XML TO IDENTIFY IN THE OUTPUT
-            String lasPath = discoverLithology.getParsedLAS().getFullPath();
-            String xml = discoverLithology.getXmlPath();
-            organizedSample.add(lasPath);
-            organizedSample.add(xml);
+            organizedSample.addAll(lasInfo);
+            organizedSample.add(discoverLithology.getXmlPath());
             organizedSample.add(discoverLithology.getLithologyName());
-            //System.out.println("NAMO:" + discoverLithology.getLithologyName() );
             organizedSample.add(Integer.toString(lithology));
             organizedSample.add(String.valueOf(discoverLithology.getGrainSizeID()));
             organizedSample.add(String.valueOf(discoverLithology.getRoundnessID()));

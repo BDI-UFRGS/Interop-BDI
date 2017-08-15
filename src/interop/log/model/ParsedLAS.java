@@ -5,6 +5,8 @@
  */
 package interop.log.model;
 
+import interop.well.Well;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -239,5 +241,14 @@ public class ParsedLAS {
 
     public void setFullPath(String fullPath) {
         this.fullPath = fullPath;
+    }
+
+    public WellLog getLog(String mnemonic) {
+        for(WellLog log : getLogsList()) {
+            if (log.getLogType().getLogMnemonic().equalsIgnoreCase(mnemonic))
+                return log;
+        }
+
+        return null;
     }
 }

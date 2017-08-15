@@ -16,9 +16,9 @@ import java.util.List;
  * @author eduardo
  */
 public class LogAverageVector {
+
     private List<Double> logSum;
-    private List<Integer> numberOfSamples; 
-    float nullvalue = SampleLithology.nullValue;
+    private List<Integer> numberOfSamples;
 
     public LogAverageVector(){
         logSum = new ArrayList<>();
@@ -46,6 +46,8 @@ public class LogAverageVector {
     }
     
     void feedAverageVector(List<String> OrganizedSample) {
+
+/*      TODO: FIX THIS (null value)
         if(logSum.isEmpty()){
             for(String value:OrganizedSample){
                 logSum.add(0.0);
@@ -59,6 +61,6 @@ public class LogAverageVector {
                 logSum.set(i, value);
                 numberOfSamples.set(i, numberOfSamples.get(i)+1);
             }
-        }
+        }*/
     }
 }

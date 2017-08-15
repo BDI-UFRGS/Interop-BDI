@@ -152,7 +152,8 @@ public class ProbabilityDensityFunction {
     }
 
     private double[][] arrayListToMatrix_nx1(List<Double> averageVector, List<Integer> invalidIndex) {
-        List<Double> newList = new ArrayList<>();
+        // TODO: FIX THIS (null value)
+        /*List<Double> newList = new ArrayList<>();
         
         for(int i=0; i<averageVector.size(); i++){
             if(!invalidIndex.contains(i)){
@@ -167,6 +168,7 @@ public class ProbabilityDensityFunction {
         
         //System.out.println("VEREMOS... " );
         
-        return m;
+        return m;*/
+        return null;
     }
 }
