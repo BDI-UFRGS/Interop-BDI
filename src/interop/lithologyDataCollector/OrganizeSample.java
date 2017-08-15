@@ -1,5 +1,6 @@
 package interop.lithologyDataCollector;
 
+import interop.log.model.LogValue;
 import interop.log.model.ParsedLAS;
 import interop.log.model.WellLog;
 
@@ -9,43 +10,43 @@ import java.util.List;
 
 public class OrganizeSample {
 
-    private ParsedLAS parsed;
+    private ParsedLAS parsedLAS;
     private List<String> types;
 
+    private List<WellLog> organized;
+
     public OrganizeSample(ParsedLAS psd, List<String> types) {
-        this.parsed = psd;
+        this.parsedLAS = psd;
         this.types = types;
+
+        this.organized = getOrganizeLogs();
     }
 
-    public List<String> organize(int sampleIndex) {
+    public List<String> getOrganizedSample(int index) {
         List<String> organizedSample = new ArrayList<>();
+        List<String> organizedValues = new ArrayList<>();
 
-        for (String type : types) {
-            organizedSample.add(Float.toString(getSpecificSampleValue(type, sampleIndex)));
+        for (WellLog log : organized) {
+            if(log == null) {
+                organizedValues.add(Float.toString(parsedLAS.getNullValue()));
+            } else {
+                LogValue value = log.getLogValues().getPair(index);
+                organizedValues.add(Float.toString(value.getLogValue()));
+
+                if(organizedSample.isEmpty())
+                    organizedSample.add(Float.toString(value.getDepth()));
+            }
         }
+
+        organizedSample.addAll(organizedValues);
 
         return organizedSample;
     }
 
-    public float getSpecificSampleValue(String type, int sampleIndex) {
-        float nullValue = parsed.getLogsList().get(0).getNullValue();
-        float value = nullValue;
-
-        for (WellLog wl : parsed.getLogsList()) {
-            if (type.equalsIgnoreCase("DEPT")) {
-                value = wl.getLogValues().getPair(sampleIndex).getDepth();
-            } else if (type.equalsIgnoreCase(wl.getLogType().getLogMnemonic()) && wl.getLogValues().getPair(sampleIndex).getLogValue() != nullValue) {
-                value = wl.getLogValues().getPair(sampleIndex).getLogValue();
-            }
-
-        }
-        return value;
-    }
-
-    public List<WellLog> organizeLogs(ParsedLAS parsedLAS, List<String> sortedLogs) {
+    public List<WellLog> getOrganizeLogs() {
         List<WellLog> logs = new ArrayList<>();
 
-        for(String s : sortedLogs) {
+        for(String s : types) {
             logs.add(parsedLAS.getLog(s));
         }
 

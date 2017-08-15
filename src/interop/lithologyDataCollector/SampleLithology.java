@@ -3,6 +3,7 @@ package interop.lithologyDataCollector;
 import interop.lithoprototype.model.LithologyDatabase;
 import interop.log.model.LASList;
 import interop.log.model.ParsedLAS;
+import interop.log.model.WellLog;
 
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
@@ -64,39 +65,32 @@ public class SampleLithology {
         DiscoverLithology discoverLithology = new DiscoverLithology(parsed, pathDescriptions);
         OrganizeSample organizer = new OrganizeSample(parsed, logTypesWanted);
 
-        List<String> lasInfo = Arrays.asList(
-                discoverLithology.getParsedLAS().getFullPath(),
-                discoverLithology.getXmlPath(),
-                parsed.getFullPath()
-        );
-
         //FOR EVERY SAMPLE IN THE LAS FILE
         for (int i = 0; i < parsed.getLogsList().get(0).getLogValues().size(); i++) {
             if ((10 * i) / parsed.getLogsList().get(0).getLogValues().size() > (10 * (i - 1)) / parsed.getLogsList().get(0).getLogValues().size())
                 System.out.print(".");
 
-            //System.out.println("Process: \t" + i + "\t" + parsed.getLogsList().get(0).getLogValues().size());
-            //ORGANIZE SAMPLE IN ORDER OF logsTypeWanted
-            List<String> organizedSample = organizer.organize(i);
+            // Get depth + organized samples from a specific index
+            List<String> organizedSample = organizer.getOrganizedSample(i);
 
-            //SEARCH THE LITHOLOGY IN THE LIST OF XML, IF IT EXISTS
-            int lithology = discoverLithology.fast_discover(i);
-            //int lithology = discoverLithology.fast_discover();
+            // Searches for the lithology
+            DiscoverLithology.Result result = discoverLithology.discover(i, Float.valueOf(organizedSample.get(0)));
 
-            if (lithology != 0)
-                db.feedDatabase(lithology, organizedSample);
 
-            //AND GET THE PATH OF LAS AND XML TO IDENTIFY IN THE OUTPUT
-            organizedSample.addAll(lasInfo);
-            organizedSample.add(discoverLithology.getXmlPath());
-            organizedSample.add(discoverLithology.getLithologyName());
-            organizedSample.add(Integer.toString(lithology));
-            organizedSample.add(String.valueOf(discoverLithology.getGrainSizeID()));
-            organizedSample.add(String.valueOf(discoverLithology.getRoundnessID()));
-            organizedSample.add(String.valueOf(discoverLithology.getSphericityID()));
+            if (result != null)
+                db.feedDatabase(result.getLithologyID(), organizedSample);
+
+
+            organizedSample.add(parsed.getFullPath());
+            organizedSample.add(result.getXml());
+            organizedSample.add(result.getLithologyName());
+            organizedSample.add(Integer.toString(result.getLithologyID()));
+            organizedSample.add(String.valueOf(result.getGrainSizeID()));
+            organizedSample.add(String.valueOf(result.getRoundnessID()));
+            organizedSample.add(String.valueOf(result.getSphericityID()));
 
             //if(lithology >= -1){//WITH UNUSED SAMPLES
-            if (lithology != -1) {//WITHOUT UNUSED SAMPLES;
+            if () {//WITHOUT UNUSED SAMPLES;
                 //IF EXISTS JUST ADD THE SAMPLE
 
                 archive.add(
