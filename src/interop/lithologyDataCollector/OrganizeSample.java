@@ -35,7 +35,10 @@ public class OrganizeSample {
                 organizedValues.add(nullValue);
             } else {
                 LogValue value = log.getLogValues().getPair(index);
-                organizedValues.add(Float.toString(value.getLogValue()));
+                if(value.getLogValue() == parsedLAS.getNullValue())
+                    organizedValues.add(nullValue);
+                else
+                    organizedValues.add(Float.toString(value.getLogValue()));
 
                 if(organizedSample.isEmpty())
                     organizedSample.add(Float.toString(value.getDepth()));
