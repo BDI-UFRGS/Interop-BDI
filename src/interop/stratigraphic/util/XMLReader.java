@@ -43,6 +43,9 @@ public class XMLReader {
             Logger.getLogger(XMLReader.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        for(StratigraphicDescription description : descriptionsList)
+            description.setFilePath(pathFile);
+
         return descriptionsList;
     }
 

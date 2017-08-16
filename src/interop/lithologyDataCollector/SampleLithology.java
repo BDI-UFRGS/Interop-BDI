@@ -4,6 +4,7 @@ import interop.lithoprototype.model.LithologyDatabase;
 import interop.log.model.LASList;
 import interop.log.model.ParsedLAS;
 import interop.log.model.WellLog;
+import interop.stratigraphic.model.DepositionalFacies;
 
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
@@ -58,45 +59,49 @@ public class SampleLithology {
         archive.closeWriter();
     }
 
-    public void processWell(ParsedLAS parsed, List<String> pathDescriptions) {
-        System.out.println();
+    public void processWell(ParsedLAS parsedLAS, List<String> pathDescriptions) {
 
-        System.out.print("Processing Well");
-        DiscoverLithology discoverLithology = new DiscoverLithology(parsed, pathDescriptions);
-        OrganizeSample organizer = new OrganizeSample(parsed, logTypesWanted);
+        System.out.println("Processing Well");
+        DiscoverLithology discoverLithology = new DiscoverLithology(pathDescriptions);
+        OrganizeSample organizer = new OrganizeSample(parsedLAS, logTypesWanted);
 
         //FOR EVERY SAMPLE IN THE LAS FILE
-        for (int i = 0; i < parsed.getLogsList().get(0).getLogValues().size(); i++) {
-            if ((10 * i) / parsed.getLogsList().get(0).getLogValues().size() > (10 * (i - 1)) / parsed.getLogsList().get(0).getLogValues().size())
-                System.out.print(".");
+        for (int i = 0; i < parsedLAS.getLogsList().get(0).getLogValues().size(); i++) {
 
             // Get depth + organized samples from a specific index
             List<String> organizedSample = organizer.getOrganizedSample(i);
+            organizedSample.add(parsedLAS.getFullPath());
 
             // Searches for the lithology
-            DiscoverLithology.Result result = discoverLithology.discover(i, Float.valueOf(organizedSample.get(0)));
+            DiscoverLithology.Result result = discoverLithology.discover(Float.valueOf(organizedSample.get(0)));
 
 
-            if (result != null)
-                db.feedDatabase(result.getLithologyID(), organizedSample);
+            if (result == null) {
 
+                organizedSample.add("null");
+                organizedSample.add("null");
+                organizedSample.add("0");
+                organizedSample.add("0");
+                organizedSample.add("0");
+                organizedSample.add("0");
 
-            organizedSample.add(parsed.getFullPath());
-            organizedSample.add(result.getXml());
-            organizedSample.add(result.getLithologyName());
-            organizedSample.add(Integer.toString(result.getLithologyID()));
-            organizedSample.add(String.valueOf(result.getGrainSizeID()));
-            organizedSample.add(String.valueOf(result.getRoundnessID()));
-            organizedSample.add(String.valueOf(result.getSphericityID()));
+            } else {
+                db.feedDatabase(result.getFacies().getLithology().getId(), organizedSample);
 
-            //if(lithology >= -1){//WITH UNUSED SAMPLES
-            if () {//WITHOUT UNUSED SAMPLES;
-                //IF EXISTS JUST ADD THE SAMPLE
+                DepositionalFacies facies = result.getFacies();
 
-                archive.add(
-                        parsed.getWellName(),
-                        organizedSample);
+                organizedSample.add(result.getDescription().getFilePath());
+                organizedSample.add(facies.getLithology().getValue());
+                organizedSample.add(String.valueOf(facies.getLithology().getId()));
+                organizedSample.add(String.valueOf(facies.getGrainSize() != null ? facies.getGrainSize().getId() : 0));
+                organizedSample.add(String.valueOf(facies.getRoundness() != null ? facies.getRoundness().getId() : 0));
+                organizedSample.add(String.valueOf(facies.getSphericity() != null ? facies.getSphericity().getId() : 0));
             }
+
+            archive.add(
+                    parsedLAS.getWellName(),
+                    organizedSample);
+
         }
 
     }

@@ -7,7 +7,9 @@ import interop.log.model.WellLog;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * @author Lucas Hagen
+ */
 public class OrganizeSample {
 
     private ParsedLAS parsedLAS;

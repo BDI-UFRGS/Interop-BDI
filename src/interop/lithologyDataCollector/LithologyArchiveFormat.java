@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * @author Lucas Hagen
+ */
 public class LithologyArchiveFormat {
 
     public static String TAB = "\t";
