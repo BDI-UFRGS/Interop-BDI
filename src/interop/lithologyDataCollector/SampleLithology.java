@@ -3,7 +3,6 @@ package interop.lithologyDataCollector;
 import interop.lithoprototype.model.LithologyDatabase;
 import interop.log.model.LASList;
 import interop.log.model.ParsedLAS;
-import interop.log.model.WellLog;
 import interop.stratigraphic.model.DepositionalFacies;
 
 import java.io.FileNotFoundException;
@@ -17,33 +16,32 @@ import java.util.List;
 
 public class SampleLithology {
 
-    private float nullValue;
-    private List<String> logTypesWanted;
+    private List<LogTypeAlias> logTypesWanted;
     private LithologyDatabase db;
     private LithologyArchiveFormat archive;
 
-    public SampleLithology(List<String> types) {
+    public SampleLithology(List<LogTypeAlias> types) {
         this.logTypesWanted = types;
     }
 
     public SampleLithology() {
-        this(Arrays.asList("DEPT",
-                "DT",
-                "GR",
-                "ILD",
-                "NPHI",
-                "RHOB",
-                "DRHO",
-                "CALI",
-                "SP",
-                "SN",
-                "MSFL"
+        this(Arrays.asList(LogTypeAlias.DEPT,
+                LogTypeAlias.DT,   // DTC
+                LogTypeAlias.GR,
+                LogTypeAlias.ILD,
+                LogTypeAlias.NPHI, // NEUT
+                LogTypeAlias.RHOB,
+                LogTypeAlias.DRHO,
+                LogTypeAlias.CALI,
+                LogTypeAlias.SP,
+                LogTypeAlias.SN,
+                LogTypeAlias.MSFL
         ));
     }
 
     public void run(LASList lasList, String path) {
-        db = new LithologyDatabase(logTypesWanted);
-        archive = new LithologyArchiveFormat(path, logTypesWanted);
+        db = new LithologyDatabase(LogTypeAlias.toStringList(logTypesWanted));
+        archive = new LithologyArchiveFormat(path, LogTypeAlias.toStringList(logTypesWanted));
 
         for (ParsedLAS las : lasList)
             processWell(las, las.getXMLPaths());
@@ -61,13 +59,14 @@ public class SampleLithology {
 
     public void processWell(ParsedLAS parsedLAS, List<String> pathDescriptions) {
 
-        System.out.println("Processing Well");
+        System.out.print("Processing Well");
         DiscoverLithology discoverLithology = new DiscoverLithology(pathDescriptions);
         OrganizeSample organizer = new OrganizeSample(parsedLAS, logTypesWanted);
 
         //FOR EVERY SAMPLE IN THE LAS FILE
         for (int i = 0; i < parsedLAS.getLogsList().get(0).getLogValues().size(); i++) {
-
+            if((10*i)/parsedLAS.getLogsList().get(0).getLogValues().size() > (10*(i-1))/parsedLAS.getLogsList().get(0).getLogValues().size())
+                System.out.print(".");
             // Get depth + organized samples from a specific index
             List<String> organizedSample = organizer.getOrganizedSample(i);
             organizedSample.add(parsedLAS.getFullPath());
@@ -103,6 +102,7 @@ public class SampleLithology {
                     organizedSample);
 
         }
+        System.out.println();
 
     }
 

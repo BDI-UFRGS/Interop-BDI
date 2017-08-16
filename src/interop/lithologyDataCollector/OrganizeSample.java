@@ -12,12 +12,14 @@ import java.util.List;
  */
 public class OrganizeSample {
 
+    private static String nullValue = "NaN";
+
     private ParsedLAS parsedLAS;
-    private List<String> types;
+    private List<LogTypeAlias> types;
 
     private List<WellLog> organized;
 
-    public OrganizeSample(ParsedLAS psd, List<String> types) {
+    public OrganizeSample(ParsedLAS psd, List<LogTypeAlias> types) {
         this.parsedLAS = psd;
         this.types = types;
 
@@ -30,7 +32,7 @@ public class OrganizeSample {
 
         for (WellLog log : organized) {
             if(log == null) {
-                organizedValues.add(Float.toString(parsedLAS.getNullValue()));
+                organizedValues.add(nullValue);
             } else {
                 LogValue value = log.getLogValues().getPair(index);
                 organizedValues.add(Float.toString(value.getLogValue()));
@@ -48,8 +50,9 @@ public class OrganizeSample {
     public List<WellLog> getOrganizeLogs() {
         List<WellLog> logs = new ArrayList<>();
 
-        for(String s : types) {
-            logs.add(parsedLAS.getLog(s));
+        for(LogTypeAlias alias : types) {
+            if(alias != LogTypeAlias.DEPT)
+                logs.add(alias.get(parsedLAS));
         }
 
         return logs;
