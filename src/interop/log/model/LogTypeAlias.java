@@ -1,8 +1,4 @@
-package interop.lithologyDataCollector;
-
-import interop.log.model.LogType;
-import interop.log.model.ParsedLAS;
-import interop.log.model.WellLog;
+package interop.log.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;

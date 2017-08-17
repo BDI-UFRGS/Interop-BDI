@@ -2,6 +2,7 @@ package interop.lithologyDataCollector;
 
 import interop.lithoprototype.model.LithologyDatabase;
 import interop.log.model.LASList;
+import interop.log.model.LogTypeAlias;
 import interop.log.model.ParsedLAS;
 import interop.stratigraphic.model.DepositionalFacies;
 
@@ -59,24 +60,18 @@ public class SampleLithology {
 
     public void processWell(ParsedLAS parsedLAS, List<String> pathDescriptions) {
 
-        System.out.print("Processing Well");
         DiscoverLithology discoverLithology = new DiscoverLithology(pathDescriptions);
         OrganizeSample organizer = new OrganizeSample(parsedLAS, logTypesWanted);
 
-        //FOR EVERY SAMPLE IN THE LAS FILE
-        for (int i = 0; i < parsedLAS.getLogsList().get(0).getLogValues().size(); i++) {
-            if((10*i)/parsedLAS.getLogsList().get(0).getLogValues().size() > (10*(i-1))/parsedLAS.getLogsList().get(0).getLogValues().size())
-                System.out.print(".");
-            // Get depth + organized samples from a specific index
-            List<String> organizedSample = organizer.getOrganizedSample(i);
-            organizedSample.add(parsedLAS.getFullPath());
+        List<String> organizedSample;
+        while ((organizedSample = organizer.getNextOrganizedSample()) != null) {
+            float depth = Float.valueOf(organizedSample.get(0));
 
             // Searches for the lithology
-            DiscoverLithology.Result result = discoverLithology.discover(Float.valueOf(organizedSample.get(0)));
+            DiscoverLithology.Result result = discoverLithology.discover(depth);
 
-
+            organizedSample.add(parsedLAS.getFullPath());
             if (result == null) {
-
                 organizedSample.add("null");
                 organizedSample.add("null");
                 organizedSample.add("0");
@@ -102,7 +97,6 @@ public class SampleLithology {
                     organizedSample);
 
         }
-        System.out.println();
 
     }
 

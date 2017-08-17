@@ -1,11 +1,11 @@
 package interop.lithologyDataCollector;
 
-import interop.log.model.LogValue;
-import interop.log.model.ParsedLAS;
-import interop.log.model.WellLog;
+import interop.log.model.*;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Lucas Hagen
@@ -17,37 +17,55 @@ public class OrganizeSample {
     private ParsedLAS parsedLAS;
     private List<LogTypeAlias> types;
 
-    private List<WellLog> organized;
+    private List<Iterator<Map.Entry<Float, Float>>> organized;
 
     public OrganizeSample(ParsedLAS psd, List<LogTypeAlias> types) {
         this.parsedLAS = psd;
         this.types = types;
 
-        this.organized = getOrganizeLogs();
+        resetIterator();
     }
 
-    public List<String> getOrganizedSample(int index) {
+    public void resetIterator() {
+        this.organized = getOrganizeLogsIterators();
+    }
+
+    public boolean hasNextOrganizedSample() {
+        if(organized == null)
+            return false;
+
+        for(Iterator i : organized)
+            if(i.hasNext())
+                return true;
+
+        return false;
+    }
+
+    public List<String> getNextOrganizedSample() {
         List<String> organizedSample = new ArrayList<>();
         List<String> organizedValues = new ArrayList<>();
+        boolean empty = true;
 
-        for (WellLog log : organized) {
-            if(log == null) {
+        for (Iterator<Map.Entry<Float, Float>> log : organized) {
+            if(log == null || !log.hasNext()) {
                 organizedValues.add(nullValue);
             } else {
-                LogValue value = log.getLogValues().getPair(index);
-                if(value.getLogValue() == parsedLAS.getNullValue())
+                Map.Entry<Float, Float> value = log.next();
+                if(value.getValue() == parsedLAS.getNullValue())
                     organizedValues.add(nullValue);
                 else
-                    organizedValues.add(Float.toString(value.getLogValue()));
+                    organizedValues.add(Float.toString(value.getValue()));
 
                 if(organizedSample.isEmpty())
-                    organizedSample.add(Float.toString(value.getDepth()));
+                    organizedSample.add(Float.toString(value.getKey()));
+
+                empty = false;
             }
         }
 
         organizedSample.addAll(organizedValues);
 
-        return organizedSample;
+        return empty ? null : organizedSample;
     }
 
     public List<WellLog> getOrganizeLogs() {
@@ -56,6 +74,19 @@ public class OrganizeSample {
         for(LogTypeAlias alias : types) {
             if(alias != LogTypeAlias.DEPT)
                 logs.add(alias.get(parsedLAS));
+        }
+
+        return logs;
+    }
+
+    public List<Iterator<Map.Entry<Float, Float>>> getOrganizeLogsIterators() {
+        List<Iterator<Map.Entry<Float, Float>>> logs = new ArrayList<>();
+
+        for(LogTypeAlias alias : types) {
+            if(alias != LogTypeAlias.DEPT) {
+                WellLog log = alias.get(parsedLAS);
+                logs.add(log == null ? null : log.getLogValues().entrySet().iterator());
+            }
         }
 
         return logs;
