@@ -22,13 +22,15 @@ public class DiscoverLithology {
     private StratigraphicDescription currentDescription;
     private DepositionalFacies facies;
 
-
     public DiscoverLithology(List<String> xmls) {
         this.xmlPaths = xmls;
 
         restartFacies();
     }
 
+    /**
+     * Restart all iterators and loads all xml files to memory.
+     */
     public void restartFacies() {
         TreeSet<StratigraphicDescription> descriptions = new TreeSet<>();
 
@@ -40,7 +42,13 @@ public class DiscoverLithology {
         facies = getNextFacies();
     }
 
-    public DepositionalFacies getFacies(float depth) {
+    /**
+     * Gets next facies if needed, or returns the current facies.
+     *
+     * @param depth Depth to get lithology, must be increasing.
+     * @return
+     */
+    private DepositionalFacies getNextFacies(float depth) {
         if (facies == null)
             return null;
 
@@ -72,7 +80,7 @@ public class DiscoverLithology {
     }
 
     public Result discover(float depth) {
-        DepositionalFacies currentFacies = getFacies(depth);
+        DepositionalFacies currentFacies = getNextFacies(depth);
 
         return currentFacies == null ? null : new Result(currentDescription, currentFacies);
     }
